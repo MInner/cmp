@@ -1,7 +1,12 @@
 #include "Exp.h"
 
-IdExp::IdExp(string s_) : s(s_) { }
+IdExp::IdExp(const string s_) : s(s_) { }
 
-NumExp::NumExp(int a_) : a(a_) { }
+NumExp::NumExp(const int a_) : a(a_) { }
 
-OpExp::OpExp(Exp left_, char b_, Exp right_): left(left_), b(b_), right(right_) {}
+OpExp::OpExp(const Exp* left_, const char b_, const Exp* right_): left(left_), b(b_), right(right_) {}
+
+Exp::~Exp()
+{
+
+}

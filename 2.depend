@@ -3,5 +3,21 @@
 
 1379592720 source:/home/ben/Dropbox/bt/comp/3/Binop.cpp
 
-1379592101 source:/home/ben/Dropbox/bt/comp/3/Exp.cpp
+1379594125 source:/home/ben/Dropbox/bt/comp/3/Exp.cpp
+	"Exp.h"
+
+1379594212 /home/ben/Dropbox/bt/comp/3/Exp.h
+	<string>
+
+1379593619 source:/home/ben/Dropbox/bt/comp/3/Statement.cpp
+	<assert.h>
+	<string>
+	"ExpList.h"
+	"Exp.h"
+
+1379593600 /home/ben/Dropbox/bt/comp/3/ExpList.h
+	<string>
+
+1379592930 source:/home/ben/Dropbox/bt/comp/3/main.cpp
+	<iostream>
 

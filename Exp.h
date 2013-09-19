@@ -5,30 +5,30 @@ using std::string;
 class Exp
 {
 public:
-	virtual int Execute();
+//	virtual int Execute();
 	virtual ~Exp();
 };
 
 class IdExp : public Exp
 {
 public:
-	string s;
-	IdExp(string s_);
+	const string s;
+	IdExp(const string s_);
 };
 
 class NumExp : public Exp
 {
 public:
-	int a;
-	NumExp(int a_);
+	const int a;
+	NumExp(const int a_);
 };
 
 class OpExp : public Exp
 {
 public:
-	Exp left;
-	Exp right;
-	char b;
+	const Exp* left;
+	const char b;
+	const Exp* right;
 
-	OpExp(Exp left_, char b_, Exp right_);
+	OpExp(const Exp* left_, const char b_, const Exp* right_);
 };
