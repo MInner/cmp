@@ -1,5 +1,5 @@
 #include <assert.h>
-#include <String>
+#include <string>
 #include "ExpList.h"
 #include "Exp.h"
 
@@ -37,7 +37,7 @@ public:
 	}
 
 private:
-	const string const id;
+	const string id;
 	const Exp* const exp;
 };
 
@@ -46,7 +46,7 @@ class PrintStm : public Statement {
 public:
 	PrintStm( const ExpList* expList) :
 	expList( expList )
-	{		
+	{
 		assert( expList != 0 );
 	}
 
