@@ -23,21 +23,25 @@
 
 1379604717 source:/home/ben/Dropbox/bt/comp/cmp/AssignStm.cpp
 
-1379937449 source:/home/ben/Dropbox/bt/comp/cmp/Exp.cpp
+1379968534 source:/home/ben/Dropbox/bt/comp/cmp/Exp.cpp
 	"stm.h"
 	"ExpList.h"
 	"Exp.h"
+	"vartable.h"
 
-1379939557 /home/ben/Dropbox/bt/comp/cmp/Exp.h
+1379968381 /home/ben/Dropbox/bt/comp/cmp/Exp.h
 	<string>
 	"all.h"
 	"stm.h"
 	"ExpList.h"
 
-1379937449 source:/home/ben/Dropbox/bt/comp/cmp/Statement.cpp
+1379968265 source:/home/ben/Dropbox/bt/comp/cmp/Statement.cpp
 	"stm.h"
 	"ExpList.h"
 	"Exp.h"
+	"vartable.h"
+	<stdio.h>
+	<iostream>
 
 1379939403 /home/ben/Dropbox/bt/comp/cmp/ExpList.h
 	<string>
@@ -121,7 +125,7 @@
 	"ExpList.h"
 	"Exp.h"
 
-1379938237 source:/home/ben/Dropbox/bt/comp/cmp/main.cpp
+1379968265 source:/home/ben/Dropbox/bt/comp/cmp/main.cpp
 	<iostream>
 	"all.h"
 	"Exp.h"
@@ -129,10 +133,14 @@
 	"ExpList.h"
 	"vartable.h"
 
-1379937952 source:/home/ben/Dropbox/bt/comp/cmp/vartable.cpp
+1379968265 source:/home/ben/Dropbox/bt/comp/cmp/vartable.cpp
+	"vartable.h"
+	<map>
+	<iostream>
 
-1379938247 /home/ben/Dropbox/bt/comp/cmp/vartable.h
+1379968265 /home/ben/Dropbox/bt/comp/cmp/vartable.h
 	<string>
+	<map>
 
 1379956488 c:\users\vitaly\desktop\comp_th\cmp\vartable.h
 	<string>

@@ -23,11 +23,13 @@ int OpExp::Exec(const VarTable* table) const{
             return this->left->Exec(table) + this->right->Exec(table);
         case '-':
             return this->left->Exec(table) - this->right->Exec(table);
-        case 'x':
+        case '*':
             return this->left->Exec(table) * this->right->Exec(table);
         case '/':
             return this->left->Exec(table) / this->right->Exec(table);
     }
+    throw "No such binop";
+    return -1;
 }
 
 EseqExp::EseqExp(const Statement* stm_, const Exp* exp_): stm(stm_), exp(exp_){}

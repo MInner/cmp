@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello world!" << endl;
+    cout << "Start!" << endl;
 
     //  a = 5 + 3; b = ( print( a, a - 1), 10*a); print( b )
 
@@ -34,7 +34,7 @@ int main()
     //------EseqExp--------------------
     IdExp* rightAId = new IdExp("a");
     NumExp* a10 = new NumExp(10);
-    OpExp* expTimes = new OpExp(a10, 'x', rightAId);
+    OpExp* expTimes = new OpExp(a10, '*', rightAId);
     EseqExp* eseqExp = new EseqExp(firPrintStm, expTimes);
     //-------cmpStm----------------------------
     AssignStm* assignB = new AssignStm("b", eseqExp);
