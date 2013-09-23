@@ -1,5 +1,11 @@
+
+#include "Exp.h"
+
+#ifndef STMH
+#define STMH
+
 #include <assert.h>
-#include <String>
+#include <string>
 
 using namespace std::string;
 
@@ -25,3 +31,4 @@ private:
 	const Exp* const expP;
 };
 
+#endif

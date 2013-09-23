@@ -1,4 +1,8 @@
+#ifndef EXPH
+#define EXPH
+
 #include <string>
+#include "stm.h"
 
 using std::string;
 
@@ -43,3 +47,6 @@ private:
 	const Statement* stm;
 	const Exp* exp;
 };
+
+
+#endif
