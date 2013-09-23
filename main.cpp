@@ -44,5 +44,9 @@ int main()
 
     delete topStm;
 
+    VarTable vt;
+    vt.getVar("dsgs");
+    vt.setVar("a",1);
+    cout << vt.getVar("a");
     return 0;
 }

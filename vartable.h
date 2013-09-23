@@ -2,14 +2,18 @@
 #define VARTABLE_H_INCLUDED
 
 #include <string>
+#include <map>
+
+using namespace std;
 
 class VarTable
 {
 public:
     VarTable();
-    const int get(const string name);
-    void set(const string name, const int val);
-
+    int getVar(const string name);
+    void setVar(const string name, const int val);
+private:
+    map<string,int> var;
 };
 
 #endif // VARTABLE_H_INCLUDED
