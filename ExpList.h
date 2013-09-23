@@ -1,3 +1,6 @@
+#ifndef EXPLIST
+#define EXPLIST
+
 #include <string>
 
 class ExpList {
@@ -7,3 +10,5 @@ private:
 	const Exp* const exp;
 	const ExpList* const expList;
 };
+
+#endif
