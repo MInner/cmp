@@ -11,6 +11,7 @@ using std::string;
 
 class Statement {
 public:
+//    virtual VarTable* Exec(const VarTable* table) = 0;
 	virtual ~Statement();
 };
 

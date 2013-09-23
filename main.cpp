@@ -3,12 +3,15 @@
 #include "Exp.h"
 #include "stm.h"
 #include "ExpList.h"
+#include "vartable.h"
 
 using namespace std;
 
 int main()
 {
     cout << "Hello world!" << endl;
+
+    //  a = 5 + 3; b = ( print( a, a - 1), 10*a); print( b )
 
     //------assign a------------------
     NumExp* a5 = new NumExp(5);
@@ -38,6 +41,8 @@ int main()
     CompoundStatement* cmpStm = new CompoundStatement(assignB, secPrintStm);
     //---------------topStm------------------
     CompoundStatement* topStm = new CompoundStatement(assignA, cmpStm);
+
+    delete topStm;
 
     return 0;
 }

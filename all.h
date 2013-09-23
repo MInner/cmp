@@ -11,6 +11,7 @@ class CompoundStatement;
 class PrintStm;
 class AssignStm;
 class ExpList;
+class VarTable;
 
 
 #endif // ALL_H_INCLUDED
