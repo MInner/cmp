@@ -59,7 +59,7 @@
 
 1379883325 source:c:\users\vitaly\desktop\comp_th\cmp\assignstm.cpp
 
-1379959760 source:c:\users\vitaly\desktop\comp_th\cmp\exp.cpp
+1379966804 source:c:\users\vitaly\desktop\comp_th\cmp\exp.cpp
 	"stm.h"
 	"ExpList.h"
 	"Exp.h"
@@ -89,14 +89,15 @@
 	<string>
 	"all.h"
 
-1379961360 source:c:\users\vitaly\desktop\comp_th\cmp\statement.cpp
+1379964874 source:c:\users\vitaly\desktop\comp_th\cmp\statement.cpp
 	"stm.h"
 	"ExpList.h"
 	"Exp.h"
 	"vartable.h"
 	<stdio.h>
+	<iostream>
 
-1379960204 source:c:\users\vitaly\desktop\comp_th\cmp\main.cpp
+1379967166 source:c:\users\vitaly\desktop\comp_th\cmp\main.cpp
 	<iostream>
 	"all.h"
 	"Exp.h"

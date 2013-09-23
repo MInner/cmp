@@ -30,10 +30,10 @@ int OpExp::Exec(const VarTable* table) const{
     }
 }
 
-EseqExp::EseqExp(const Statement* stm_, const Exp* exp_) {}
+EseqExp::EseqExp(const Statement* stm_, const Exp* exp_): stm(stm_), exp(exp_){}
 
 int EseqExp::Exec(const VarTable* table) const{
-    const VarTable* table1 = this->stm->Exec(table);
+    const VarTable* table1 = stm->Exec(table);
     return this->exp->Exec(table1);
 }
 

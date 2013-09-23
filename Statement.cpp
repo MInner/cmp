@@ -3,6 +3,9 @@
 #include "Exp.h"
 #include "vartable.h"
 #include <stdio.h>
+#include <iostream>
+
+using namespace std;
 
 CompoundStatement::CompoundStatement( const Statement* first, const Statement* second ) :
 firstStm( first ), secondStm( second )
@@ -43,7 +46,7 @@ const VarTable* PrintStm::Exec(const VarTable* table) const
     while (l != NULL)
     {
         const Exp* cur = l->exp;
-        printf("%d", cur->Exec(table));
+        printf("%d ", cur->Exec(table));
         l = l->expList;
     }
     return table;
