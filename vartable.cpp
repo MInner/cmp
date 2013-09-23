@@ -6,11 +6,12 @@ VarTable::VarTable(){
     //var = new map<string,int>();
 }
 
-int VarTable::getVar(const string name){
+int VarTable::getVar(const string name) const{
     if (this->var.count(name) == 0){
-            cout << "there is no var " << name << endl;
+        cout << "there is no var " << name << endl;
+        return 0;
     } else {
-        return var[name];
+        return var.at(name);
     }
 }
 

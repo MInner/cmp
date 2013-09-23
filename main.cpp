@@ -42,11 +42,14 @@ int main()
     //---------------topStm------------------
     CompoundStatement* topStm = new CompoundStatement(assignA, cmpStm);
 
+    topStm->Exec(new VarTable());
     delete topStm;
 
     VarTable vt;
     vt.getVar("dsgs");
     vt.setVar("a",1);
     cout << vt.getVar("a");
+
+
     return 0;
 }

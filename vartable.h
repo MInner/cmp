@@ -10,7 +10,7 @@ class VarTable
 {
 public:
     VarTable();
-    int getVar(const string name);
+    int getVar(const string name) const;
     void setVar(const string name, const int val);
 private:
     map<string,int> var;

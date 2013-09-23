@@ -59,12 +59,13 @@
 
 1379883325 source:c:\users\vitaly\desktop\comp_th\cmp\assignstm.cpp
 
-1379936906 source:c:\users\vitaly\desktop\comp_th\cmp\exp.cpp
+1379959760 source:c:\users\vitaly\desktop\comp_th\cmp\exp.cpp
 	"stm.h"
 	"ExpList.h"
 	"Exp.h"
+	"vartable.h"
 
-1379941022 c:\users\vitaly\desktop\comp_th\cmp\exp.h
+1379959780 c:\users\vitaly\desktop\comp_th\cmp\exp.h
 	<string>
 	"all.h"
 	"stm.h"
@@ -88,12 +89,14 @@
 	<string>
 	"all.h"
 
-1379936986 source:c:\users\vitaly\desktop\comp_th\cmp\statement.cpp
+1379961360 source:c:\users\vitaly\desktop\comp_th\cmp\statement.cpp
 	"stm.h"
 	"ExpList.h"
 	"Exp.h"
+	"vartable.h"
+	<stdio.h>
 
-1379940686 source:c:\users\vitaly\desktop\comp_th\cmp\main.cpp
+1379960204 source:c:\users\vitaly\desktop\comp_th\cmp\main.cpp
 	<iostream>
 	"all.h"
 	"Exp.h"
@@ -130,11 +133,11 @@
 1379938247 /home/ben/Dropbox/bt/comp/cmp/vartable.h
 	<string>
 
-1379940428 c:\users\vitaly\desktop\comp_th\cmp\vartable.h
+1379956488 c:\users\vitaly\desktop\comp_th\cmp\vartable.h
 	<string>
 	<map>
 
-1379940498 source:c:\users\vitaly\desktop\comp_th\cmp\vartable.cpp
+1379956612 source:c:\users\vitaly\desktop\comp_th\cmp\vartable.cpp
 	"vartable.h"
 	<map>
 	<iostream>
