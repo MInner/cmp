@@ -12,23 +12,34 @@ public:
 class IdExp : public Exp
 {
 public:
-	const string s;
 	IdExp(const string s_);
+private:
+    const string s;
 };
 
 class NumExp : public Exp
 {
 public:
-	const int a;
 	NumExp(const int a_);
+private:
+    const int a;
 };
 
 class OpExp : public Exp
 {
 public:
-	const Exp* left;
+	OpExp(const Exp* left_, const char b_, const Exp* right_);
+private:
+    const Exp* left;
 	const char b;
 	const Exp* right;
+};
 
-	OpExp(const Exp* left_, const char b_, const Exp* right_);
+class EseqExp : public Exp
+{
+public:
+	EseqExp(const Statement* stm_, const Exp* exp_);
+private:
+	const Statement* stm;
+	const Exp* exp;
 };
