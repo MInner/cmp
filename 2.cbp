@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="AssignStm.cpp" />
 		<Unit filename="Exp.cpp" />
 		<Unit filename="Exp.h" />
 		<Unit filename="ExpList.cpp" />
@@ -42,7 +43,6 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
-			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
