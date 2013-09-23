@@ -1,7 +1,8 @@
-#include "Exp.h"
-
 #ifndef STMH
 #define STMH
+
+#include "Exp.h"
+#include "all.h"
 
 #include <assert.h>
 #include <string>
@@ -25,8 +26,8 @@ class AssignStm : public Statement {
 public:
 	AssignStm( const string id, const Exp* exp );
 private:
-	const string const idP;
-	const Exp* const expP;
+	const string id;
+	const Exp* const exp;
 };
 
 class PrintStm : public Statement {

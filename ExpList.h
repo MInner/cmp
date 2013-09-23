@@ -2,6 +2,7 @@
 #define EXPLIST
 
 #include <string>
+#include "all.h"
 
 class ExpList {
 public:

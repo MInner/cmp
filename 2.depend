@@ -26,9 +26,10 @@
 1379604717 source:/home/ben/Dropbox/bt/comp/cmp/Exp.cpp
 	"Exp.h"
 
-1379931223 /home/ben/Dropbox/bt/comp/cmp/Exp.h
+1379933662 /home/ben/Dropbox/bt/comp/cmp/Exp.h
 	<string>
 	"stm.h"
+	"all.h"
 
 1379604717 source:/home/ben/Dropbox/bt/comp/cmp/Statement.cpp
 	<assert.h>
@@ -36,11 +37,19 @@
 	"ExpList.h"
 	"Exp.h"
 
-1379931204 /home/ben/Dropbox/bt/comp/cmp/ExpList.h
+1379933666 /home/ben/Dropbox/bt/comp/cmp/ExpList.h
 	<string>
+	"all.h"
 
-1379933117 /home/ben/Dropbox/bt/comp/cmp/stm.h
+1379934153 /home/ben/Dropbox/bt/comp/cmp/stm.h
 	"Exp.h"
+	"all.h"
 	<assert.h>
 	<string>
+
+1379933487 /home/ben/Dropbox/bt/comp/cmp/all.h
+
+1379933696 source:/home/ben/Dropbox/bt/comp/cmp/ExpList.cpp
+	"ExpList.h"
+	<assert.h>
 

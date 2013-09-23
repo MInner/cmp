@@ -3,6 +3,7 @@
 
 #include <string>
 #include "stm.h"
+#include "all.h"
 
 using std::string;
 

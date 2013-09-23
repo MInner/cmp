@@ -9,11 +9,11 @@ firstStm( first ), secondStm( second )
     assert( secondStm != 0 );
 }
 
-AssignStm::AssignStm( const string id, const Exp* exp ) :
-id( id ), exp( exp )
+AssignStm::AssignStm( const string _id, const Exp* _exp ) :
+id( _id ), exp( _exp )
 {
-    assert( id != "" );
-    assert( exp != 0 );
+    assert( _id != "" );
+    assert( _exp != 0 );
 }
 
 PrintStm::PrintStm( const ExpList* expList) :
