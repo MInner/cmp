@@ -28,7 +28,7 @@ id( _id ), exp( _exp )
 const VarTable* AssignStm::Exec(const VarTable* table) const
 {
     VarTable* t = new VarTable(*table);
-    t->set(id, exp->Exec(table));
+    t->setVar(id, exp->Exec(table));
     return t;
 }
 
@@ -40,9 +40,9 @@ PrintStm::PrintStm( const ExpList* expList) : expList( expList )
 const VarTable* PrintStm::Exec(const VarTable* table) const
 {
     const ExpList* l = new ExpList(*expList);
-    const Exp* cur = l->exp;
-    while (cur != 0)
+    while (l != NULL)
     {
+        const Exp* cur = l->exp;
         printf("%d", cur->Exec(table));
         l = l->expList;
     }

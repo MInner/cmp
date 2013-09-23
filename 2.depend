@@ -64,13 +64,13 @@
 	"ExpList.h"
 	"Exp.h"
 
-1379936649 c:\users\vitaly\desktop\comp_th\cmp\exp.h
+1379941022 c:\users\vitaly\desktop\comp_th\cmp\exp.h
 	<string>
 	"all.h"
 	"stm.h"
 	"ExpList.h"
 
-1379938508 c:\users\vitaly\desktop\comp_th\cmp\stm.h
+1379941022 c:\users\vitaly\desktop\comp_th\cmp\stm.h
 	"Exp.h"
 	"all.h"
 	<assert.h>
@@ -84,7 +84,7 @@
 	"Exp.h"
 	<assert.h>
 
-1379934528 c:\users\vitaly\desktop\comp_th\cmp\explist.h
+1379941022 c:\users\vitaly\desktop\comp_th\cmp\explist.h
 	<string>
 	"all.h"
 
@@ -93,7 +93,7 @@
 	"ExpList.h"
 	"Exp.h"
 
-1379938508 source:c:\users\vitaly\desktop\comp_th\cmp\main.cpp
+1379940686 source:c:\users\vitaly\desktop\comp_th\cmp\main.cpp
 	<iostream>
 	"all.h"
 	"Exp.h"
