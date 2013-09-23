@@ -1,4 +1,3 @@
-
 #include "Exp.h"
 
 #ifndef STMH
@@ -7,7 +6,7 @@
 #include <assert.h>
 #include <string>
 
-using namespace std::string;
+using std::string;
 
 class Statement {
 public:
@@ -22,13 +21,19 @@ private:
 	const Statement* const secondStm;
 };
 
-// AssignStm
 class AssignStm : public Statement {
 public:
 	AssignStm( const string id, const Exp* exp );
 private:
 	const string const idP;
 	const Exp* const expP;
+};
+
+class PrintStm : public Statement {
+public:
+	PrintStm( const ExpList* expList);
+private:
+	const ExpList* expList;
 };
 
 #endif
