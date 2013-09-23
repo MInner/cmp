@@ -22,3 +22,4 @@ expList( expList )
     assert( expList != 0 );
 }
 
+Statement::~Statement() {}

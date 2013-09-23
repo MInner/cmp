@@ -8,6 +8,7 @@ class OpExp;
 class EseqExp;
 class Statement;
 class CompoundStatement;
+class PrintStm;
 class AssignStm;
 class ExpList;
 

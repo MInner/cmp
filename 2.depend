@@ -53,3 +53,62 @@
 	"ExpList.h"
 	<assert.h>
 
+1379883325 source:c:\users\vitaly\desktop\comp_th\cmp\assignstm.cpp
+
+1379936906 source:c:\users\vitaly\desktop\comp_th\cmp\exp.cpp
+	"stm.h"
+	"ExpList.h"
+	"Exp.h"
+
+1379936649 c:\users\vitaly\desktop\comp_th\cmp\exp.h
+	<string>
+	"all.h"
+	"stm.h"
+	"ExpList.h"
+
+1379936560 c:\users\vitaly\desktop\comp_th\cmp\stm.h
+	"Exp.h"
+	"all.h"
+	<assert.h>
+	<string>
+
+1379935688 c:\users\vitaly\desktop\comp_th\cmp\all.h
+
+1379936434 source:c:\users\vitaly\desktop\comp_th\cmp\explist.cpp
+	"stm.h"
+	"ExpList.h"
+	"Exp.h"
+	<assert.h>
+
+1379934528 c:\users\vitaly\desktop\comp_th\cmp\explist.h
+	<string>
+	"all.h"
+
+1379934528 source:c:\users\vitaly\desktop\comp_th\cmp\statement.cpp
+	"stm.h"
+	"ExpList.h"
+	"Exp.h"
+
+1379936717 source:c:\users\vitaly\desktop\comp_th\cmp\main.cpp
+	<iostream>
+	"all.h"
+	"Exp.h"
+	"stm.h"
+	"ExpList.h"
+
+1379936429 c:\users\vitaly\desktop\comp_th\cmp\exp.cpp
+	"stm.h"
+	"ExpList.h"
+	"Exp.h"
+
+1379936434 c:\users\vitaly\desktop\comp_th\cmp\explist.cpp
+	"stm.h"
+	"ExpList.h"
+	"Exp.h"
+	<assert.h>
+
+1379934528 c:\users\vitaly\desktop\comp_th\cmp\statement.cpp
+	"stm.h"
+	"ExpList.h"
+	"Exp.h"
+

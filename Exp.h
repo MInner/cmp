@@ -2,8 +2,9 @@
 #define EXPH
 
 #include <string>
-#include "stm.h"
 #include "all.h"
+#include "stm.h"
+#include "ExpList.h"
 
 using std::string;
 
