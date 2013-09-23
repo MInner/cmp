@@ -12,7 +12,7 @@ public:
 };
 
 // Правило CompoundStm
-class CompoundStatement : public Statement {
+class CompoundStatement::CompoundStatement : public Statement {
 public:
 	CompoundStatement( const Statement* first, const Statement* second ) :
 	firstStm( first ), secondStm( second )

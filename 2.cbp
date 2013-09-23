@@ -32,10 +32,17 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Exp.cpp" />
+		<Unit filename="Exp.h" />
+		<Unit filename="ExpList.cpp" />
+		<Unit filename="ExpList.h" />
+		<Unit filename="Statement.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="stm.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
