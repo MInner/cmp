@@ -28,7 +28,7 @@
 	"ExpList.h"
 	"Exp.h"
 
-1379937449 /home/ben/Dropbox/bt/comp/cmp/Exp.h
+1379939557 /home/ben/Dropbox/bt/comp/cmp/Exp.h
 	<string>
 	"all.h"
 	"stm.h"
@@ -39,11 +39,11 @@
 	"ExpList.h"
 	"Exp.h"
 
-1379933666 /home/ben/Dropbox/bt/comp/cmp/ExpList.h
+1379939403 /home/ben/Dropbox/bt/comp/cmp/ExpList.h
 	<string>
 	"all.h"
 
-1379938079 /home/ben/Dropbox/bt/comp/cmp/stm.h
+1379939148 /home/ben/Dropbox/bt/comp/cmp/stm.h
 	"Exp.h"
 	"all.h"
 	<assert.h>

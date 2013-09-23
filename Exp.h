@@ -11,7 +11,7 @@ using std::string;
 class Exp
 {
 public:
-//	virtual int Execute();
+	virtual int Exec(const VarTable* table) const;
 	virtual ~Exp();
 };
 

@@ -11,13 +11,14 @@ using std::string;
 
 class Statement {
 public:
-//    virtual VarTable* Exec(const VarTable* table) = 0;
+    virtual const VarTable* Exec(const VarTable* table) const = 0;
 	virtual ~Statement();
 };
 
 class CompoundStatement : public Statement {
 public:
 	CompoundStatement( const Statement* first, const Statement* second );
+	const VarTable* Exec(const VarTable* table) const;
 private:
 	const Statement* const firstStm;
 	const Statement* const secondStm;
@@ -26,6 +27,7 @@ private:
 class AssignStm : public Statement {
 public:
 	AssignStm( const string id, const Exp* exp );
+	const VarTable* Exec(const VarTable* table) const;
 private:
 	const string id;
 	const Exp* const exp;
@@ -34,6 +36,7 @@ private:
 class PrintStm : public Statement {
 public:
 	PrintStm( const ExpList* expList);
+	const VarTable* Exec(const VarTable* table) const;
 private:
 	const ExpList* expList;
 };
