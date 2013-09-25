@@ -1,5 +1,4 @@
-#ifndef ALL_H_INCLUDED
-#define ALL_H_INCLUDED
+#pragma once
 
 class Exp;
 class IdExp;
@@ -12,6 +11,3 @@ class PrintStm;
 class AssignStm;
 class ExpList;
 class VarTable;
-
-
-#endif // ALL_H_INCLUDED

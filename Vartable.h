@@ -1,10 +1,10 @@
-#ifndef VARTABLE_H_INCLUDED
-#define VARTABLE_H_INCLUDED
+#pragma once
 
 #include <string>
 #include <map>
 
-using namespace std;
+using std::string;
+using std::map;
 
 class VarTable
 {
@@ -15,5 +15,3 @@ public:
 private:
     map<string,int> var;
 };
-
-#endif // VARTABLE_H_INCLUDED

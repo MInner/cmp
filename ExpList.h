@@ -1,6 +1,4 @@
-#ifndef EXPLIST
-#define EXPLIST
-
+#pragma once
 #include <string>
 #include "all.h"
 
@@ -11,4 +9,3 @@ public:
 	const ExpList* const expList;
 };
 
-#endif

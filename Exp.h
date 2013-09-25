@@ -1,9 +1,8 @@
-#ifndef EXPH
-#define EXPH
+#pragma once
 
 #include <string>
 #include "all.h"
-#include "stm.h"
+#include "Statement.h"
 #include "ExpList.h"
 
 using std::string;
@@ -53,6 +52,3 @@ private:
 	const Statement* stm;
 	const Exp* exp;
 };
-
-
-#endif

@@ -1,7 +1,7 @@
-#include "stm.h"
+#include "Statement.h"
 #include "ExpList.h"
 #include "Exp.h"
-#include "vartable.h"
+#include "Vartable.h"
 #include <stdio.h>
 #include <iostream>
 

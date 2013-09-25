@@ -1,9 +1,10 @@
 #include <iostream>
+
 #include "all.h"
 #include "Exp.h"
-#include "stm.h"
+#include "Statement.h"
 #include "ExpList.h"
-#include "vartable.h"
+#include "Vartable.h"
 
 using namespace std;
 

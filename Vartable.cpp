@@ -1,10 +1,13 @@
-#include "vartable.h"
+
 #include <map>
 #include <iostream>
 
-VarTable::VarTable(){
-    //var = new map<string,int>();
-}
+#include "Vartable.h"
+
+using std::cout;
+using std::endl;
+
+VarTable::VarTable(){ }
 
 int VarTable::getVar(const string name) const{
     if (this->var.count(name) == 0){

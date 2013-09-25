@@ -1,5 +1,4 @@
-#ifndef STMH
-#define STMH
+#pragma once
 
 #include "Exp.h"
 #include "all.h"
@@ -40,5 +39,3 @@ public:
 private:
 	const ExpList* expList;
 };
-
-#endif
