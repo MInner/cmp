@@ -2,41 +2,47 @@
 #include "ExpList.h"
 #include "Exp.h"
 #include "Vartable.h"
+#include "all.h"
 
 IdExp::IdExp(const string s_) : s(s_) { }
 
-int IdExp::Exec(const VarTable* table) const{
-    return table->getVar(this->s);
+IVPair IdExp::Exec(const VarTable* table) const{
+    return IVPair(table->getVar(this->s), table);
 }
 
 NumExp::NumExp(const int a_) : a(a_) { }
 
-int NumExp::Exec(const VarTable* table) const{
-    return this->a;
+IVPair NumExp::Exec(const VarTable* table) const{
+    return IVPair(this->a, table);
 }
 
 OpExp::OpExp(const Exp* left_, const char b_, const Exp* right_): left(left_), b(b_), right(right_) {}
 
-int OpExp::Exec(const VarTable* table) const{
+IVPair OpExp::Exec(const VarTable* table) const{
+    int ret;
     switch (this->b){
         case '+':
-            return this->left->Exec(table) + this->right->Exec(table);
+            ret =  this->left->Exec(table).first + this->right->Exec(table).first; break;
         case '-':
-            return this->left->Exec(table) - this->right->Exec(table);
+            ret = this->left->Exec(table).first - this->right->Exec(table).first; break;
         case '*':
-            return this->left->Exec(table) * this->right->Exec(table);
+            ret = this->left->Exec(table).first * this->right->Exec(table).first; break;
         case '/':
-            return this->left->Exec(table) / this->right->Exec(table);
+            ret = this->left->Exec(table).first / this->right->Exec(table).first; break;
+        default:
+            throw "No such binop";
     }
-    throw "No such binop";
-    return -1;
+
+    return IVPair(ret, table);
+
+    return IVPair(-1, table);
 }
 
 EseqExp::EseqExp(const Statement* stm_, const Exp* exp_): stm(stm_), exp(exp_){}
 
-int EseqExp::Exec(const VarTable* table) const{
+IVPair EseqExp::Exec(const VarTable* table) const{
     const VarTable* table1 = stm->Exec(table);
-    return this->exp->Exec(table1);
+    return IVPair(this->exp->Exec(table1).first, table1);
 }
 
 Exp::~Exp() {};

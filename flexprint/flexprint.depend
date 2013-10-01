@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1380200266 source:/home/ben/Dropbox/bt/comp/flexprint/lex.yy.cpp
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<math.h>
+	<stdio.h>
+	<unistd.h>
+
+1380200456 source:/home/ben/Dropbox/bt/comp/flexprint/main.cpp
+	<iostream>
+

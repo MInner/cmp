@@ -36,12 +36,13 @@
 		<Unit filename="Exp.h" />
 		<Unit filename="ExpList.cpp" />
 		<Unit filename="ExpList.h" />
+		<Unit filename="README" />
 		<Unit filename="Statement.cpp" />
+		<Unit filename="Statement.h" />
+		<Unit filename="Vartable.cpp" />
+		<Unit filename="Vartable.h" />
 		<Unit filename="all.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="stm.h" />
-		<Unit filename="vartable.cpp" />
-		<Unit filename="vartable.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

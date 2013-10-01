@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 class Exp;
 class IdExp;
 class NumExp;
@@ -11,3 +13,5 @@ class PrintStm;
 class AssignStm;
 class ExpList;
 class VarTable;
+
+typedef std::pair<int, const VarTable*> IVPair;

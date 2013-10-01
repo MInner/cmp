@@ -23,19 +23,20 @@
 
 1379604717 source:/home/ben/Dropbox/bt/comp/cmp/AssignStm.cpp
 
-1380133420 source:/home/ben/Dropbox/bt/comp/cmp/Exp.cpp
+1380196735 source:/home/ben/Dropbox/bt/comp/cmp/Exp.cpp
 	"Statement.h"
 	"ExpList.h"
 	"Exp.h"
 	"Vartable.h"
+	"all.h"
 
-1380133419 /home/ben/Dropbox/bt/comp/cmp/Exp.h
+1380196384 /home/ben/Dropbox/bt/comp/cmp/Exp.h
 	<string>
 	"all.h"
 	"Statement.h"
 	"ExpList.h"
 
-1380133422 source:/home/ben/Dropbox/bt/comp/cmp/Statement.cpp
+1380196898 source:/home/ben/Dropbox/bt/comp/cmp/Statement.cpp
 	"Statement.h"
 	"ExpList.h"
 	"Exp.h"
@@ -43,9 +44,10 @@
 	<stdio.h>
 	<iostream>
 
-1380133203 /home/ben/Dropbox/bt/comp/cmp/ExpList.h
+1380195963 /home/ben/Dropbox/bt/comp/cmp/ExpList.h
 	<string>
 	"all.h"
+	<assert.h>
 
 1380133217 /home/ben/Dropbox/bt/comp/cmp/stm.h
 	"Exp.h"
@@ -53,10 +55,10 @@
 	<assert.h>
 	<string>
 
-1380133210 /home/ben/Dropbox/bt/comp/cmp/all.h
+1380196834 /home/ben/Dropbox/bt/comp/cmp/all.h
+	<utility>
 
-1380133421 source:/home/ben/Dropbox/bt/comp/cmp/ExpList.cpp
-	"Statement.h"
+1380195942 source:/home/ben/Dropbox/bt/comp/cmp/ExpList.cpp
 	"ExpList.h"
 	"Exp.h"
 	<assert.h>
@@ -161,7 +163,7 @@
 	<string>
 	<map>
 
-1380133450 source:/home/ben/Dropbox/bt/comp/cmp/Vartable.cpp
+1380133873 source:/home/ben/Dropbox/bt/comp/cmp/Vartable.cpp
 	<map>
 	<iostream>
 	"Vartable.h"
