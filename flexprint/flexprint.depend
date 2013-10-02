@@ -12,3 +12,16 @@
 1380200456 source:/home/ben/Dropbox/bt/comp/flexprint/main.cpp
 	<iostream>
 
+1380212759 source:/home/ben/Dropbox/bt/comp/cmp/flexprint/main.cpp
+	<iostream>
+
+1380707652 source:/home/ben/Dropbox/bt/comp/cmp/flexprint/fl.cpp
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<math.h>
+	<stdio.h>
+	<unistd.h>
+

@@ -1,6 +1,7 @@
-/* int TId = 1, TNum = 2, TBinop = 3, TComment = 4, KWClass = 5; */
+%option noyywrap
+%option nounput
 
-DIGIT [0-9]
+NUMBER [0-9]*
 ID [a-z][a-z0-9]*
 
 %{
@@ -10,30 +11,42 @@ ID [a-z][a-z0-9]*
 %}
 
 %%
-	/* entities */
-DIGIT* 		printf("DIGIT(%s)", yytext);
-ID 		printf("ID(%s)", yytext);
 
 	/* keywords */
-class 			printf("CLASS");
-extern 			printf("EXTERN");
-public 			printf("PUBLIC");
-static 			printf("STATIC");
-main 			printf("MAIN");
-if 			printf("IF");
-while 			printf("WHILE");
-true			printf("TRUE");
-false			printf("FASLE");
-new			printf("NEW");
-this			printf("THIS");
+
+" "             printf("");
+
+class 			printf("CLASS ");
+extern 			printf("EXTERN ");
+public 			printf("PUBLIC ");
+static 			printf("STATIC ");
+main 			printf("MAIN ");
+if 			printf("IF ");
+while 			printf("WHILE ");
+true			printf("TRUE ");
+false			printf("FASLE ");
+new			printf("NEW ");
+this			printf("THIS ");
 
 	/* func */
-System.out.println	printf("SYSPrint");
+System.out.println	printf("SYSPrint ");
 
 	/* types */
-int		printf("TYPE_INT");
-bool		printf("TYPE_BOOL");
-int\[\]		printf("TYPE_INTARR");
+int		printf("TYPE_INT ");
+bool		printf("TYPE_BOOL ");
+int\[\]		printf("TYPE_INTARR ");
+
+	/* entities */
+{NUMBER} 		printf("DIGIT(%s) ", yytext);
+{ID} 		printf("ID(%s) ", yytext);
 
 	/* other symbols */
-.		printf("%s", yytext);
+.		printf("%s ", yytext);
+
+%%
+
+int main()
+{
+  printf("Give me your input:\n");
+  yylex();
+}
