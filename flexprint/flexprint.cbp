@@ -32,8 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="file.lex" />
 		<Unit filename="fl.cpp" />
-		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
