@@ -8,6 +8,7 @@ ID [a-zA-Z][a-zA-Z0-9]*
 #include <math.h>
 /* #include "lex.h" */
 #include <stdio.h>
+#include <bi.hpp>
 int n_lines = 0, n_chars = 0;
 %}
 
@@ -21,11 +22,11 @@ int n_lines = 0, n_chars = 0;
 
 \n              n_lines++; n_chars = 0;
 
-class 			printf("CLASS{%d, %d} ", n_chars, n_lines); n_chars += 5;
-extern 			printf("EXTERN{%d, %d} ", n_chars, n_lines); n_chars += 6;
-public 			printf("PUBLIC{%d, %d} ", n_chars, n_lines); n_chars += 6;
-static 			printf("STATIC{%d, %d} ", n_chars, n_lines); n_chars += 6;
-main 			printf("MAIN{%d, %d} ", n_chars, n_lines); n_chars += 4;
+class 			{ return  yytokentype::CLASS }
+extends 		{ return yytokentype::EXTENDS }
+public 			{ return yytokentype::PUBLIC }
+static 			{ return yytokentype::STATIC }
+main 			{ return yytokentype::MAIN }
 if 			    printf("IF{%d, %d} ", n_chars, n_lines); n_chars += 2;
 while 			printf("WHILE{%d, %d} ", n_chars, n_lines); n_chars += 5;
 true			printf("TRUE{%d, %d} ", n_chars, n_lines); n_chars += 4;
@@ -49,9 +50,3 @@ int\[\]		printf("TYPE_INTARR{%d, %d} ", n_chars, n_lines); n_chars += 5;
 .		printf("%s ", yytext); n_chars += yyleng;
 
 %%
-
-int main()
-{
-  printf("Give me your input:\n");
-  yylex();
-}

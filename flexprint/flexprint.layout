@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="file.lex" open="1" top="1" tabpos="2">
-		<Cursor position="182" topLine="0" />
+	<File name="file.lex" open="1" top="0" tabpos="7">
+		<Cursor position="671" topLine="8" />
 	</File>
-	<File name="fl.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="32832" topLine="1201" />
+	<File name="fl.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="32832" topLine="1172" />
 	</File>
 </CodeBlocks_layout_file>

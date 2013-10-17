@@ -5,6 +5,3 @@ obj/
 2.layout
 2.*
 flexprint/fl.cpp
-ben-bison/fl.cpp
-ben-bison/bi.cpp
-ben-bison/bi.hpp

@@ -1,1 +1,1 @@
-bison -obi.cpp -yd file.y
+bison -obi.cpp -yd file.y -v

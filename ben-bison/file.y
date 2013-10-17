@@ -15,7 +15,7 @@ void yyerror (char const *s)
 %}
 
 
-%token CLASS EXTERN NEW THIS
+%token CLASS EXTENDS NEW THIS
 %token PUBLIC STATIC
 %token IF WHILE TRUE FLASE ELSE
 %token PRINT MAIN RETURN LENGTH
@@ -23,6 +23,13 @@ void yyerror (char const *s)
 %token DIGIT
 %token ID
 %token BINOP
+
+%left '.'
+%left '['
+%left '('
+%left '!'
+%left '+' '-'
+%left '*'
 
 %% /* Grammar rules and actions follow */
 
@@ -37,26 +44,27 @@ ClassDecls:       ClassDecl ClassDecls
 ;
 
 ClassDecl:        CLASS ID '{' VarDecls MethodDecls '}'
-                | CLASS ID EXTERN ID '{' VarDecls MethodDecls '}'
+                | CLASS ID EXTENDS ID '{' VarDecls MethodDecls '}'
 ;
 
-VarDecls:         VarDecls VarDecl
+VarDecls:        VarDecls VarDecl
                 |
+;
 
 VarDecl:          Type ID ';'
 ;
 
-MethodDecls:      MethodDecls MethodDecl
+MethodDecls:     MethodDecl MethodDecls
                 |
 ;
 
 MethodDecl:       PUBLIC Type ID '(' FormatList ')' '{' VarDecls Statements RETURN Exp ';' '}'
 ;
 
-FormatList:       FormatListRest Type ID
+FormatList:       Type ID FormatListRest
                 |
 ;
-FormatListRest:   FormatListRest ',' Type ID
+FormatListRest:   ',' Type ID FormatListRest
                 |
 ;
 
@@ -78,7 +86,9 @@ Statement:        '{' Statements '}'
 Statements:       Statement Statements
                 |
 
-Exp:              Exp BINOP Exp ';'
+Exp:              Exp '+' Exp ';'
+                | Exp '-' Exp ';'
+                | Exp '*' Exp ';'
                 | Exp '[' Exp ']'
                 | Exp '.' LENGTH
                 | Exp '.' ID '(' ExpList ')'
