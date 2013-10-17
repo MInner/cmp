@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1381403469 source:/home/ben/Dropbox/bt/comp/cmp/ben-bison/bi.cpp
+	<math.h>
+	<stdio.h>
+	<stddef.h>
+	<libintl.h>
+	<alloca.h>
+	<malloc.h>
+	<stdlib.h>
+	<stdlib.h>
+	<stdio.h>
+
+1380803006 source:/home/ben/Dropbox/bt/comp/cmp/ben-bison/main.cpp
+	<iostream>
+
+1381404064 source:/home/ben/Dropbox/bt/comp/cmp/ben-bison/fl.cpp
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<math.h>
+	<stdio.h>
+	<unistd.h>
+
