@@ -43,7 +43,7 @@ program: mainClass classDeclarations  /*ok*/
 	}
 
 
-mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '('STRING_TYPE '[]' ID ')' '{' statement '}' '}' /*ok*/
+mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '('STRING_TYPE '['']' ID ')' '{' statement '}' '}' /*ok*/
 	{
 		/*TODO after semantic analysis*/
 	}
@@ -63,7 +63,8 @@ var_declarations: /*ok*/
 	| var_declaration var_declarations {/*TODO after SA*/}
 
 var_declaration: /*ok*/
-	type ID 
+	type ID ';'
+	
 
 method_declarations: /*ok*/
 	/*{$$ = NULL ;}*/
@@ -78,10 +79,10 @@ statements: /*ok*/
 
 statement: /*ok*/
 	'{' statements '}'
+	| assignment ';'
 	| IF '(' expression ')' statement ELSE statement
 	| WHILE '(' expression ')' statement
 	| SYSPRINT '(' expression ')' ';'
-	| ID ASSIGN expression ';'
 	| ID '['expression']' statement ';'
 
 type: /*ok*/
@@ -97,6 +98,9 @@ arguements: /*ok*/
 
 arguement: /*ok*/
 	type ID
+
+assignment:
+	ID ASSIGN expression
 
 expression: /*ok*/ 
 	expression '+' expression
@@ -126,7 +130,7 @@ expression_list: /*ok*/
 %%
 /*Epologue*/
 void yyerror(char* descr){
-	printf("%s on line #%d", descr, yylloc.first_line);
+	printf("%s on line #%d\n", descr, yylloc.first_line);
 }
 
 int main(void){
