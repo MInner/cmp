@@ -1,16 +1,82 @@
-class Program { public: virtual ~Program() {}; }; 
-class MainClass { public: virtual ~MainClass() {}; }; 
-class ClassDeclarations { public: virtual ~ClassDeclarations() {}; }; 
-class ClassDeclaration { public: virtual ~ClassDeclaration() {}; }; 
-class Var_declarations { public: virtual ~Var_declarations() {}; }; 
-class Var_declaration { public: virtual ~Var_declaration() {}; }; 
-class Method_declarations { public: virtual ~Method_declarations() {}; }; 
-class Method_declaration { public: virtual ~Method_declaration() {}; }; 
-class Statements { public: virtual ~Statements() {}; }; 
-class Statement { public: virtual ~Statement() {}; }; 
-class Type { public: virtual ~Type() {}; }; 
-class Arguements { public: virtual ~Arguements() {}; }; 
-class Arguement { public: virtual ~Arguement() {}; }; 
-class Assignment { public: virtual ~Assignment() {}; }; 
-class Expression { public: virtual ~Expression() {}; }; 
-class Expression_list { public: virtual ~Expression_list() {}; }; 
+#pragma ones 
+
+class IProgram 
+{
+public: 
+	virtual ~IProgram() {};
+}; 
+class IMainClass 
+{
+public: 
+	virtual ~IMainClass() {};
+}; 
+class IClassDeclarations 
+{
+public: 
+	virtual ~IClassDeclarations() {};
+}; 
+class IClassDeclaration 
+{
+public: 
+	virtual ~IClassDeclaration() {};
+}; 
+class IVarDeclarations 
+{
+public: 
+	virtual ~IVarDeclarations() {};
+}; 
+class IVarDeclaration 
+{
+public: 
+	virtual ~IVarDeclaration() {};
+}; 
+class IMethodDeclarations 
+{
+public: 
+	virtual ~IMethodDeclarations() {};
+}; 
+class IMethodDeclaration 
+{
+public: 
+	virtual ~IMethodDeclaration() {};
+}; 
+class IStatements 
+{
+public: 
+	virtual ~IStatements() {};
+}; 
+class IStatement 
+{
+public: 
+	virtual ~IStatement() {};
+}; 
+class IType 
+{
+public: 
+	virtual ~IType() {};
+}; 
+class IArguements 
+{
+public: 
+	virtual ~IArguements() {};
+}; 
+class IArguement 
+{
+public: 
+	virtual ~IArguement() {};
+}; 
+class IAssignment 
+{
+public: 
+	virtual ~IAssignment() {};
+}; 
+class IExpression 
+{
+public: 
+	virtual ~IExpression() {};
+}; 
+class IExpressionList 
+{
+public: 
+	virtual ~IExpressionList() {};
+}; 
