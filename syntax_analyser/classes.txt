@@ -28,13 +28,13 @@ AssignmentImpl
 ArithmExp +
 LogicExp +
 ArrValExp
-LenExp
-CallMethodExp
+LenExp +
+CallMethodExp +
 IntVal +
 BoolVal +
-IdExp
-ThisExp
-NewIntArrExp
-NewExp
+IdExp +
+ThisExp +
+NewIntArrExp +
+NewExp +
 
 expressionListImpl
