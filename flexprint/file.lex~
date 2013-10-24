@@ -23,12 +23,19 @@ int n_lines = 0, n_chars = 0;
 
 \n              n_lines++; n_chars = 0;
 
-
+<<<<<<< HEAD
+class 			{ return  yytokentype::CLASS }
+extends 		{ return yytokentype::EXTENDS }
+public 			{ return yytokentype::PUBLIC }
+static 			{ return yytokentype::STATIC }
+main 			{ return yytokentype::MAIN }
+=======
 class 			printf("CLASS{%d, %d} ", n_chars, n_lines); n_chars += 5;
 extends 		printf("EXTENDS{%d, %d} ", n_chars, n_lines); n_chars += 7;
 public 			printf("PUBLIC{%d, %d} ", n_chars, n_lines); n_chars += 6;
 static 			printf("STATIC{%d, %d} ", n_chars, n_lines); n_chars += 6;
 main 			printf("MAIN{%d, %d} ", n_chars, n_lines); n_chars += 4;
+>>>>>>> c5b4f721e47b5d8121e330ccf17c70f718fb8a2b
 if 			    printf("IF{%d, %d} ", n_chars, n_lines); n_chars += 2;
 while 			printf("WHILE{%d, %d} ", n_chars, n_lines); n_chars += 5;
 new			    printf("NEW{%d, %d} ", n_chars, n_lines); n_chars += 3;
