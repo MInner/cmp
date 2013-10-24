@@ -50,95 +50,92 @@ const Expression_list* expression_list;
 %error-verbose
 
 %%
-/*Grammars*/
-program: mainClass classDeclarations  /*ok*/
-	{
-		/*TODO some execute*/
-	}
+
+program: mainClass classDeclarations  /*ok*/ 	{ $$ = new ProgramImpl($1, $2);	}
 
 
 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '('STRING_TYPE '['']' ID ')' '{' statement '}' '}' /*ok*/
-	{
-		/*TODO after semantic analysis*/
-	}
-	
+	{ $$ = new MainClassImpl("_", "_", $1) 	}
 
 
 classDeclarations: /*ok*/
-	{ @$;}
-	| classDeclaration classDeclarations {/*TODO after semantic analysis*/}
+											{ $$ = new ClassDeclarationsImpl()}
+	| classDeclaration classDeclarations 	{ $$ = new ClassDeclarationsImpl($1, $2)}
 
 classDeclaration: /*ok*/
-	CLASS ID '{' var_declarations method_declarations '}' 
-	| CLASS ID EXTENDS ID'{' var_declarations method_declarations '}' 
+	CLASS ID '{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl("_", $1)}
+	| CLASS ID EXTENDS ID'{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl("_", "_", $1)}
 
-var_declarations: /*ok*/
-	/*{$$ = NULL ;}*/
-	| var_declaration var_declarations {/*TODO after SA*/}
+varDeclarations: /*ok*/
+	/*{$$ = NULL ;}*/					{ $$ = new varDeclarationsImpl()}
+	| varDeclaration varDeclarations 	{ $$ = new varDeclarationsImpl($1, $2)}
 
-var_declaration: /*ok*/
-	type ID ';'
-	
 
-method_declarations: /*ok*/
-	/*{$$ = NULL ;}*/
-	| method_declaration method_declarations {/*TODO after SA*/}
+varDeclaration: /*ok*/
+	type ID ';' { $$ = new varDeclarationImpl($1, "_")}
 
-method_declaration: /*ok*/
-	PUBLIC type ID '(' arguements ')' '{' var_declarations statements RETURN expression ';' '}'
+
+methodDeclarations: /*ok*/
+	/*{$$ = NULL ;}*/							{ $$ = new methodDeclarationsImpl()}
+	| methodDeclaration methodDeclarations 		{ $$ = new methodDeclarationsImpl($1, $2)}
+
+methodDeclaration: /*ok*/
+	PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
+	{$$ = new methodDeclarationImpl($1, "_", $2, $3, $4, $5)}
 
 statements: /*ok*/
-	/*{$$ = NULL ;}*/
-	| statement statements
+	/*{$$ = NULL ;}*/ 		{$$ = new StatementsImpl()}
+	| statement statements	{$$ = new StatementsImpl($1, $2)}
 
 statement: /*ok*/
-	'{' statements '}'
-	| assignment ';'
-	| IF '(' expression ')' statement ELSE statement
-	| WHILE '(' expression ')' statement
-	| SYSPRINT '(' expression ')' ';'
-	| ID '['expression']' statement ';'
+	'{' statements '}'   								{ $$ = new Block($1)}
+	| assignment ';'    			 					{ $$ = new AssignStm($1)}
+	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStm($1, $2, $3)}
+	| WHILE '(' expression ')' statement				{ $$ = new WhileStm($1, $2)}
+	| SYSPRINT '(' expression ')' ';'					{ $$ = new PrintStmPrintStm($1)}
+	| ID '['expression']' = statement ';'				{ $$ = new AssignArrStm("_", $1, $2)}
 
 type: /*ok*/
-	 INT_TYPE '['']'
-	| BOOLEAN_TYPE
-	| STRING_TYPE
-	| INT_TYPE
+	 INT_TYPE '['']'	{ $$ = new InternalType(Type.INT_ARR)}
+	| BOOLEAN_TYPE		{ $$ = new InternalType(Type.BOOL)}
+	| STRING_TYPE		{ $$ = new InternalType(Type.STRING)}	
+	| INT_TYPE			{ $$ = new InternalType(Type.INT)}
 
 arguements: /*ok*/
-	/*{$$ = NULL ;}*/
-	| arguement ',' arguements 
-	| arguement
+	/*{$$ = NULL ;}*/			{$$ = new ArguementsImpl()}
+	| arguement ',' arguements	{$$ = new ArguementsImpl($1, $2)}
+	| arguement					{$$ = new ArguementsImpl($1, new Arguments())}
 
 arguement: /*ok*/
-	type ID
+	type ID		{$$ = new Arguement($1, "_")}
 
 assignment:
-	ID ASSIGN expression
+	ID ASSIGN expression {$$ = new Assignment("_", $1)}
 
-expression: /*ok*/ 
-	expression '+' expression
-	| expression '-' expression
-	| expression '*' expression
-	| expression AND expression
-	| expression LT expression
-	| expression '[' expression ']'
-	| expression '.' LENGTH
-	| expression '.' ID '('expression_list')'
-	| INTEGER
+expression: /*ok*/
+	expression '+' expression  	{ $$ = new ArithmExp(Arithm.PLUS, $1, $2)} 
+	| expression '-' expression	{ $$ = new ArithmExp(Arithm.MINUS, $1, $2)}	
+	| expression '*' expression	{ $$ = new ArithmExp(Arithm.MUL, $1, $2)}
+	| expression '/' expression	{ $$ = new ArithmExp(Arithm.DIV, $1, $2)}
+	| expression AND expression	{ $$ = new LogicExp(Logic.AND, $1, $2)}	
+	| expression LT expression  { $$ = new LogicExp(Logic.LT, $1, $2)}
+	| expression '[' expression ']'  	{ $$ = new ArrValExp($1, $2)}
+	| expression '.' LENGTH  			{ $$ = new LenExp($1)}
+	| expression '.' ID '('expressionList')'	{ $$ = new CallMethodExp($1, "_", $2)}
+	| INTEGER 									{$$ = new IntVal($1)}
 	/*| STRING*/
-	| TRUE
-	| FALSE
-	| ID
-	| THIS
-	| NEW INT_TYPE '[' expression ']'
-	| NEW ID '(' ')'
-	| '!' expression
-	| '(' expression ')'
-	
-expression_list: /*ok*/ 
-	/*{$$ = NULL ;}*/
-	| expression ',' expression_list
-	| expression
+	| TRUE			{ $$ = new BoolVal(true)}
+	| FALSE			{ $$ = new BoolVal(false))}
+	| ID			{ $$ = new IdExp("_")}
+	| THIS			{ $$ = new ThisExp("_")}
+	| NEW INT_TYPE '[' expression ']' { $$ = new IntArrExp($1)}
+	| NEW ID '(' ')'		{ $$ = new NewExp("_")}
+	| '!' expression 		{ $$ = new LogicExp(Logic.NOT, $1)}
+	| '(' expression ')' 	{ $$ = $1}
+
+expressionList: /*ok*/
+	/*{$$ = NULL ;}*/					{$$ = new expressionListImpl()}
+	| expression ',' expressionList		{$$ = new expressionListImpl($1, $2)}
+	| expression						{$$ = new expressionListImpl($1)}
 
 %%
