@@ -3,17 +3,11 @@
 #include <stdio.h>
 
 int yylex(void);
-void yyerror(char *);
+void yyerror(const char *);
 int yydebug = 1;
 
 %}
-/*Bison declarations*/
 
-%union { /*union для возможности сделать больше типов*/
-  int intval;	/*для возврата целого числа*/
-  int boolvar; /*для возврата булевой переменной*/
-  int /*VarTableRecord* */ 	var_pointer;
-}
 
 %token <intval> INTEGER
 %token <boolval> BOOLEAN
@@ -37,7 +31,6 @@ int yydebug = 1;
 %%
 program: mainClass classDeclarations  /*ok*/
 	{
-		$$ = new Program($1, $2);
 	}
 
 
