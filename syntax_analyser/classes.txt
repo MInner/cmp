@@ -3,31 +3,31 @@ MainClassImpl
 ClassDeclarationsImpl
 ClassDeclarationImpl
 
-varDeclarationsImpl
-varDeclarationImpl
+VarDeclarationsImpl
+VarDeclarationImpl
 
-methodDeclarationsImpl
-methodDeclarationImpl
+MethodDeclarationsImpl
+MethodDeclarationImpl
+ 
+StatementsImpl +
 
-StatementsImpl
-
-BlockStm
-AssignStm
-IfElseStm
-WhileStm
-PrintStmPrintStm
-AssignArrStm
+BlockStm +
+AssignStm +
+IfElseStm +
+WhileStm +
+PrintStmPrintStm +
+AssignArrStm +
 
 InternalType
 
 ArguementsImpl
 ArguementImpl
 
-AssignmentImpl
+AssignmentImpl +
 
 ArithmExp +
 LogicExp +
-ArrValExp
+ArrValExp +
 LenExp +
 CallMethodExp +
 IntVal +
@@ -37,4 +37,4 @@ ThisExp +
 NewIntArrExp +
 NewExp +
 
-expressionListImpl
+ExpressionListImpl +

@@ -91,21 +91,21 @@ classDeclaration: /*ok*/
 	| CLASS ID EXTENDS ID'{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl("_", "_", $6, $7)}
 
 varDeclarations: /*ok*/
-	/*{$$ = NULL ;}*/					{ $$ = new varDeclarationsImpl()}
-	| varDeclaration varDeclarations 	{ $$ = new varDeclarationsImpl($1, $2)}
+	/*{$$ = NULL ;}*/					{ $$ = new VarDeclarationsImpl()}
+	| varDeclaration varDeclarations 	{ $$ = new VarDeclarationsImpl($1, $2)}
 
 
 varDeclaration: /*ok*/
-	type ID ';' { $$ = new varDeclarationImpl($1, "_")}
+	type ID ';' { $$ = new VarDeclarationImpl($1, "_")}
 
 
 methodDeclarations: /*ok*/
-	/*{$$ = NULL ;}*/							{ $$ = new methodDeclarationsImpl()}
-	| methodDeclaration methodDeclarations 		{ $$ = new methodDeclarationsImpl($1, $2)}
+	/*{$$ = NULL ;}*/							{ $$ = new MethodDeclarationsImpl()}
+	| methodDeclaration methodDeclarations 		{ $$ = new MethodDeclarationsImpl($1, $2)}
 
 methodDeclaration: /*ok*/
 	PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
-	{$$ = new methodDeclarationImpl($2, "_", $5, $8, $9, $11}
+	{$$ = new MethodDeclarationImpl($2, "_", $5, $8, $9, $11}
 
 statements: /*ok*/
 	/*{$$ = NULL ;}*/ 		{$$ = new StatementsImpl()}
@@ -117,7 +117,7 @@ statement: /*ok*/
 	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStm($3, $5, $7)}
 	| WHILE '(' expression ')' statement				{ $$ = new WhileStm($3, $5)}
 	| SYSPRINT '(' expression ')' ';'					{ $$ = new PrintStmPrintStm($3)}
-	| ID '['expression']' ASSIGN statement ';'				{ $$ = new AssignArrStm("_", $3, $6)}
+	| ID '['expression']' ASSIGN statement ';'			{ $$ = new AssignArrStm("_", $3, $6)}
 
 type: /*ok*/
 	 INT_TYPE '['']'	{ $$ = new InternalType(Type.INT_ARR)}
@@ -158,8 +158,8 @@ expression: /*ok*/
 	| '(' expression ')' 	{ $$ = $2}
 
 expressionList: /*ok*/
-	/*{$$ = NULL ;}*/					{$$ = new expressionListImpl()}
-	| expression ',' expressionList		{$$ = new expressionListImpl($1, $3)}
-	| expression						{$$ = new expressionListImpl($1)}
+	/*{$$ = NULL ;}*/					{$$ = new ExpressionListImpl()}
+	| expression ',' expressionList		{$$ = new ExpressionListImpl($1, $3)}
+	| expression						{$$ = new ExpressionListImpl($1)}
 
 %%
