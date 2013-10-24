@@ -1,4 +1,4 @@
-%{	
+%{
 // here we will include .h files from the first exercise
 #include <stdio.h>
 
@@ -12,7 +12,7 @@ int yydebug = 1;
 %union { /*union для возможности сделать больше типов*/
   int intval;	/*для возврата целого числа*/
   int boolvar; /*для возврата булевой переменной*/
-  int /*VarTableRecord* */ 	var_pointer; 
+  int /*VarTableRecord* */ 	var_pointer;
 }
 
 %token <intval> INTEGER
@@ -23,7 +23,6 @@ int yydebug = 1;
 %token INT_TYPE BOOLEAN_TYPE STRING_TYPE
 
 %nonassoc ASSIGN '.' '[' ']'/* = */
-
 
 %left AND  	/* && */
 %left LT    /* < */
@@ -36,10 +35,9 @@ int yydebug = 1;
 %error-verbose
 
 %%
-/*Grammars*/
 program: mainClass classDeclarations  /*ok*/
 	{
-		/*TODO some execute*/
+		$$ = new Program($1, $2);
 	}
 
 
@@ -47,7 +45,7 @@ mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '('STRING_TYPE '['']' ID ')' '{'
 	{
 		/*TODO after semantic analysis*/
 	}
-	
+
 
 
 classDeclarations: /*ok*/
@@ -55,8 +53,8 @@ classDeclarations: /*ok*/
 	| classDeclaration classDeclarations {/*TODO after semantic analysis*/}
 
 classDeclaration: /*ok*/
-	CLASS ID '{' var_declarations method_declarations '}' 
-	| CLASS ID EXTENDS ID'{' var_declarations method_declarations '}' 
+	CLASS ID '{' var_declarations method_declarations '}'
+	| CLASS ID EXTENDS ID'{' var_declarations method_declarations '}'
 
 var_declarations: /*ok*/
 	/*{$$ = NULL ;}*/
@@ -64,7 +62,7 @@ var_declarations: /*ok*/
 
 var_declaration: /*ok*/
 	type ID ';'
-	
+
 
 method_declarations: /*ok*/
 	/*{$$ = NULL ;}*/
@@ -93,7 +91,7 @@ type: /*ok*/
 
 arguements: /*ok*/
 	/*{$$ = NULL ;}*/
-	| arguement ',' arguements 
+	| arguement ',' arguements
 	| arguement
 
 arguement: /*ok*/
@@ -102,7 +100,7 @@ arguement: /*ok*/
 assignment:
 	ID ASSIGN expression
 
-expression: /*ok*/ 
+expression: /*ok*/
 	expression '+' expression
 	| expression '-' expression
 	| expression '*' expression
@@ -121,8 +119,8 @@ expression: /*ok*/
 	| NEW ID '(' ')'
 	| '!' expression
 	| '(' expression ')'
-	
-expression_list: /*ok*/ 
+
+expression_list: /*ok*/
 	/*{$$ = NULL ;}*/
 	| expression ',' expression_list
 	| expression

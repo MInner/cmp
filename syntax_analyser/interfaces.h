@@ -1,0 +1,16 @@
+class Program { virtual Program~() {} }; 
+class MainClass { virtual MainClass~() {} }; 
+class ClassDeclarations { virtual ClassDeclarations~() {} }; 
+class ClassDeclaration { virtual ClassDeclaration~() {} }; 
+class Var_declarations { virtual Var_declarations~() {} }; 
+class Var_declaration { virtual Var_declaration~() {} }; 
+class Method_declarations { virtual Method_declarations~() {} }; 
+class Method_declaration { virtual Method_declaration~() {} }; 
+class Statements { virtual Statements~() {} }; 
+class Statement { virtual Statement~() {} }; 
+class Type { virtual Type~() {} }; 
+class Arguements { virtual Arguements~() {} }; 
+class Arguement { virtual Arguement~() {} }; 
+class Assignment { virtual Assignment~() {} }; 
+class Expression { virtual Expression~() {} }; 
+class Expression_list { virtual Expression_list~() {} }; 
