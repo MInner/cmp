@@ -1,5 +1,3 @@
-/* Reverse polish notation calculator. */
-
 %{
 #define YYSTYPE double
 #include <math.h>
@@ -31,8 +29,7 @@ void yyerror (char const *s)
 %left '+' '-'
 %left '*'
 
-%% /* Grammar rules and actions follow */
-
+%%
 Program:          MainClass ClassDecls
 ;
 
@@ -74,6 +71,7 @@ Type:             INTARR
                 | STRING
                 | BOOL
                 | ID
+;
 
 Statement:        '{' Statements '}'
                 | IF '(' Exp ')' Statement ELSE Statement
@@ -101,11 +99,13 @@ Exp:              Exp '+' Exp ';'
                 | NEW  ID '(' ')'
                 | '!' Exp
                 | '(' Exp ')'
+;
 
 ExpList:          Exp ExpListRest
                 |
+;
 
 ExpListRest:      ',' Exp ExpListRest
                 |
-
+;
 %%
