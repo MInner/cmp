@@ -1,6 +1,7 @@
 %{	
 // here we will include .h files from the first exercise
 #include <stdio.h>
+#include "interfaces.h"
 
 int yylex(void);
 void yyerror(const char *);
@@ -9,10 +10,23 @@ int yydebug = 1;
 %}
 /*Bison declarations*/
 
-%union { /*union для возможности сделать больше типов*/
-  int intval;	/*для возврата целого числа*/
-  int boolvar; /*для возврата булевой переменной*/
-  int /*VarTableRecord* */ 	var_pointer; 
+%union { 
+const Program* program; 
+const MainClass* mainClass; 
+const ClassDeclarations* classDeclarations; 
+const ClassDeclaration* classDeclaration; 
+const Var_declarations* var_declarations; 
+const Var_declaration* var_declaration; 
+const Method_declarations* method_declarations; 
+const Method_declaration* method_declaration; 
+const Statements* statements; 
+const Statement* statement; 
+const Type* type; 
+const Arguements* arguements; 
+const Arguement* arguement; 
+const Assignment* assignment; 
+const Expression* expression; 
+const Expression_list* expression_list; 
 }
 
 %token <intval> INTEGER

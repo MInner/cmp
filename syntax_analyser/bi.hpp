@@ -99,16 +99,29 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 12 "simple_java.y"
- /*union для возможности сделать больше типов*/
-  int intval;	/*для возврата целого числа*/
-  int boolvar; /*для возврата булевой переменной*/
-  int /*VarTableRecord* */ 	var_pointer; 
+#line 13 "simple_java.y"
+ 
+const Program* program; 
+const MainClass* mainClass; 
+const ClassDeclarations* classDeclarations; 
+const ClassDeclaration* classDeclaration; 
+const Var_declarations* var_declarations; 
+const Var_declaration* var_declaration; 
+const Method_declarations* method_declarations; 
+const Method_declaration* method_declaration; 
+const Statements* statements; 
+const Statement* statement; 
+const Type* type; 
+const Arguements* arguements; 
+const Arguement* arguement; 
+const Assignment* assignment; 
+const Expression* expression; 
+const Expression_list* expression_list; 
 
 
 
 /* Line 2068 of yacc.c  */
-#line 112 "bi.hpp"
+#line 125 "bi.hpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

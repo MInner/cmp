@@ -14,7 +14,7 @@ union.write("%" + "union { \n")
 
 for cl in classes:
 	classname = cl[0].upper()+cl[1:]
-	out.write("class %s { virtual %s~() {} }; \n" % (classname, classname) )
+	out.write("class %s { public: virtual ~%s() {}; }; \n" % (classname, classname) )
 	union.write("const %s* %s; \n" % (classname, cl) )
 
 union.write('} \n')

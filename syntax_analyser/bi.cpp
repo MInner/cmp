@@ -70,6 +70,7 @@
 	
 // here we will include .h files from the first exercise
 #include <stdio.h>
+#include "interfaces.h"
 
 int yylex(void);
 void yyerror(const char *);
@@ -78,7 +79,7 @@ int yydebug = 1;
 
 
 /* Line 268 of yacc.c  */
-#line 82 "bi.cpp"
+#line 83 "bi.cpp"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -167,16 +168,29 @@ typedef union YYSTYPE
 {
 
 /* Line 293 of yacc.c  */
-#line 12 "simple_java.y"
- /*union для возможности сделать больше типов*/
-  int intval;	/*для возврата целого числа*/
-  int boolvar; /*для возврата булевой переменной*/
-  int /*VarTableRecord* */ 	var_pointer; 
+#line 13 "simple_java.y"
+ 
+const Program* program; 
+const MainClass* mainClass; 
+const ClassDeclarations* classDeclarations; 
+const ClassDeclaration* classDeclaration; 
+const Var_declarations* var_declarations; 
+const Var_declaration* var_declaration; 
+const Method_declarations* method_declarations; 
+const Method_declaration* method_declaration; 
+const Statements* statements; 
+const Statement* statement; 
+const Type* type; 
+const Arguements* arguements; 
+const Arguement* arguement; 
+const Assignment* assignment; 
+const Expression* expression; 
+const Expression_list* expression_list; 
 
 
 
 /* Line 293 of yacc.c  */
-#line 180 "bi.cpp"
+#line 194 "bi.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -201,7 +215,7 @@ typedef struct YYLTYPE
 
 
 /* Line 343 of yacc.c  */
-#line 205 "bi.cpp"
+#line 219 "bi.cpp"
 
 #ifdef short
 # undef short
@@ -516,12 +530,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    40,    40,    46,    54,    55,    58,    59,    61,    63,
-      66,    69,    71,    74,    76,    78,    81,    82,    83,    84,
-      85,    86,    89,    90,    91,    92,    94,    96,    97,   100,
-     103,   106,   107,   108,   109,   110,   111,   112,   113,   114,
-     116,   117,   118,   119,   120,   121,   122,   123,   125,   127,
-     128
+       0,    54,    54,    60,    68,    69,    72,    73,    75,    77,
+      80,    83,    85,    88,    90,    92,    95,    96,    97,    98,
+      99,   100,   103,   104,   105,   106,   108,   110,   111,   114,
+     117,   120,   121,   122,   123,   124,   125,   126,   127,   128,
+     130,   131,   132,   133,   134,   135,   136,   137,   139,   141,
+     142
 };
 #endif
 
@@ -1590,7 +1604,7 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 41 "simple_java.y"
+#line 55 "simple_java.y"
     {
 		/*TODO some execute*/
 	}
@@ -1599,7 +1613,7 @@ yyreduce:
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 47 "simple_java.y"
+#line 61 "simple_java.y"
     {
 		/*TODO after semantic analysis*/
 	}
@@ -1608,35 +1622,35 @@ yyreduce:
   case 4:
 
 /* Line 1806 of yacc.c  */
-#line 54 "simple_java.y"
+#line 68 "simple_java.y"
     { (yyloc);}
     break;
 
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 55 "simple_java.y"
+#line 69 "simple_java.y"
     {/*TODO after semantic analysis*/}
     break;
 
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 63 "simple_java.y"
+#line 77 "simple_java.y"
     {/*TODO after SA*/}
     break;
 
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 71 "simple_java.y"
+#line 85 "simple_java.y"
     {/*TODO after SA*/}
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 1640 "bi.cpp"
+#line 1654 "bi.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1874,5 +1888,5 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 130 "simple_java.y"
+#line 144 "simple_java.y"
 
