@@ -1,17 +1,17 @@
-#include "interfaces.h"
-#include "enums.h"
+// #include "enums.h"
 #include "string"
 
+#define nullptr 0
 
 // Expression
 
 class ArithmExp : public IExpression
 {
 public:
-	ArithmExp(const Arithm op_, const IExpression* left_, const IExpression* right_): 
+	ArithmExp(const Arithm::Arithm op_, const IExpression* left_, const IExpression* right_): 
 		left(left_), op(op_), right(right_) {}
 private:
-	const Arithm op;
+	const Arithm::Arithm op;
 	const IExpression* left;	
 	const IExpression* right;
 };
@@ -19,13 +19,13 @@ private:
 class LogicExp : public IExpression
 {
 public:
-	LogicExp(const Logic op_, const IExpression* left_, const IExpression* right_): 
+	LogicExp(const Logic::Logic op_, const IExpression* left_, const IExpression* right_): 
 		left(left_), op(op_), right(right_) {}
-	LogicExp(const Logic op_, const IExpression* left_): 
+	LogicExp(const Logic::Logic op_, const IExpression* left_): 
 		left(left_), op(op_), right(nullptr) {}
 
 private:
-	const Logic op;
+	const Logic::Logic op;
 	const IExpression* left;	
 	const IExpression* right;
 };
@@ -262,10 +262,10 @@ private:
 class InternalType : public IType
 {
 public:
-	InternalType(const Type type_): 
+	InternalType(const Type::Type type_): 
 		type(type_) {}
 private:
-	const Type type;
+	const Type::Type type;
 };
 
 // VarDeclarationsImpl VarDeclarationImpl MethodDeclarationsImpl MethodDeclarationImpl

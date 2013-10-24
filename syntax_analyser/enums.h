@@ -1,3 +1,8 @@
+#pragma ones
+
+namespace Type
+{
+
 enum Type { 
 	INT_ARR,
 	BOOL, 
@@ -5,14 +10,23 @@ enum Type {
 	INT
 };
 
+}
+
+namespace Arithm
+{
 enum Arithm { 
 	PLUS,
 	MINUS, 
 	MUL,
 	DIV
 };
+}
+
+namespace Logic
+{
 enum Logic { 
-	AND,
-	LT, 
-	NOT	
+	L_AND,
+	L_LT, 
+	L_NOT	
 };
+}
