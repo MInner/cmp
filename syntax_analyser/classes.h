@@ -231,3 +231,65 @@ private:
 	const std::string id;
 	const IExpression*  exp;
 };
+
+// InternalType ArguementsImpl ArguementImpl
+
+class ArguementImpl : public IArguement
+{
+public:
+	ArguementImpl(const IType* type_, const std::string id_): 
+		type(type_), id(id_) {}	
+
+private:
+	const IType*  type;
+	const std::string id;	
+};
+
+class ArguementsImpl : public IArguements
+{
+public:
+	ArguementsImpl(const IArguement* arg_, const IArguements*  list_): 
+		arg(arg_), list(list_) {}		
+	ArguementsImpl(): 
+		arg(NULL), list(nullptr) {}
+
+private:
+	const IArguement*  arg;
+	const IArguements*  list;
+};
+
+
+class InternalType : public IType
+{
+public:
+	InternalType(const Type type_): 
+		type(type_) {}
+private:
+	const Type type;
+};
+
+// VarDeclarationsImpl VarDeclarationImpl MethodDeclarationsImpl MethodDeclarationImpl
+
+class VarDeclarationImpl : public IVarDeclaration
+{
+public:
+	VarDeclarationImpl(const IType* type_, const std::string id_): 
+		type(type_), id(id_) {}	
+
+private:
+	const IType*  type;
+	const std::string id;	
+};
+
+class VarDeclarationsImpl : public IVarDeclarations
+{
+public:
+	VarDeclarationsImpl(const IVarDeclaration* dec_, const IVarDeclarations*  list_): 
+		dec(dec_), list(list_) {}		
+	VarDeclarationsImpl(): 
+		dec(NULL), list(nullptr) {}
+
+private:
+	const IVarDeclaration*  dec;
+	const IVarDeclarations*  list;
+};

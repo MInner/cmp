@@ -3,8 +3,8 @@ MainClassImpl
 ClassDeclarationsImpl
 ClassDeclarationImpl
 
-VarDeclarationsImpl
-VarDeclarationImpl
+VarDeclarationsImpl +
+VarDeclarationImpl +
 
 MethodDeclarationsImpl
 MethodDeclarationImpl
@@ -18,10 +18,10 @@ WhileStm +
 PrintStmPrintStm +
 AssignArrStm +
 
-InternalType
+InternalType +
 
-ArguementsImpl
-ArguementImpl
+ArguementsImpl +
+ArguementImpl +
 
 AssignmentImpl +
 

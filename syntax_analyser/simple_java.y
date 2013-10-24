@@ -145,7 +145,7 @@ expression: /*ok*/
 	| expression LT expression  { $$ = new LogicExp(Logic.LT, $1, $3)}
 	| expression '[' expression ']'  	{ $$ = new ArrValExp($1, $3)}
 	| expression '.' LENGTH  			{ $$ = new LenExp($1)}
-	| expression '.' ID '('expressionList')'	{ $$ = new CallMethodExp($1, "_", $5)}
+	| expression '.' ID '('expressionList')'	{ $$ = new CallMethodExp($1, "_", $5)}  // тут наверно аргументы
 	| INTEGER 									{$$ = new IntVal($1)}
 	/*| STRING*/
 	| TRUE			{ $$ = new BoolVal(true)}
