@@ -88,7 +88,7 @@ statements: /*ok*/
 	| statement statements	{$$ = new StatementsImpl($1, $2)}
 
 statement: /*ok*/
-	'{' statements '}'   								{ $$ = new Block($1)}
+	'{' statements '}'   								{ $$ = new BlockStm($1)}
 	| assignment ';'    			 					{ $$ = new AssignStm($1)}
 	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStm($1, $2, $3)}
 	| WHILE '(' expression ')' statement				{ $$ = new WhileStm($1, $2)}
@@ -107,10 +107,10 @@ arguements: /*ok*/
 	| arguement					{$$ = new ArguementsImpl($1, new Arguments())}
 
 arguement: /*ok*/
-	type ID		{$$ = new Arguement($1, "_")}
+	type ID		{$$ = new ArguementImpl($1, "_")}
 
 assignment:
-	ID ASSIGN expression {$$ = new Assignment("_", $1)}
+	ID ASSIGN expression {$$ = new AssignmentImpl("_", $1)}
 
 expression: /*ok*/
 	expression '+' expression  	{ $$ = new ArithmExp(Arithm.PLUS, $1, $2)} 
@@ -128,7 +128,7 @@ expression: /*ok*/
 	| FALSE			{ $$ = new BoolVal(false))}
 	| ID			{ $$ = new IdExp("_")}
 	| THIS			{ $$ = new ThisExp("_")}
-	| NEW INT_TYPE '[' expression ']' { $$ = new IntArrExp($1)}
+	| NEW INT_TYPE '[' expression ']' { $$ = new NewIntArrExp($1)}
 	| NEW ID '(' ')'		{ $$ = new NewExp("_")}
 	| '!' expression 		{ $$ = new LogicExp(Logic.NOT, $1)}
 	| '(' expression ')' 	{ $$ = $1}
