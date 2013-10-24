@@ -1,10 +1,8 @@
+/* A Bison parser, made by GNU Bison 2.5.  */
 
-/* A Bison parser, made by GNU Bison 2.4.1.  */
-
-/* Skeleton interface for Bison's Yacc-like parsers in C
+/* Bison interface for Yacc-like parsers in C
    
-      Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+      Copyright (C) 1984, 1989-1990, 2000-2011 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -66,6 +64,33 @@
      LT = 282
    };
 #endif
+/* Tokens.  */
+#define INTEGER 258
+#define BOOLEAN 259
+#define ID 260
+#define CLASS 261
+#define EXTENDS 262
+#define PUBLIC 263
+#define STATIC 264
+#define MAIN 265
+#define IF 266
+#define WHILE 267
+#define TRUE 268
+#define FALSE 269
+#define NEW 270
+#define THIS 271
+#define VOID 272
+#define RETURN 273
+#define SYSPRINT 274
+#define LENGTH 275
+#define ELSE 276
+#define INT_TYPE 277
+#define BOOLEAN_TYPE 278
+#define STRING_TYPE 279
+#define ASSIGN 280
+#define AND 281
+#define LT 282
+
 
 
 
@@ -73,7 +98,7 @@
 typedef union YYSTYPE
 {
 
-/* Line 1676 of yacc.c  */
+/* Line 2068 of yacc.c  */
 #line 12 "simple_java.y"
  /*union для возможности сделать больше типов*/
   int intval;	/*для возврата целого числа*/
@@ -82,8 +107,8 @@ typedef union YYSTYPE
 
 
 
-/* Line 1676 of yacc.c  */
-#line 87 "simple_java.tab.h"
+/* Line 2068 of yacc.c  */
+#line 112 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -95,7 +95,22 @@
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+typedef union YYSTYPE
+{
 
+/* Line 2068 of yacc.c  */
+#line 12 "simple_java.y"
+ /*union для возможности сделать больше типов*/
+  int intval;	/*для возврата целого числа*/
+  int boolvar; /*для возврата булевой переменной*/
+  int /*VarTableRecord* */ 	var_pointer; 
+
+
+
+/* Line 2068 of yacc.c  */
+#line 112 "bi.hpp"
+} YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 #endif

@@ -1,10 +1,13 @@
-#include <iostream>
+#include <stdio.h>
+#include "bi.hpp"
 
-using namespace std;
+extern int yyparse();
 
-int main()
-{
-    cout << "Hello world!" << endl;
-    yylex();
-    return 0;
+void yyerror(const char* descr){
+	printf("%s on line #%d\n", descr, yylloc.first_line);
+}
+
+int main(void){
+	yyparse();
+	return 0;
 }

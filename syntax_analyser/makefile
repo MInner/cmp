@@ -1,7 +1,5 @@
 all:
+	rm -f fl.cpp *.output bi.cpp bi.hpp
 	flex -ofl.cpp file.lex
-	# cat union.h > simple_java.y.tml
-	cat simple_java.y >> simple_java.y.tml
-	bison -obi.cpp -yd simple_java.y -v
-	gcc lex.yy.c bi.cpp -o result
-	
+	bison -yd simple_java.y -obi.cpp
+	gcc main.cpp fl.cpp bi.cpp -o result

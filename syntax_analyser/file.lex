@@ -2,8 +2,11 @@
 
 %{
 #include <math.h>
-#include "simple_java.tab.h"
+#include "bi.hpp"
 #include <stdio.h>
+
+void yyerror(const char* descr);
+
 int n_lines = 1, n_chars = 1; 
 
 void update_loc();
