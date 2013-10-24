@@ -1,13 +1,14 @@
+ProgramImpl +
 MainClassImpl
 
-ClassDeclarationsImpl
-ClassDeclarationImpl
+ClassDeclarationsImpl +
+ClassDeclarationImpl +
 
 VarDeclarationsImpl +
 VarDeclarationImpl +
 
-MethodDeclarationsImpl
-MethodDeclarationImpl
+MethodDeclarationsImpl+
+MethodDeclarationImpl+
  
 StatementsImpl +
 

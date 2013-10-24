@@ -293,3 +293,91 @@ private:
 	const IVarDeclaration*  dec;
 	const IVarDeclarations*  list;
 };
+
+class MethodDeclarationsImpl : public IMethodDeclarations
+{
+public:
+	MethodDeclarationsImpl(const IMethodDeclaration* dec_, const IMethodDeclarations*  list_): 
+		dec(dec_), list(list_) {}		
+	MethodDeclarationsImpl(): 
+		dec(NULL), list(nullptr) {}
+
+private:
+	const IMethodDeclaration*  dec;
+	const IMethodDeclarations*  list;
+};
+
+class MethodDeclarationImpl : public IMethodDeclaration
+{
+public:
+	MethodDeclarationImpl(const IType*  type_, const std::string id_, 
+		const IArguements*  args_, const IVarDeclarations*  vars_,	
+		const IStatements*  statements_,	const IExpression*  exp_): 
+		type(type_), id(id_), args(args_), vars(vars_),
+		statements(statements_), exp(exp_){}		
+
+private:
+	const IType*  type;
+	const std::string id;
+	const IArguements*  args;
+	const IVarDeclarations*  vars;
+	const IStatements*  statements;
+	const IExpression*  exp;
+};
+
+// MainClassImpl ClassDeclarationsImpl ClassDeclarationImpl
+
+class ClassDeclarationsImpl : public IClassDeclarations
+{
+public:
+	ClassDeclarationsImpl(const IClassDeclaration* dec_, const IClassDeclarations*  list_): 
+		dec(dec_), list(list_) {}		
+	ClassDeclarationsImpl(): 
+		dec(NULL), list(nullptr) {}
+
+private:
+	const IClassDeclaration*  dec;
+	const IClassDeclarations*  list;
+};
+
+class ClassDeclarationImpl : public IClassDeclaration
+{
+public:
+	ClassDeclarationImpl(const std::string id_, const std::string extId_, 
+		const IVarDeclarations*  vars_, const IMethodDeclarations*  methods_): 
+		id(id_), extId(extId_), vars(vars_), methods(methods_) {}		
+	ClassDeclarationImpl(const std::string id_, const IVarDeclarations*  
+		vars_, const IMethodDeclarations*  methods_): 
+		id(id_), extId(NULL), vars(vars_), methods(methods_) {}
+
+private:
+	const std::string id;
+	const std::string extId;
+	const IVarDeclarations*  vars;
+	const IMethodDeclarations*  methods;
+};
+
+class ProgramImpl : public IProgram
+{
+public:
+	ProgramImpl(const IMainClass* cl_, const IClassDeclarations*  decs_): 
+		cl(cl_), decs(decs_) {}			
+
+private:	
+	const IMainClass* cl;
+	const IClassDeclarations*  decs;
+};
+
+class MainClassImpl : public IMainClass
+{
+public:
+	MainClassImpl(const std::string id_, const std::string argId_, 
+		const IStatement*  stm_): 
+		id(id_), argId(argId_), stm(stm_) {}		
+	
+
+private:
+	const std::string id;
+	const std::string argId;
+	const IStatement*  stm;
+};
