@@ -1,18 +1,18 @@
 enum Type { 
-	INT_ARR = 1,
-	BOOL = 2, 
-	STRING = 3,
-	INT = 4
+	INT_ARR,
+	BOOL, 
+	STRING,
+	INT
 };
 
 enum Arithm { 
-	PLUS = 1,
-	MINUS = 2, 
-	MUL = 3,
-	DIV = 4
+	PLUS,
+	MINUS, 
+	MUL,
+	DIV
 };
 enum Logic { 
-	AND = 1,
-	LT = 2, 
-	NOT = 3	
+	AND,
+	LT, 
+	NOT	
 };

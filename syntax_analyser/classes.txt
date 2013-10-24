@@ -25,13 +25,13 @@ ArguementImpl
 
 AssignmentImpl
 
-ArithmExp
-LogicExp
+ArithmExp +
+LogicExp +
 ArrValExp
 LenExp
 CallMethodExp
-IntVal
-BoolVal
+IntVal +
+BoolVal +
 IdExp
 ThisExp
 NewIntArrExp
