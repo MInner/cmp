@@ -1,7 +1,8 @@
+#pragma once
 
-// #include "enums.h"
 #include <string>
 #include <iostream>
+#include "visitor.h"
 
 using std::cout;
 
@@ -14,6 +15,12 @@ class ArithmExp : public IExpression
 public:
 	ArithmExp(const Arithm::Arithm op_, const IExpression* left_, const IExpression* right_): 
 		left(left_), op(op_), right(right_) {}
+	
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const Arithm::Arithm op;
 	const IExpression* left;	
