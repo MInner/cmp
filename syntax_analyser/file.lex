@@ -9,7 +9,13 @@ void yyerror(const char* descr);
 
 int n_lines = 1, n_chars = 1; 
 
-void update_loc();
+void update_loc(){
+	yylloc.first_line=n_lines;
+	yylloc.last_line=n_lines;
+	yylloc.first_column=n_chars;
+	yylloc.last_column=n_chars+yyleng;
+}
+
 %}
 
 %option noyywrap
@@ -68,11 +74,4 @@ ID [a-zA-Z_][a-zA-Z0-9_-]*
 .		{update_loc(); n_chars += yyleng; yyerror("Unknown symbol\n"); printf("Symbol:%c", *yytext);}
 
 %%
-void update_loc(){
-	printf("%s\n", yytext);
-	yylloc.first_line=n_lines;
-	yylloc.last_line=n_lines;
-	yylloc.first_column=n_chars;
-	yylloc.last_column=n_chars+yyleng;
-}
 
