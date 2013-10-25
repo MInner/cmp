@@ -1,9 +1,12 @@
 #pragma once
 
-class ArithmExp;
+#include "fwdclasses.h"
 
 class IVisitor
 {
 public:
-	int visit(const ArithmExp* n);
+	virtual int visit(const ArithmExp* n) = 0;
+	virtual int visit(const MainClassImpl* n) = 0;
+	virtual int visit(const ProgramImpl* n) = 0;
+	virtual int visit(const ClassDeclarationsImpl* n) = 0;
 };

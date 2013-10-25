@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iostream>
 #include "bi.hpp"
 #include "printvisitor.h"
 #include "classes.h"
@@ -9,9 +10,14 @@ void yyerror(const char* descr){
 	printf("%s on line #%d\n", descr, yylloc.first_line);
 }
 
+const ProgramImpl* ProgramImpl::me = 0;
+
 int main(void){
-	PrintVisitor pv();
 
 	yyparse();
+
+	PrintVisitor* pv = new PrintVisitor();
+
+	ProgramImpl::me->Accept(pv);
 	return 0;
 }

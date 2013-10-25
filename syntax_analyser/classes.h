@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include "visitor.h"
+#include "enums.h"
+#include "interfaces.h"
 
 using std::cout;
 
@@ -35,6 +37,10 @@ public:
 	LogicExp(const Logic::Logic op_, const IExpression* left_): 
 		left(left_), op(op_), right(nullptr) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 private:
 	const Logic::Logic op;
 	const IExpression* left;	
@@ -47,6 +53,11 @@ public:
 	IntVal(const int val_): 
 		val(val_) {}	
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const int val;
 };
@@ -56,6 +67,11 @@ class BoolVal : public IExpression
 public:
 	BoolVal(const bool val_): 
 		val(val_) {}	
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const bool val;
@@ -67,6 +83,11 @@ public:
 	IdExp(const std::string id_): 
 		id(id_) {}	
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const std::string id;
 };
@@ -75,7 +96,12 @@ class NewExp : public IExpression
 {
 public:
 	NewExp(const std::string id_): 
-		id(id_) {}	
+		id(id_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const std::string id;
@@ -87,6 +113,11 @@ public:
 	ThisExp(const std::string val_): 
 		val(val_) {}	
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const std::string val;
 };
@@ -96,6 +127,11 @@ class LenExp : public IExpression
 public:
 	LenExp(const IExpression* exp_): 
 		exp(exp_) {}	
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const IExpression*  exp;
@@ -107,6 +143,12 @@ public:
 	CallMethodExp(const IExpression* exp_, const std::string id_, 
 		const IExpressionList* list_): 
 		exp(exp_), id(id_), list(list_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IExpression* exp;
 	const std::string id;	
@@ -117,7 +159,12 @@ class NewIntArrExp : public IExpression
 {
 public:
 	NewIntArrExp(const IExpression* exp_): 
-		exp(exp_) {}	
+		exp(exp_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const IExpression*  exp;
@@ -128,6 +175,11 @@ class ArrValExp : public IExpression
 public:
 	ArrValExp(const IExpression* exp_, const IExpression*  inExp_): 
 		exp(exp_), inExp(inExp_) {}	
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const IExpression*  exp;
@@ -140,7 +192,12 @@ class BlockStm : public IStatement
 {
 public:
 	BlockStm(const IStatements* stms_): 
-		stms(stms_) {}	
+		stms(stms_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const IStatements*  stms;
@@ -150,7 +207,12 @@ class AssignStm : public IStatement
 {
 public:
 	AssignStm(const IAssignment* assign_): 
-		assign(assign_) {}	
+		assign(assign_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const IAssignment*  assign;
@@ -160,7 +222,12 @@ class PrintStmPrintStm : public IStatement
 {
 public:
 	PrintStmPrintStm(const IExpression* exp_): 
-		exp(exp_) {}	
+		exp(exp_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const IExpression*  exp;
@@ -171,6 +238,11 @@ class WhileStm : public IStatement
 public:
 	WhileStm(const IExpression* exp_, const IStatement*  stm_): 
 		exp(exp_), stm(stm_) {}	
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const IExpression*  exp;
@@ -184,6 +256,11 @@ public:
 		const IStatement*  elseStm_): 
 		exp(exp_), stm(stm_), elseStm(elseStm_) {}	
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IExpression*  exp;
 	const IStatement*  stm;
@@ -195,6 +272,11 @@ class AssignArrStm : public IStatement
 public:
 	AssignArrStm(const std::string id_, const IExpression* exp_, const IStatement*  stm_): 
 		exp(exp_), stm(stm_) {}	
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const std::string id;
@@ -214,6 +296,11 @@ public:
 	ExpressionListImpl(): 
 		exp(NULL), list(nullptr) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IExpression*  exp;
 	const IExpressionList*  list;
@@ -227,6 +314,11 @@ public:
 	StatementsImpl(): 
 		stm(NULL), list(nullptr) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IStatement*  stm;
 	const IStatements*  list;
@@ -237,6 +329,11 @@ class AssignmentImpl : public IAssignment
 public:
 	AssignmentImpl(const std::string id_, const IExpression* exp_): 
 		id(id_), exp(exp_) {}	
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 
 private:
 	const std::string id;
@@ -251,6 +348,11 @@ public:
 	ArguementImpl(const IType* type_, const std::string id_): 
 		type(type_), id(id_) {}	
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IType*  type;
 	const std::string id;	
@@ -264,6 +366,11 @@ public:
 	ArguementsImpl(): 
 		arg(NULL), list(nullptr) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IArguement*  arg;
 	const IArguements*  list;
@@ -275,6 +382,11 @@ class InternalType : public IType
 public:
 	InternalType(const Type::Type type_): 
 		type(type_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 private:
 	const Type::Type type;
 };
@@ -285,7 +397,12 @@ class VarDeclarationImpl : public IVarDeclaration
 {
 public:
 	VarDeclarationImpl(const IType* type_, const std::string id_): 
-		type(type_), id(id_) {}	
+		type(type_), id(id_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}	
 
 private:
 	const IType*  type;
@@ -300,6 +417,11 @@ public:
 	VarDeclarationsImpl(): 
 		dec(NULL), list(nullptr) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IVarDeclaration*  dec;
 	const IVarDeclarations*  list;
@@ -313,6 +435,10 @@ public:
 	MethodDeclarationsImpl(): 
 		dec(NULL), list(nullptr) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 private:
 	const IMethodDeclaration*  dec;
 	const IMethodDeclarations*  list;
@@ -327,6 +453,10 @@ public:
 		type(type_), id(id_), args(args_), vars(vars_),
 		statements(statements_), exp(exp_){}		
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
 private:
 	const IType*  type;
 	const std::string id;
@@ -346,6 +476,11 @@ public:
 	ClassDeclarationsImpl(): 
 		dec(NULL), list(nullptr) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const IClassDeclaration*  dec;
 	const IClassDeclarations*  list;
@@ -361,6 +496,11 @@ public:
 		vars_, const IMethodDeclarations*  methods_): 
 		id(id_), extId(""), vars(vars_), methods(methods_) {}
 
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
 private:
 	const std::string id;
 	const std::string extId;
@@ -371,10 +511,17 @@ private:
 class ProgramImpl : public IProgram
 {
 public:
-	ProgramImpl(const IMainClass* cl_, const IClassDeclarations*  decs_): 
-		cl(cl_), decs(decs_) {}			
+	const static ProgramImpl* me;
 
-private:	
+	ProgramImpl(const IMainClass* cl_, const IClassDeclarations*  decs_): 
+		cl(cl_), decs(decs_) { me = this;}			
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}
+
+public:	
 	const IMainClass* cl;
 	const IClassDeclarations*  decs;
 };
@@ -384,7 +531,12 @@ class MainClassImpl : public IMainClass
 public:
 	MainClassImpl(const std::string id_, const std::string argId_, 
 		const IStatement*  stm_): 
-		id(id_), argId(argId_), stm(stm_) {}		
+		id(id_), argId(argId_), stm(stm_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		v->visit(this);
+	}		
 	
 
 private:
