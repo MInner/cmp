@@ -1,0 +1,20 @@
+ ProgramImpl: ()
+  MainClassImpl: (_, _)
+   PrintStmPrintStm: ()
+    CallMethodExp: (_)
+     NewExp: (_)
+     /NewExp
+     ExpressionListImpl: ()
+      IntVal: (0)
+      /IntVal
+     /ExpressionListImpl
+    /CallMethodExp
+   /PrintStmPrintStm
+  /MainClassImpl
+  ClassDeclarationsImpl: ()
+   ClassDeclarationsImpl: ()
+   /ClassDeclarationsImpl
+   ClassDeclarationsImpl: ()
+   /ClassDeclarationsImpl
+  /ClassDeclarationsImpl
+ /ProgramImpl

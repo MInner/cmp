@@ -40,10 +40,10 @@ public:
 
 		visitexprlist = []
 		for visel in tovisit:
-			if visel != 'list':
-				visitexprlist += ["\t\tn->%s->Accept(this);" % visel]
+			if visel == 'list' or visel == 'dec':
+				visitexprlist += ['\t\tif(n->%s) {n->list->Accept(this);}' % visel]
 			else:
-				visitexprlist += ['\t\tif(n->list) {n->list->Accept(this);}']
+				visitexprlist += ["\t\tn->%s->Accept(this);" % visel]
 
 		visitexpr = '\n'.join(visitexprlist)
 

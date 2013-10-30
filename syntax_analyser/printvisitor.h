@@ -266,7 +266,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "VarDeclarationsImpl: (" <<  ")" << std::endl;
-		n->dec->Accept(this);
+		if(n->dec) {n->list->Accept(this);}
 		if(n->list) {n->list->Accept(this);}
 		std::cout << std::string(padding, ' ') << "/VarDeclarationsImpl" << std::endl;
 		padding -= 1;
@@ -277,7 +277,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "MethodDeclarationsImpl: (" <<  ")" << std::endl;
-		n->dec->Accept(this);
+		if(n->dec) {n->list->Accept(this);}
 		if(n->list) {n->list->Accept(this);}
 		std::cout << std::string(padding, ' ') << "/MethodDeclarationsImpl" << std::endl;
 		padding -= 1;
@@ -302,7 +302,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ClassDeclarationsImpl: (" <<  ")" << std::endl;
-		n->dec->Accept(this);
+		if(n->dec) {n->list->Accept(this);}
 		if(n->list) {n->list->Accept(this);}
 		std::cout << std::string(padding, ' ') << "/ClassDeclarationsImpl" << std::endl;
 		padding -= 1;
