@@ -5,27 +5,27 @@ BoolVal | val
 IdExp | id
 NewExp | id
 ThisExp | val
-LenExp  exp
+LenExp exp |
 CallMethodExp exp list | id
-NewIntArrExp exp
-ArrValExp exp inExp
-BlockStm stms
-AssignStm assign
-PrintStmPrintStm exp
-WhileStm exp stm
-IfElseStm exp stm elseStm
+NewIntArrExp exp |
+ArrValExp exp inExp |
+BlockStm stms |
+AssignStm assign |
+PrintStmPrintStm exp |
+WhileStm exp stm |
+IfElseStm exp stm elseStm |
 AssignArrStm exp stm | id
-ExpressionListImpl exp list
-StatementsImpl stm list
+ExpressionListImpl exp list |
+StatementsImpl stm list |
 AssignmentImpl exp | id
 ArguementImpl type | id
-ArguementsImpl arg list
+ArguementsImpl arg list |
 InternalType | type
 VarDeclarationImpl type | id
-VarDeclarationsImpl dec list
-MethodDeclarationsImpl dec list
+VarDeclarationsImpl dec list |
+MethodDeclarationsImpl dec list |
 MethodDeclarationImpl type args vars statements exp | id
-ClassDeclarationsImpl dec list
+ClassDeclarationsImpl dec list |
 ClassDeclarationImpl vars methods | id extId
-ProgramImpl cl decs
+ProgramImpl cl decs |
 MainClassImpl stm | id argId

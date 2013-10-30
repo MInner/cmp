@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <iostream>
+
+#include "enums.h"
 #include "bi.hpp"
 #include "printvisitor.h"
 #include "classes.h"

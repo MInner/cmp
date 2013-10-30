@@ -23,7 +23,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const Arithm::Arithm op;
 	const IExpression* left;	
 	const IExpression* right;
@@ -41,7 +41,7 @@ public:
 	{
 		v->visit(this);
 	}
-private:
+
 	const Logic::Logic op;
 	const IExpression* left;	
 	const IExpression* right;
@@ -58,7 +58,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const int val;
 };
 
@@ -73,7 +73,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const bool val;
 };
 
@@ -88,7 +88,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const std::string id;
 };
 
@@ -103,7 +103,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const std::string id;
 };
 
@@ -118,7 +118,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const std::string val;
 };
 
@@ -133,7 +133,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression*  exp;
 };
 
@@ -149,7 +149,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression* exp;
 	const std::string id;	
 	const IExpressionList* list;
@@ -166,7 +166,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression*  exp;
 };
 
@@ -181,7 +181,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression*  exp;
 	const IExpression*  inExp;
 };
@@ -199,7 +199,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IStatements*  stms;
 };
 
@@ -214,7 +214,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IAssignment*  assign;
 };
 
@@ -229,7 +229,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression*  exp;
 };
 
@@ -244,7 +244,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression*  exp;
 	const IStatement*  stm;
 };
@@ -261,7 +261,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression*  exp;
 	const IStatement*  stm;
 	const IStatement*  elseStm;
@@ -278,7 +278,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const std::string id;
 	const IExpression*  exp;
 	const IStatement*  stm;
@@ -301,7 +301,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IExpression*  exp;
 	const IExpressionList*  list;
 };
@@ -319,7 +319,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IStatement*  stm;
 	const IStatements*  list;
 };
@@ -335,7 +335,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const std::string id;
 	const IExpression*  exp;
 };
@@ -353,7 +353,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IType*  type;
 	const std::string id;	
 };
@@ -371,7 +371,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IArguement*  arg;
 	const IArguements*  list;
 };
@@ -387,7 +387,7 @@ public:
 	{
 		v->visit(this);
 	}
-private:
+
 	const Type::Type type;
 };
 
@@ -404,7 +404,7 @@ public:
 		v->visit(this);
 	}	
 
-private:
+
 	const IType*  type;
 	const std::string id;	
 };
@@ -422,7 +422,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IVarDeclaration*  dec;
 	const IVarDeclarations*  list;
 };
@@ -439,7 +439,7 @@ public:
 	{
 		v->visit(this);
 	}
-private:
+
 	const IMethodDeclaration*  dec;
 	const IMethodDeclarations*  list;
 };
@@ -457,7 +457,7 @@ public:
 	{
 		v->visit(this);
 	}
-private:
+
 	const IType*  type;
 	const std::string id;
 	const IArguements*  args;
@@ -481,7 +481,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const IClassDeclaration*  dec;
 	const IClassDeclarations*  list;
 };
@@ -501,7 +501,7 @@ public:
 		v->visit(this);
 	}
 
-private:
+
 	const std::string id;
 	const std::string extId;
 	const IVarDeclarations*  vars;
@@ -539,7 +539,7 @@ public:
 	}		
 	
 
-private:
+
 	const std::string id;
 	const std::string argId;
 	const IStatement*  stm;
