@@ -87,7 +87,7 @@ mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '('STRING_TYPE '['']' ID ')' '{'
 
 
 classDeclarations: /*ok*/
-											{ $$ = NULL;}
+											{ $$ = new ClassDeclarationsImpl();}
 	| classDeclaration classDeclarations 	{ $$ = new ClassDeclarationsImpl($1, $2);}
 
 classDeclaration: /*ok*/
@@ -95,7 +95,7 @@ classDeclaration: /*ok*/
 	| CLASS ID EXTENDS ID'{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl("_", "_", $6, $7);}
 
 varDeclarations: /*ok*/
-	/*{$$ = NULL ;}*/					{ $$ = NULL;}
+	/*{$$ = NULL ;}*/					{ $$ = new VarDeclarationsImpl();}
 	| varDeclaration varDeclarations 	{ $$ = new VarDeclarationsImpl($1, $2);}
 
 
@@ -104,7 +104,7 @@ varDeclaration: /*ok*/
 
 
 methodDeclarations: /*ok*/
-	/*{$$ = NULL ;}*/							{ $$ = NULL;}
+	/*{$$ = NULL ;}*/							{ $$ = new MethodDeclarationsImpl();}
 	| methodDeclaration methodDeclarations 		{ $$ = new MethodDeclarationsImpl($1, $2);}
 
 methodDeclaration: /*ok*/
@@ -112,7 +112,7 @@ methodDeclaration: /*ok*/
 	{$$ = new MethodDeclarationImpl($2, "_", $5, $8, $9, $11);}
 
 statements: /*ok*/
-	/*{$$ = NULL ;}*/ 		{$$ = NULL;}
+	/*{$$ = NULL ;}*/ 		{$$ = new StatementsImpl();}
 	| statement statements	{$$ = new StatementsImpl($1, $2);}
 
 statement: /*ok*/
@@ -130,9 +130,9 @@ type: /*ok*/
 	| INT_TYPE			{ $$ = new InternalType(Type::INT);}
 
 arguements: /*ok*/
-	/*{$$ = NULL ;}*/			{$$ = NULL;}
+	/*{$$ = NULL ;}*/			{$$ = new ArguementsImpl();}
 	| arguement ',' arguements	{$$ = new ArguementsImpl($1, $3);}
-	| arguement					{ArguementsImpl* a = NULL; $$ = new ArguementsImpl($1, a);}
+	| arguement					{ArguementsImpl* a = new ArguementsImpl(); $$ = new ArguementsImpl($1, a);}
 
 arguement: /*ok*/
 	type ID		{$$ = new ArguementImpl($1, "_");}
@@ -162,7 +162,7 @@ expression: /*ok*/
 	| '(' expression ')' 	{ $$ = $2;}
 
 expressionList: /*ok*/
-	/*{$$ = NULL ;}*/					{$$ = NULL;}
+	/*{$$ = NULL ;}*/					{$$ = new ExpressionListImpl();}
 	| expression ',' expressionList		{$$ = new ExpressionListImpl($1, $3);}
 	| expression						{$$ = new ExpressionListImpl($1);}
 

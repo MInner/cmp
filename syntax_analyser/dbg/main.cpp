@@ -19,7 +19,6 @@ int main(void){
 	yyparse();
 
 	PrintVisitor* pv = new PrintVisitor();
-	pv->padding = -1;
 
 	ProgramImpl::me->Accept(pv);
 	return 0;

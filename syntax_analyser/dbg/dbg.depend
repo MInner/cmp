@@ -1,0 +1,62 @@
+# depslib dependency file v1.0
+1383214724 source:/home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/bi.cpp
+	<stdio.h>
+	"interfaces.h"
+	"enums.h"
+	"classes.h"
+	<stddef.h>
+	<libintl.h>
+	<alloca.h>
+	<malloc.h>
+	<stdlib.h>
+	<stdlib.h>
+	<stdio.h>
+
+1383153836 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/interfaces.h
+	"visitor.h"
+
+1383153940 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/visitor.h
+	"enums.h"
+	"fwdclasses.h"
+
+1382728171 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/enums.h
+
+1383154387 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/fwdclasses.h
+
+1383215072 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/classes.h
+	<string>
+	<iostream>
+	"visitor.h"
+	"enums.h"
+	"interfaces.h"
+
+1383214715 source:/home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/fl.cpp
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<stdlib.h>
+	<inttypes.h>
+	<math.h>
+	"bi.hpp"
+	<stdio.h>
+	<unistd.h>
+
+1383214724 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/bi.hpp
+	"interfaces.h"
+	"enums.h"
+	"classes.h"
+
+1383158506 source:/home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/main.cpp
+	<stdio.h>
+	<iostream>
+	"enums.h"
+	"bi.hpp"
+	"printvisitor.h"
+	"classes.h"
+
+1383214221 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/printvisitor.h
+	"visitor.h"
+	"fwdclasses.h"
+	<iostream>
+	<string>
+

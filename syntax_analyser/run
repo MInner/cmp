@@ -1,1 +1,1 @@
-cat sample.java | ./mjv > tree.txt
+./mjv < sample.java

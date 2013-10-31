@@ -40,7 +40,10 @@ public:
 
 		visitexprlist = []
 		for visel in tovisit:
-			visitexprlist += ['\t\tif(n->%s) { n->%s->Accept(this); } else { std::cout << std::string(padding + 1, \' \') << "%s::NULL" << std::endl; }' % (visel, visel, visel)]
+			if visel == 'list' or visel == 'dec':
+				visitexprlist += ['\t\tif(n->%s) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, \' \') << "NULL" << std::endl; }' % visel]
+			else:
+				visitexprlist += ["\t\tn->%s->Accept(this);" % visel]
 
 		visitexpr = '\n'.join(visitexprlist)
 
