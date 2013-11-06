@@ -32,7 +32,32 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="bi.cpp" />
+		<Unit filename="bi.hpp" />
+		<Unit filename="bi.output" />
+		<Unit filename="cl.txt" />
+		<Unit filename="classes.h" />
+		<Unit filename="classes.txt" />
+		<Unit filename="dbg.cbp" />
+		<Unit filename="enums.h" />
+		<Unit filename="file.lex" />
+		<Unit filename="fl.cpp" />
+		<Unit filename="forward.h" />
+		<Unit filename="fwdclasses.h" />
+		<Unit filename="gen.py" />
+		<Unit filename="gen_visitors.py" />
+		<Unit filename="interfaces.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="makefile" />
+		<Unit filename="mjv" />
+		<Unit filename="printvisitor.h" />
+		<Unit filename="run" />
+		<Unit filename="simple_java.y" />
+		<Unit filename="todo.txt" />
+		<Unit filename="tree.txt" />
+		<Unit filename="types.h" />
+		<Unit filename="union.h" />
+		<Unit filename="visitor.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

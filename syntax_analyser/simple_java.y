@@ -2,6 +2,7 @@
 #include "interfaces.h" 
 #include "enums.h"
 #include "classes.h"
+#include "symbol.h"
 }
 %locations
 
