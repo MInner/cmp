@@ -64,7 +64,35 @@ def gen_fwdclasses_h():
 	for (classname, tocout, tovisit) in data:
 		fwd.write('class %s;\n' % classname)
 
+def gen_visitor_scafold(name):
+	f = open(name.lower()+".h", 'w')
+	f.write('''#pragma once
+
+#include "visitor.h"
+#include "fwdclasses.h"
+#include <iostream>
+#include <string>
+
+class %s : public IVisitor
+{
+public:
+''' % name )
+
+	for (classname, _, tovisit) in data:
+		visitexprlist = []
+		for visel in tovisit:
+			visitexprlist += ['\t\tif(n->%s) { n->%s->Accept(this); }' % (visel, visel)]
+
+		f.write('''
+	int visit(const %s* n)
+	{
+%s
+		return 0;
+	}''' % (classname, '\n'.join(visitexprlist) ) )
+
+	f.write('\n};')
+
 def main():
-	gen_print_visitor()
+	gen_visitor_scafold("RunVisitor")
 
 main()

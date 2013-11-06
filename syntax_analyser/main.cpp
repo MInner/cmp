@@ -17,14 +17,15 @@ const ProgramImpl* ProgramImpl::me = 0;
 
 int main(void){
 
-	std::cout << Symbol::getSymbol("a") << std::endl << Symbol::getSymbol("b") << std::endl << Symbol::getSymbol("a") << std::endl;
-	const Symbol* d = Symbol::getSymbol("a");
-	std::cout << d << std::endl;
-	// yyparse();
+	// std::cout << Symbol::getSymbol("a") << std::endl << Symbol::getSymbol("b") << std::endl << Symbol::getSymbol("a") << std::endl;
+	// const Symbol* d = Symbol::getSymbol("a");
+	// std::cout << d << std::endl;
 
-	// PrintVisitor* pv = new PrintVisitor();
-	// pv->padding = -1;
+	yyparse();
 
-	// ProgramImpl::me->Accept(pv);
-	// return 0;
+	PrintVisitor* pv = new PrintVisitor();
+	pv->padding = -1;
+
+	ProgramImpl::me->Accept(pv);
+	return 0;
 }

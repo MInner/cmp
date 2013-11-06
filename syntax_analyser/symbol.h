@@ -14,6 +14,8 @@ class Symbol
 public:
 	static const Symbol* getSymbol(const std::string&);
 	friend ostream& operator<<(ostream& os, const Symbol*& s);
+	friend ostream& operator<<(ostream& os, Symbol*& s);
+
 };
 
 ostream& operator<<(ostream& os, const Symbol*& s);
