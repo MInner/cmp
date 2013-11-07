@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "bi.hpp"
 #include "printvisitor.h"
+#include "runvisitor.h"
 #include "classes.h"
 #include "symbol.h"
 
@@ -23,9 +24,8 @@ int main(void){
 
 	yyparse();
 
-	PrintVisitor* pv = new PrintVisitor();
-	pv->padding = -1;
+	RunVisitor* rv = new RunVisitor();
 
-	ProgramImpl::me->Accept(pv);
+	ProgramImpl::me->Accept(rv);
 	return 0;
 }

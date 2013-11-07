@@ -1,6 +1,12 @@
+#pragma once
+
 #include <vector>
 #include "symbol.h"
 #include "interfaces.h"
+
+class ClassInfo;
+class MethodInfo;
+class VarInfo;
 
 class ClassTable {
 	public:
