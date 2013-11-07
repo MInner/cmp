@@ -15,8 +15,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ArithmExp: (" << n->op <<  ")" << std::endl;
-		n->left->Accept(this);
-		n->right->Accept(this);
+		if(n->left) { n->left->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "left::NULL" << std::endl; }
+		if(n->right) { n->right->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "right::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ArithmExp" << std::endl;
 		padding -= 1;
 		return 0;
@@ -26,8 +26,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "LogicExp: (" << n->op <<  ")" << std::endl;
-		n->left->Accept(this);
-		n->right->Accept(this);
+		if(n->left) { n->left->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "left::NULL" << std::endl; }
+		if(n->right) { n->right->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "right::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/LogicExp" << std::endl;
 		padding -= 1;
 		return 0;
@@ -87,7 +87,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "LenExp: (" <<  ")" << std::endl;
-		n->exp->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/LenExp" << std::endl;
 		padding -= 1;
 		return 0;
@@ -97,8 +97,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "CallMethodExp: (" << n->id <<  ")" << std::endl;
-		n->exp->Accept(this);
-		if(n->list) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
+		if(n->list) { n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "list::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/CallMethodExp" << std::endl;
 		padding -= 1;
 		return 0;
@@ -108,7 +108,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "NewIntArrExp: (" <<  ")" << std::endl;
-		n->exp->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/NewIntArrExp" << std::endl;
 		padding -= 1;
 		return 0;
@@ -118,8 +118,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ArrValExp: (" <<  ")" << std::endl;
-		n->exp->Accept(this);
-		n->inExp->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
+		if(n->inExp) { n->inExp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "inExp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ArrValExp" << std::endl;
 		padding -= 1;
 		return 0;
@@ -129,7 +129,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "BlockStm: (" <<  ")" << std::endl;
-		n->stms->Accept(this);
+		if(n->stms) { n->stms->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "stms::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/BlockStm" << std::endl;
 		padding -= 1;
 		return 0;
@@ -139,7 +139,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "AssignStm: (" <<  ")" << std::endl;
-		n->assign->Accept(this);
+		if(n->assign) { n->assign->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "assign::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/AssignStm" << std::endl;
 		padding -= 1;
 		return 0;
@@ -149,7 +149,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "PrintStmPrintStm: (" <<  ")" << std::endl;
-		n->exp->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/PrintStmPrintStm" << std::endl;
 		padding -= 1;
 		return 0;
@@ -159,8 +159,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "WhileStm: (" <<  ")" << std::endl;
-		n->exp->Accept(this);
-		n->stm->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
+		if(n->stm) { n->stm->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "stm::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/WhileStm" << std::endl;
 		padding -= 1;
 		return 0;
@@ -170,9 +170,9 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "IfElseStm: (" <<  ")" << std::endl;
-		n->exp->Accept(this);
-		n->stm->Accept(this);
-		n->elseStm->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
+		if(n->stm) { n->stm->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "stm::NULL" << std::endl; }
+		if(n->elseStm) { n->elseStm->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "elseStm::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/IfElseStm" << std::endl;
 		padding -= 1;
 		return 0;
@@ -182,8 +182,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "AssignArrStm: (" << n->id <<  ")" << std::endl;
-		n->exp->Accept(this);
-		n->stm->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
+		if(n->stm) { n->stm->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "stm::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/AssignArrStm" << std::endl;
 		padding -= 1;
 		return 0;
@@ -193,8 +193,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ExpressionListImpl: (" <<  ")" << std::endl;
-		n->exp->Accept(this);
-		if(n->list) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
+		if(n->list) { n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "list::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ExpressionListImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -204,8 +204,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "StatementsImpl: (" <<  ")" << std::endl;
-		n->stm->Accept(this);
-		if(n->list) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
+		if(n->stm) { n->stm->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "stm::NULL" << std::endl; }
+		if(n->list) { n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "list::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/StatementsImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -215,7 +215,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "AssignmentImpl: (" << n->id <<  ")" << std::endl;
-		n->exp->Accept(this);
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/AssignmentImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -225,7 +225,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ArguementImpl: (" << n->id <<  ")" << std::endl;
-		n->type->Accept(this);
+		if(n->type) { n->type->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "type::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ArguementImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -235,8 +235,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ArguementsImpl: (" <<  ")" << std::endl;
-		n->arg->Accept(this);
-		if(n->list) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
+		if(n->arg) { n->arg->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "arg::NULL" << std::endl; }
+		if(n->list) { n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "list::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ArguementsImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -256,7 +256,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "VarDeclarationImpl: (" << n->id <<  ")" << std::endl;
-		n->type->Accept(this);
+		if(n->type) { n->type->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "type::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/VarDeclarationImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -266,8 +266,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "VarDeclarationsImpl: (" <<  ")" << std::endl;
-		if(n->dec) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
-		if(n->list) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
+		if(n->dec) { n->dec->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "dec::NULL" << std::endl; }
+		if(n->list) { n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "list::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/VarDeclarationsImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -277,8 +277,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "MethodDeclarationsImpl: (" <<  ")" << std::endl;
-		if(n->dec) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
-		if(n->list) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
+		if(n->dec) { n->dec->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "dec::NULL" << std::endl; }
+		if(n->list) { n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "list::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/MethodDeclarationsImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -288,11 +288,11 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "MethodDeclarationImpl: (" << n->id <<  ")" << std::endl;
-		n->type->Accept(this);
-		n->args->Accept(this);
-		n->vars->Accept(this);
-		n->statements->Accept(this);
-		n->exp->Accept(this);
+		if(n->type) { n->type->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "type::NULL" << std::endl; }
+		if(n->args) { n->args->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "args::NULL" << std::endl; }
+		if(n->vars) { n->vars->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "vars::NULL" << std::endl; }
+		if(n->statements) { n->statements->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "statements::NULL" << std::endl; }
+		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/MethodDeclarationImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -302,8 +302,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ClassDeclarationsImpl: (" <<  ")" << std::endl;
-		if(n->dec) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
-		if(n->list) {n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "NULL" << std::endl; }
+		if(n->dec) { n->dec->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "dec::NULL" << std::endl; }
+		if(n->list) { n->list->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "list::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ClassDeclarationsImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -313,8 +313,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ClassDeclarationImpl: (" << n->id << ", " << n->extId <<  ")" << std::endl;
-		n->vars->Accept(this);
-		n->methods->Accept(this);
+		if(n->vars) { n->vars->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "vars::NULL" << std::endl; }
+		if(n->methods) { n->methods->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "methods::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ClassDeclarationImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -324,8 +324,8 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ProgramImpl: (" <<  ")" << std::endl;
-		n->cl->Accept(this);
-		n->decs->Accept(this);
+		if(n->cl) { n->cl->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "cl::NULL" << std::endl; }
+		if(n->decs) { n->decs->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "decs::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ProgramImpl" << std::endl;
 		padding -= 1;
 		return 0;
@@ -335,7 +335,7 @@ public:
 	{
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "MainClassImpl: (" << n->id << ", " << n->argId <<  ")" << std::endl;
-		n->stm->Accept(this);
+		if(n->stm) { n->stm->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "stm::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/MainClassImpl" << std::endl;
 		padding -= 1;
 		return 0;

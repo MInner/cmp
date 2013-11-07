@@ -38,11 +38,12 @@
 #include "interfaces.h" 
 #include "enums.h"
 #include "classes.h"
+#include "symbol.h"
 
 
 
 /* Line 2068 of yacc.c  */
-#line 46 "bi.hpp"
+#line 47 "bi.hpp"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -112,7 +113,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 18 "simple_java.y"
+#line 19 "simple_java.y"
  
 const IProgram* program; 
 const IMainClass* mainClass; 
@@ -130,14 +131,14 @@ const IArguement* arguement;
 const IAssignment* assignment; 
 const IExpression* expression; 
 const IExpressionList* expressionList;
-const char* strval;
+const Symbol* strval;
 int intval;
 bool boolval;
 
 
 
 /* Line 2068 of yacc.c  */
-#line 141 "bi.hpp"
+#line 142 "bi.hpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
