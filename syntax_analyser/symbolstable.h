@@ -12,8 +12,8 @@ class ClassTable {
 	public:
 		std::vector<ClassInfo*> classes;
 		
-		const ClassInfo* addClass(const Symbol* name, const Symbol* parentName);
-		const ClassInfo* getClass(const Symbol* name);
+		ClassInfo* addClass(const Symbol* name, const Symbol* parentName);
+		ClassInfo* getClass(const Symbol* name);
 
 };
 
@@ -26,25 +26,25 @@ class ClassInfo {
 
 		ClassInfo(const Symbol* name_, const Symbol* parentName_):
 			name(name_), parentName(parentName_){};
-		const VarInfo* addField(const Symbol* name_, const IType* type_);
-		const VarInfo* getField(const Symbol* name);
-		const MethodInfo* addMethod(const Symbol* name, const IType* returnType);
-		const MethodInfo* getMethod(const Symbol* name);
+		VarInfo* addField(const Symbol* name_, const IType* type_);
+		VarInfo* getField(const Symbol* name);
+		MethodInfo* addMethod(const Symbol* name, const IType* returnType);
+		MethodInfo* getMethod(const Symbol* name);
 };
 
 class MethodInfo {
 	public:
 		const Symbol* name;
+		const IType* returnType;	
 		std::vector<VarInfo*> params;
 		std::vector<VarInfo*> localVars;
-		const IType* returnType;	
 
 		MethodInfo(const Symbol* name_, const IType* returnType_):
 			name(name_), returnType(returnType_){};
-		const VarInfo* addParam(const Symbol* name, const IType* type);
-		const VarInfo* getParam(const Symbol* name, const IType* type);
-		const VarInfo* addLocalVar(const Symbol* name, const IType* type);
-		const VarInfo* getLocalVar(const Symbol* name, const IType* type);
+		VarInfo* addParam(const Symbol* name, const IType* type);
+		VarInfo* getParam(const Symbol* name, const IType* type);
+		VarInfo* addLocalVar(const Symbol* name, const IType* type);
+		VarInfo* getLocalVar(const Symbol* name, const IType* type);
 };
 
 

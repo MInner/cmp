@@ -10,16 +10,22 @@ enum Type {
 	INT
 };
 
+union AnyType
+{
+	Type internaltype;
+	Symbol* name;
+};
+
 }
 
 namespace Arithm
 {
-enum Arithm { 
-	PLUS,
-	MINUS, 
-	MUL,
-	DIV
-};
+	enum Arithm { 
+		PLUS,
+		MINUS, 
+		MUL,
+		DIV
+	};
 }
 
 namespace Logic

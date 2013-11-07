@@ -2,7 +2,7 @@
 #include <vector>
 #include "interfaces.h"
 
-const ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
+ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
 	for(int i = 0; i < classes.size(); i++){
 		if(classes.at(i)->name == name){
 			throw "class already exists";
@@ -12,7 +12,7 @@ const ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentNa
 	classes.push_back(a);
 }
 
-const ClassInfo* ClassTable::getClass(const Symbol* name){
+ClassInfo* ClassTable::getClass(const Symbol* name){
 	for(int i = 0; i < classes.size(); i++){
 		if(classes.at(i)->name == name){
 			return classes.at(i);
@@ -23,7 +23,7 @@ const ClassInfo* ClassTable::getClass(const Symbol* name){
 
 //--------------------------------------------------
 
-const VarInfo* ClassInfo::addField(const Symbol* name, const IType* type){
+VarInfo* ClassInfo::addField(const Symbol* name, const IType* type){
 	for(int i = 0; i < fields.size(); i++){
 		if(fields.at(i)->name == name){
 			throw "field already exists";
@@ -33,7 +33,7 @@ const VarInfo* ClassInfo::addField(const Symbol* name, const IType* type){
 	fields.push_back(a);
 }
 
-const VarInfo* ClassInfo::getField(const Symbol* name){
+VarInfo* ClassInfo::getField(const Symbol* name){
 	for(int i = 0; i < fields.size(); i++){
 		if(fields.at(i)->name == name){
 			return fields.at(i);
@@ -42,7 +42,7 @@ const VarInfo* ClassInfo::getField(const Symbol* name){
 	throw "there is no such field";
 }
 
-const MethodInfo* ClassInfo::addMethod(const Symbol* name,const IType* returnType){
+MethodInfo* ClassInfo::addMethod(const Symbol* name,const IType* returnType){
 	for(int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == name){
 			throw "method already exists";
@@ -52,7 +52,7 @@ const MethodInfo* ClassInfo::addMethod(const Symbol* name,const IType* returnTyp
 	methods.push_back(a);
 }
 
-const MethodInfo* ClassInfo::getMethod(const Symbol* name){
+MethodInfo* ClassInfo::getMethod(const Symbol* name){
 	for(int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == name){
 			return methods.at(i);
@@ -64,17 +64,17 @@ const MethodInfo* ClassInfo::getMethod(const Symbol* name){
 //------------------------------------------------
 
 
-const VarInfo* MethodInfo::addParam(const Symbol* name, const IType* type){
+VarInfo* MethodInfo::addParam(const Symbol* name, const IType* type){
 	for(int i = 0; i < params.size(); i++){
 		if(params.at(i)->name == name){
 			throw "param already exists";
 		}
-	}
+}
 	VarInfo* a = new VarInfo(name, type);
 	params.push_back(a);
 }
 
-const VarInfo* MethodInfo::getParam(const Symbol* name, const IType* type){	
+VarInfo* MethodInfo::getParam(const Symbol* name, const IType* type){	
 	for(int i = 0; i < params.size(); i++){
 		if(params.at(i)->name == name){
 			return params.at(i);
@@ -83,7 +83,7 @@ const VarInfo* MethodInfo::getParam(const Symbol* name, const IType* type){
 	throw "there is no such param";
 }
 
-const VarInfo* MethodInfo::addLocalVar(const Symbol* name, const IType* type){
+VarInfo* MethodInfo::addLocalVar(const Symbol* name, const IType* type){
 	for(int i = 0; i < localVars.size(); i++){
 		if(localVars.at(i)->name == name){
 			throw "localVar already exists";
@@ -93,7 +93,7 @@ const VarInfo* MethodInfo::addLocalVar(const Symbol* name, const IType* type){
 	localVars.push_back(a);
 }
 
-const VarInfo* MethodInfo::getLocalVar(const Symbol* name, const IType* type){
+VarInfo* MethodInfo::getLocalVar(const Symbol* name, const IType* type){
 	for(int i = 0; i < localVars.size(); i++){
 		if(localVars.at(i)->name == name){
 			return localVars.at(i);
