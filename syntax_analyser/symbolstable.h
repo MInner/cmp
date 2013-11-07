@@ -18,10 +18,11 @@ class ClassInfo {
 		std::vector<VarInfo*> fields;
 		std::vector<MethodInfo*> methods;
 
-		ClassInfo(const Symbol* name, const Symbol* parentName);
+		ClassInfo(const Symbol* name_, const Symbol* parentName_):
+			name(name_), parentName(parentName_){};
 		const VarInfo* addField(const Symbol* name_, const IType* type_);
 		const VarInfo* getField(const Symbol* name);
-		const MethodInfo* addMethod(const Symbol* name,const IType* returnType);
+		const MethodInfo* addMethod(const Symbol* name, const IType* returnType);
 		const MethodInfo* getMethod(const Symbol* name);
 };
 
@@ -34,10 +35,10 @@ class MethodInfo {
 
 		MethodInfo(const Symbol* name_, const IType* returnType_):
 			name(name_), returnType(returnType_){};
-		const VarInfo* addParam(const Symbol* name);
-		const VarInfo* getParam(const Symbol* name);
-		const VarInfo* addLocalVar(const Symbol* name);
-		const VarInfo* getLocalVar(const Symbol* name);
+		const VarInfo* addParam(const Symbol* name, const IType* type);
+		const VarInfo* getParam(const Symbol* name, const IType* type);
+		const VarInfo* addLocalVar(const Symbol* name, const IType* type);
+		const VarInfo* getLocalVar(const Symbol* name, const IType* type);
 };
 
 

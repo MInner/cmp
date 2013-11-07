@@ -21,8 +21,7 @@ const ClassInfo* ClassTable::getClass(const Symbol* name){
 	throw "there is no such class";
 }
 
-ClassInfo::ClassInfo(const Symbol* name_, const Symbol* parentName_):
-	name(name_), parentName(parentName_){}
+//--------------------------------------------------
 
 const VarInfo* ClassInfo::addField(const Symbol* name, const IType* type){
 	for(int i = 0; i < fields.size(); i++){
@@ -60,4 +59,45 @@ const MethodInfo* ClassInfo::getMethod(const Symbol* name){
 		}
 	}
 	throw "there is no such method";
+}
+
+//------------------------------------------------
+
+
+const VarInfo* MethodInfo::addParam(const Symbol* name, const IType* type){
+	for(int i = 0; i < params.size(); i++){
+		if(params.at(i)->name == name){
+			throw "param already exists";
+		}
+	}
+	VarInfo* a = new VarInfo(name, type);
+	params.push_back(a);
+}
+
+const VarInfo* MethodInfo::getParam(const Symbol* name, const IType* type){	
+	for(int i = 0; i < params.size(); i++){
+		if(params.at(i)->name == name){
+			return params.at(i);
+		}
+	}
+	throw "there is no such param";
+}
+
+const VarInfo* MethodInfo::addLocalVar(const Symbol* name, const IType* type){
+	for(int i = 0; i < localVars.size(); i++){
+		if(localVars.at(i)->name == name){
+			throw "localVar already exists";
+		}
+	}
+	VarInfo* a = new VarInfo(name, type);
+	localVars.push_back(a);
+}
+
+const VarInfo* MethodInfo::getLocalVar(const Symbol* name, const IType* type){
+	for(int i = 0; i < localVars.size(); i++){
+		if(localVars.at(i)->name == name){
+			return localVars.at(i);
+		}
+	}
+	throw "there is no such localVar";
 }
