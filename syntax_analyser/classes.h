@@ -5,6 +5,7 @@
 #include "visitor.h"
 #include "enums.h"
 #include "interfaces.h"
+#include "symbol.h"
 
 using std::cout;
 
@@ -80,7 +81,7 @@ public:
 class IdExp : public IExpression
 {
 public:
-	IdExp(const std::string id_):
+	IdExp(const Symbol* id_):
 		id(id_) {}
 
 	int Accept(IVisitor* v) const
@@ -89,13 +90,13 @@ public:
 	}
 
 
-	const std::string id;
+	const Symbol* id;
 };
 
 class NewExp : public IExpression
 {
 public:
-	NewExp(const std::string id_):
+	NewExp(const Symbol* id_):
 		id(id_) {}
 
 	int Accept(IVisitor* v) const
@@ -104,13 +105,13 @@ public:
 	}
 
 
-	const std::string id;
+	const Symbol* id;
 };
 
 class ThisExp : public IExpression
 {
 public:
-	ThisExp(const std::string val_):
+	ThisExp(const Symbol* val_):
 		val(val_) {}
 
 	int Accept(IVisitor* v) const
@@ -119,7 +120,7 @@ public:
 	}
 
 
-	const std::string val;
+	const Symbol* val;
 };
 
 class LenExp : public IExpression
@@ -140,7 +141,7 @@ public:
 class CallMethodExp : public IExpression
 {
 public:
-	CallMethodExp(const IExpression* exp_, const std::string id_,
+	CallMethodExp(const IExpression* exp_, const Symbol* id_,
 		const IExpressionList* list_):
 		exp(exp_), id(id_), list(list_) {}
 
@@ -151,7 +152,7 @@ public:
 
 
 	const IExpression* exp;
-	const std::string id;
+	const Symbol* id;
 	const IExpressionList* list;
 };
 
@@ -270,7 +271,7 @@ public:
 class AssignArrStm : public IStatement
 {
 public:
-	AssignArrStm(const std::string id_, const IExpression* exp_, const IStatement*  stm_):
+	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IStatement*  stm_):
 		exp(exp_), stm(stm_) {}
 
 	int Accept(IVisitor* v) const
@@ -279,7 +280,7 @@ public:
 	}
 
 
-	const std::string id;
+	const Symbol* id;
 	const IExpression*  exp;
 	const IStatement*  stm;
 };
@@ -327,7 +328,7 @@ public:
 class AssignmentImpl : public IAssignment
 {
 public:
-	AssignmentImpl(const std::string id_, const IExpression* exp_):
+	AssignmentImpl(const Symbol* id_, const IExpression* exp_):
 		id(id_), exp(exp_) {}
 
 	int Accept(IVisitor* v) const
@@ -336,7 +337,7 @@ public:
 	}
 
 
-	const std::string id;
+	const Symbol* id;
 	const IExpression*  exp;
 };
 
@@ -345,7 +346,7 @@ public:
 class ArguementImpl : public IArguement
 {
 public:
-	ArguementImpl(const IType* type_, const std::string id_):
+	ArguementImpl(const IType* type_, const Symbol* id_):
 		type(type_), id(id_) {}
 
 	int Accept(IVisitor* v) const
@@ -355,7 +356,7 @@ public:
 
 
 	const IType*  type;
-	const std::string id;
+	const Symbol* id;
 };
 
 class ArguementsImpl : public IArguements
@@ -396,7 +397,7 @@ public:
 class VarDeclarationImpl : public IVarDeclaration
 {
 public:
-	VarDeclarationImpl(const IType* type_, const std::string id_):
+	VarDeclarationImpl(const IType* type_, const Symbol* id_):
 		type(type_), id(id_) {}
 
 	int Accept(IVisitor* v) const
@@ -406,7 +407,7 @@ public:
 
 
 	const IType*  type;
-	const std::string id;
+	const Symbol* id;
 };
 
 class VarDeclarationsImpl : public IVarDeclarations
@@ -447,7 +448,7 @@ public:
 class MethodDeclarationImpl : public IMethodDeclaration
 {
 public:
-	MethodDeclarationImpl(const IType*  type_, const std::string id_,
+	MethodDeclarationImpl(const IType*  type_, const Symbol* id_,
 		const IArguements*  args_, const IVarDeclarations*  vars_,
 		const IStatements*  statements_,	const IExpression*  exp_):
 		type(type_), id(id_), args(args_), vars(vars_),
@@ -459,7 +460,7 @@ public:
 	}
 
 	const IType*  type;
-	const std::string id;
+	const Symbol* id;
 	const IArguements*  args;
 	const IVarDeclarations*  vars;
 	const IStatements*  statements;
@@ -489,12 +490,12 @@ public:
 class ClassDeclarationImpl : public IClassDeclaration
 {
 public:
-	ClassDeclarationImpl(const std::string id_, const std::string extId_,
+	ClassDeclarationImpl(const Symbol* id_, const Symbol* extId_,
 		const IVarDeclarations*  vars_, const IMethodDeclarations*  methods_):
 		id(id_), extId(extId_), vars(vars_), methods(methods_) {}
-	ClassDeclarationImpl(const std::string id_, const IVarDeclarations*
+	ClassDeclarationImpl(const Symbol* id_, const IVarDeclarations*
 		vars_, const IMethodDeclarations*  methods_):
-		id(id_), extId(""), vars(vars_), methods(methods_) {}
+		id(id_), extId(NULL), vars(vars_), methods(methods_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -502,8 +503,8 @@ public:
 	}
 
 
-	const std::string id;
-	const std::string extId;
+	const Symbol* id;
+	const Symbol* extId;
 	const IVarDeclarations*  vars;
 	const IMethodDeclarations*  methods;
 };
@@ -529,7 +530,7 @@ public:
 class MainClassImpl : public IMainClass
 {
 public:
-	MainClassImpl(const std::string id_, const std::string argId_,
+	MainClassImpl(const Symbol* id_, const Symbol* argId_,
 		const IStatement*  stm_):
 		id(id_), argId(argId_), stm(stm_) {}
 
@@ -540,7 +541,7 @@ public:
 
 
 
-	const std::string id;
-	const std::string argId;
+	const Symbol* id;
+	const Symbol* argId;
 	const IStatement*  stm;
 };

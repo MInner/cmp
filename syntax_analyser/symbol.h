@@ -19,3 +19,4 @@ public:
 };
 
 ostream& operator<<(ostream& os, const Symbol*& s);
+ostream& operator<<(ostream& os, Symbol*& s);

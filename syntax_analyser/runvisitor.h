@@ -4,10 +4,20 @@
 #include "fwdclasses.h"
 #include <iostream>
 #include <string>
+#include "SymbolsTable.h"
 
 class RunVisitor : public IVisitor
 {
 public:
+
+	ClassTable* curclasstable;
+	ClassInfo* curclass;
+	MethodInfo* curmethod;
+
+	RunVisitor()
+	{
+		curclasstable = new ClassTable();
+	}
 
 	int visit(const ArithmExp* n)
 	{
@@ -169,6 +179,11 @@ public:
 	}
 	int visit(const ClassDeclarationImpl* n)
 	{
+		if (extId)
+			curclass = curclasstable->addClass(id);
+		else
+			curclass = curclasstable->addClass(id, extId);
+
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->methods) { n->methods->Accept(this); }
 		return 0;

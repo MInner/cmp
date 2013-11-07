@@ -27,3 +27,9 @@ ostream& operator<<(ostream& os, const Symbol*& s)
 	os << s->str;
 	return os; 
 }
+
+ostream& operator<<(ostream& os, Symbol*& s)
+{
+	os << s->str;
+	return os; 
+}

@@ -93,6 +93,6 @@ public:
 	f.write('\n};')
 
 def main():
-	gen_visitor_scafold("RunVisitor")
+	gen_visitor_scafold()
 
 main()
