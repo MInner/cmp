@@ -4,7 +4,7 @@
 #include "fwdclasses.h"
 #include <iostream>
 #include <string>
-#include "SymbolsTable.h"
+#include "symbolstable.h"
 
 class RunVisitor : public IVisitor
 {
@@ -131,6 +131,8 @@ public:
 	}
 	int visit(const ArguementImpl* n)
 	{
+		curmethod->addParam(n->id, n->type);
+
 		if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
@@ -164,6 +166,8 @@ public:
 	}
 	int visit(const MethodDeclarationImpl* n)
 	{
+		curmethod = curclass->addMethod(n->id, n->type);
+
 		if(n->type) { n->type->Accept(this); }
 		if(n->args) { n->args->Accept(this); }
 		if(n->vars) { n->vars->Accept(this); }
@@ -179,10 +183,8 @@ public:
 	}
 	int visit(const ClassDeclarationImpl* n)
 	{
-		if (extId)
-			curclass = curclasstable->addClass(id);
-		else
-			curclass = curclasstable->addClass(id, extId);
+
+		curclass = curclasstable->addClass(n->id, n->extId);
 
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->methods) { n->methods->Accept(this); }
