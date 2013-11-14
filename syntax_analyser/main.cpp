@@ -4,7 +4,7 @@
 #include "enums.h"
 #include "bi.hpp"
 #include "printvisitor.h"
-#include "runvisitor.h"
+#include "buildtable.h"
 #include "classes.h"
 #include "symbol.h"
 
@@ -24,7 +24,7 @@ int main(void){
 
 	yyparse();
 
-	RunVisitor* rv = new RunVisitor();
+	BuildTableVisitor* rv = new BuildTableVisitor();
 
 	ProgramImpl::me->Accept(rv);
 	return 0;
