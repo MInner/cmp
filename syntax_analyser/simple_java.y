@@ -97,7 +97,7 @@ classDeclaration: /*ok*/
 
 varDeclarations: /*ok*/
 	/*{$$ = NULL ;}*/					{ $$ = NULL;}
-	| varDeclaration varDeclarations 	{ $$ = new VarDeclarationsImpl($1, $2);}
+	| varDeclarations varDeclaration 	{ $$ = new VarDeclarationsImpl($2, $1);}
 
 
 varDeclaration: /*ok*/
@@ -128,6 +128,7 @@ type: /*ok*/
 	| BOOLEAN_TYPE		{ $$ = new InternalType(Type::BOOL);}
 	| STRING_TYPE		{ $$ = new InternalType(Type::STRING);}	
 	| INT_TYPE			{ $$ = new InternalType(Type::INT);}
+	| ID 				{ $$ = new CustomType(Symbol::getSymbol($1));}
 
 arguements: /*ok*/
 	/*{$$ = NULL ;}*/			{$$ = NULL;}
@@ -151,10 +152,9 @@ expression: /*ok*/
 	| expression '.' LENGTH  			{ $$ = new LenExp($1);}
 	| expression '.' ID '('expressionList')'	{ $$ = new CallMethodExp($1, Symbol::getSymbol($3), $5);}
 	| INTEGER 									{$$ = new IntVal($1);}
-	/*| STRING*/
 	| TRUE			{ $$ = new BoolVal(true);}
 	| FALSE			{ $$ = new BoolVal(false);}
-	| ID			{ $$ = new IdExp(Symbol::getSymbol($1));}
+	| ID			{ std::cout << "ID -> exp " << $1 << std::endl; $$ = new IdExp(Symbol::getSymbol($1));}
 	| THIS			{ $$ = new ThisExp(Symbol::getSymbol("_"));} 
 	| NEW INT_TYPE '[' expression ']' { $$ = new NewIntArrExp($4);}
 	| NEW ID '(' ')'		{ $$ = new NewExp(Symbol::getSymbol($2));}

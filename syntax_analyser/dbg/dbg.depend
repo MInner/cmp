@@ -13,19 +13,19 @@
 	<stdlib.h>
 	<stdio.h>
 
-1383153836 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/interfaces.h
+1384423369 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/interfaces.h
 	"visitor.h"
 
-1383153940 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/visitor.h
+1384423897 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/visitor.h
 	"enums.h"
 	"fwdclasses.h"
 
-1383825253 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/enums.h
+1384424080 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/enums.h
 	"symbol.h"
 
-1383154387 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/fwdclasses.h
+1384423914 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/fwdclasses.h
 
-1384329398 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/classes.h
+1384423737 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/classes.h
 	<string>
 	<iostream>
 	"visitor.h"
@@ -44,19 +44,19 @@
 	<stdio.h>
 	<unistd.h>
 
-1384330294 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/bi.hpp
+1384424395 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/bi.hpp
 	"interfaces.h"
 	"enums.h"
 	"classes.h"
 	"symbol.h"
 
-1383823654 source:/home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/main.cpp
+1384421564 source:/home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/main.cpp
 	<stdio.h>
 	<iostream>
 	"enums.h"
 	"bi.hpp"
 	"printvisitor.h"
-	"runvisitor.h"
+	"buildtable.h"
 	"classes.h"
 	"symbol.h"
 
@@ -89,10 +89,17 @@
 	<string>
 	<iostream>
 
-1384330507 source:/home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/symbolstable.cpp
+1384424258 source:/home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/symbolstable.cpp
 	"symbolstable.h"
 	<vector>
 	"interfaces.h"
 	<string>
 	<iostream>
+
+1384423830 /home/ben/Dropbox/bt/comp/cmp/syntax_analyser/dbg/buildtable.h
+	"visitor.h"
+	"fwdclasses.h"
+	<iostream>
+	<string>
+	"symbolstable.h"
 

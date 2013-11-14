@@ -23,6 +23,7 @@ class AssignmentImpl;
 class ArguementImpl;
 class ArguementsImpl;
 class InternalType;
+class CustomType;
 class VarDeclarationImpl;
 class VarDeclarationsImpl;
 class MethodDeclarationsImpl;

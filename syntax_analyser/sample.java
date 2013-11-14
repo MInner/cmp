@@ -28,7 +28,10 @@ class Fac {
 class B
 {
 	public int do()	{
+		Fac f;
 		int a;
+		f = new Fac();
+		a = f.ComputeFac(5);
 		return a; 
 	}
 }

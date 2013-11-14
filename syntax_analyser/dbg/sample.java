@@ -21,12 +21,16 @@ class Fac {
 		int locvar1;
 		int locvar2;
 		int locvar3;
+		return locvar1;
 	}
 }
 
 class B
 {
 	public int do()	{
+		Fac f;
+		f = new Fac();
+		f.ComputeFac(5);
 		int a;
 		return a; 
 	}

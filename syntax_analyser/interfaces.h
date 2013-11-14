@@ -67,6 +67,7 @@ class IType
 public: 
 	virtual ~IType() {};
 	virtual int Accept(IVisitor* v) const = 0;
+	virtual bool isInternal() const = 0;
 }; 
 class IArguements 
 {

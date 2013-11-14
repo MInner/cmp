@@ -29,6 +29,7 @@ public:
 	virtual int visit(const ArguementImpl* n) = 0;
 	virtual int visit(const ArguementsImpl* n) = 0;
 	virtual int visit(const InternalType* n) = 0;
+	virtual int visit(const CustomType * n) = 0;
 	virtual int visit(const VarDeclarationImpl* n) = 0;
 	virtual int visit(const VarDeclarationsImpl* n) = 0;
 	virtual int visit(const MethodDeclarationsImpl* n) = 0;

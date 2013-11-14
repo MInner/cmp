@@ -23,7 +23,6 @@ ClassInfo* ClassTable::getClass(const Symbol* name){
 		}
 	}
 	std::cout << "WARNING: there is no such class" << std::endl;
-	return NULL;
 }
 
 //--------------------------------------------------
@@ -47,10 +46,9 @@ VarInfo* ClassInfo::getField(const Symbol* name){
 		}
 	}
 	std::cout << "WARNING: there is no such field" << std::endl;
-	return NULL;
 }
 
-MethodInfo* ClassInfo::addMethod(const Symbol* mname,const IType* returnType){
+MethodInfo* ClassInfo::addMethod(const Symbol* mname,const IType* returnType){	
 	std::cout << "New method: " << name << "::" << mname << std::endl;
 	for(int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == mname){
@@ -69,7 +67,6 @@ MethodInfo* ClassInfo::getMethod(const Symbol* name){
 		}
 	}
 	std::cout << "WARNING: there is no such method" << std::endl;
-	return NULL;
 }
 
 //------------------------------------------------
@@ -94,7 +91,6 @@ VarInfo* MethodInfo::getParam(const Symbol* name, const IType* type){
 		}
 	}
 	std::cout << "WARNING: there is no such param" << std::endl;
-	return NULL;
 }
 
 VarInfo* MethodInfo::addLocalVar(const Symbol* vname, const IType* type){
@@ -116,5 +112,4 @@ VarInfo* MethodInfo::getLocalVar(const Symbol* name, const IType* type){
 		}
 	}
 	std::cout << "WARNING: there is no such localVar" << std::endl;
-	return NULL;
 }

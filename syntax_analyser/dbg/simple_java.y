@@ -128,6 +128,7 @@ type: /*ok*/
 	| BOOLEAN_TYPE		{ $$ = new InternalType(Type::BOOL);}
 	| STRING_TYPE		{ $$ = new InternalType(Type::STRING);}	
 	| INT_TYPE			{ $$ = new InternalType(Type::INT);}
+	| ID 				{ $$ = new CustomType(Symbol::getSymbol($1));}
 
 arguements: /*ok*/
 	/*{$$ = NULL ;}*/			{$$ = NULL;}

@@ -374,7 +374,6 @@ public:
 		return v->visit(this);
 	}
 
-
 	const IArguement*  arg;
 	const IArguements*  list;
 };
@@ -391,7 +390,32 @@ public:
 		return v->visit(this);
 	}
 
+	bool isInternal() const
+	{
+		return true;
+	}
+
 	const Type::Type type;
+};
+
+class CustomType : public IType
+{
+public:
+	CustomType(const Symbol* type_):
+		type(type_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+	bool isInternal() const
+	{
+		return false;
+	}
+
+	const Symbol* type;
+
 };
 
 // VarDeclarationsImpl VarDeclarationImpl MethodDeclarationsImpl MethodDeclarationImpl

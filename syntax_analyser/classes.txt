@@ -21,6 +21,7 @@ AssignmentImpl exp | id
 ArguementImpl type | id
 ArguementsImpl arg list |
 InternalType | type
+CustomType | type
 VarDeclarationImpl type | id
 VarDeclarationsImpl dec list |
 MethodDeclarationsImpl dec list |

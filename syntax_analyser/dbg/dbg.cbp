@@ -35,6 +35,8 @@
 		<Unit filename="bi.cpp" />
 		<Unit filename="bi.hpp" />
 		<Unit filename="bi.output" />
+		<Unit filename="buildfile.sh" />
+		<Unit filename="buildtable.h" />
 		<Unit filename="cl.txt" />
 		<Unit filename="classes.h" />
 		<Unit filename="classes.txt" />
@@ -53,6 +55,8 @@
 		<Unit filename="makefile" />
 		<Unit filename="mjv" />
 		<Unit filename="printvisitor.h" />
+		<Unit filename="pv-comp.sublime-project" />
+		<Unit filename="pv-comp.sublime-workspace" />
 		<Unit filename="run" />
 		<Unit filename="runvisitor.h" />
 		<Unit filename="simple_java.y" />
@@ -62,6 +66,7 @@
 		<Unit filename="symbolstable.h" />
 		<Unit filename="todo.txt" />
 		<Unit filename="tree.txt" />
+		<Unit filename="typecheckervisitor.h" />
 		<Unit filename="types.h" />
 		<Unit filename="union.h" />
 		<Unit filename="visitor.h" />

@@ -12,12 +12,6 @@ namespace Type
 		INT
 	};
 
-	union AnyType
-	{
-		Type internaltype;
-		Symbol* name;
-	};
-
 }
 
 namespace Arithm
