@@ -198,7 +198,7 @@ const IArguement* arguement;
 const IAssignment* assignment; 
 const IExpression* expression; 
 const IExpressionList* expressionList;
-const Symbol* strval;
+const char* strval;
 int intval;
 bool boolval;
 
@@ -546,11 +546,11 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    83,    83,    86,    91,    92,    95,    96,    99,   100,
-     104,   108,   109,   112,   116,   117,   120,   121,   122,   123,
-     124,   125,   128,   129,   130,   131,   134,   135,   136,   139,
-     142,   145,   146,   147,   148,   149,   150,   151,   152,   153,
-     154,   156,   157,   158,   159,   160,   161,   162,   163,   166,
-     167,   168
+     104,   107,   108,   111,   115,   116,   119,   120,   121,   122,
+     123,   124,   127,   128,   129,   130,   133,   134,   135,   138,
+     141,   144,   145,   146,   147,   148,   149,   150,   151,   152,
+     153,   155,   156,   157,   158,   159,   160,   161,   162,   165,
+     166,   167
 };
 #endif
 
@@ -1634,7 +1634,7 @@ yyreduce:
 
 /* Line 1806 of yacc.c  */
 #line 87 "simple_java.y"
-    { (yyval.mainClass) = new MainClassImpl(Symbol::getSymbol("_"), Symbol::getSymbol("_"), (yyvsp[(15) - (17)].statement)); 	}
+    { (yyval.mainClass) = new MainClassImpl(Symbol::getSymbol((yyvsp[(2) - (17)].strval)), Symbol::getSymbol((yyvsp[(12) - (17)].strval)), (yyvsp[(15) - (17)].statement)); 	}
     break;
 
   case 4:
@@ -1655,14 +1655,14 @@ yyreduce:
 
 /* Line 1806 of yacc.c  */
 #line 95 "simple_java.y"
-    { (yyval.classDeclaration) = new ClassDeclarationImpl(Symbol::getSymbol("_"), (yyvsp[(4) - (6)].varDeclarations), (yyvsp[(5) - (6)].methodDeclarations));}
+    { (yyval.classDeclaration) = new ClassDeclarationImpl(Symbol::getSymbol((yyvsp[(2) - (6)].strval)), (yyvsp[(4) - (6)].varDeclarations), (yyvsp[(5) - (6)].methodDeclarations));}
     break;
 
   case 7:
 
 /* Line 1806 of yacc.c  */
 #line 96 "simple_java.y"
-    { (yyval.classDeclaration) = new ClassDeclarationImpl(Symbol::getSymbol("_"), Symbol::getSymbol("_"), (yyvsp[(6) - (8)].varDeclarations), (yyvsp[(7) - (8)].methodDeclarations));}
+    { (yyval.classDeclaration) = new ClassDeclarationImpl(Symbol::getSymbol((yyvsp[(2) - (8)].strval)), Symbol::getSymbol((yyvsp[(4) - (8)].strval)), (yyvsp[(6) - (8)].varDeclarations), (yyvsp[(7) - (8)].methodDeclarations));}
     break;
 
   case 8:
@@ -1683,293 +1683,293 @@ yyreduce:
 
 /* Line 1806 of yacc.c  */
 #line 104 "simple_java.y"
-    { (yyval.varDeclaration) = new VarDeclarationImpl((yyvsp[(1) - (3)].type), Symbol::getSymbol("_"));}
+    { (yyval.varDeclaration) = new VarDeclarationImpl((yyvsp[(1) - (3)].type), Symbol::getSymbol((yyvsp[(2) - (3)].strval)));}
     break;
 
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 108 "simple_java.y"
+#line 107 "simple_java.y"
     { (yyval.methodDeclarations) = NULL;}
     break;
 
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 109 "simple_java.y"
+#line 108 "simple_java.y"
     { (yyval.methodDeclarations) = new MethodDeclarationsImpl((yyvsp[(1) - (2)].methodDeclaration), (yyvsp[(2) - (2)].methodDeclarations));}
     break;
 
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 113 "simple_java.y"
-    {(yyval.methodDeclaration) = new MethodDeclarationImpl((yyvsp[(2) - (13)].type), Symbol::getSymbol("_"), (yyvsp[(5) - (13)].arguements), (yyvsp[(8) - (13)].varDeclarations), (yyvsp[(9) - (13)].statements), (yyvsp[(11) - (13)].expression));}
+#line 112 "simple_java.y"
+    {(yyval.methodDeclaration) = new MethodDeclarationImpl((yyvsp[(2) - (13)].type), Symbol::getSymbol((yyvsp[(3) - (13)].strval)), (yyvsp[(5) - (13)].arguements), (yyvsp[(8) - (13)].varDeclarations), (yyvsp[(9) - (13)].statements), (yyvsp[(11) - (13)].expression));}
     break;
 
   case 14:
 
 /* Line 1806 of yacc.c  */
-#line 116 "simple_java.y"
+#line 115 "simple_java.y"
     {(yyval.statements) = NULL;}
     break;
 
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 117 "simple_java.y"
+#line 116 "simple_java.y"
     {(yyval.statements) = new StatementsImpl((yyvsp[(1) - (2)].statement), (yyvsp[(2) - (2)].statements));}
     break;
 
   case 16:
 
 /* Line 1806 of yacc.c  */
-#line 120 "simple_java.y"
+#line 119 "simple_java.y"
     { (yyval.statement) = new BlockStm((yyvsp[(2) - (3)].statements));}
     break;
 
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 121 "simple_java.y"
+#line 120 "simple_java.y"
     { (yyval.statement) = new AssignStm((yyvsp[(1) - (2)].assignment));}
     break;
 
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 122 "simple_java.y"
+#line 121 "simple_java.y"
     { (yyval.statement) = new IfElseStm((yyvsp[(3) - (7)].expression), (yyvsp[(5) - (7)].statement), (yyvsp[(7) - (7)].statement));}
     break;
 
   case 19:
 
 /* Line 1806 of yacc.c  */
-#line 123 "simple_java.y"
+#line 122 "simple_java.y"
     { (yyval.statement) = new WhileStm((yyvsp[(3) - (5)].expression), (yyvsp[(5) - (5)].statement));}
     break;
 
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 124 "simple_java.y"
+#line 123 "simple_java.y"
     { (yyval.statement) = new PrintStmPrintStm((yyvsp[(3) - (5)].expression));}
     break;
 
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 125 "simple_java.y"
-    { (yyval.statement) = new AssignArrStm(Symbol::getSymbol("_"), (yyvsp[(3) - (7)].expression), (yyvsp[(6) - (7)].statement));}
+#line 124 "simple_java.y"
+    { (yyval.statement) = new AssignArrStm(Symbol::getSymbol((yyvsp[(1) - (7)].strval)), (yyvsp[(3) - (7)].expression), (yyvsp[(6) - (7)].statement));}
     break;
 
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 128 "simple_java.y"
+#line 127 "simple_java.y"
     { (yyval.type) = new InternalType(Type::INT_ARR);}
     break;
 
   case 23:
 
 /* Line 1806 of yacc.c  */
-#line 129 "simple_java.y"
+#line 128 "simple_java.y"
     { (yyval.type) = new InternalType(Type::BOOL);}
     break;
 
   case 24:
 
 /* Line 1806 of yacc.c  */
-#line 130 "simple_java.y"
+#line 129 "simple_java.y"
     { (yyval.type) = new InternalType(Type::STRING);}
     break;
 
   case 25:
 
 /* Line 1806 of yacc.c  */
-#line 131 "simple_java.y"
+#line 130 "simple_java.y"
     { (yyval.type) = new InternalType(Type::INT);}
     break;
 
   case 26:
 
 /* Line 1806 of yacc.c  */
-#line 134 "simple_java.y"
+#line 133 "simple_java.y"
     {(yyval.arguements) = NULL;}
     break;
 
   case 27:
 
 /* Line 1806 of yacc.c  */
-#line 135 "simple_java.y"
+#line 134 "simple_java.y"
     {(yyval.arguements) = new ArguementsImpl((yyvsp[(1) - (3)].arguement), (yyvsp[(3) - (3)].arguements));}
     break;
 
   case 28:
 
 /* Line 1806 of yacc.c  */
-#line 136 "simple_java.y"
+#line 135 "simple_java.y"
     {ArguementsImpl* a = NULL; (yyval.arguements) = new ArguementsImpl((yyvsp[(1) - (1)].arguement), a);}
     break;
 
   case 29:
 
 /* Line 1806 of yacc.c  */
-#line 139 "simple_java.y"
-    {(yyval.arguement) = new ArguementImpl((yyvsp[(1) - (2)].type), Symbol::getSymbol("_"));}
+#line 138 "simple_java.y"
+    {(yyval.arguement) = new ArguementImpl((yyvsp[(1) - (2)].type), Symbol::getSymbol((yyvsp[(2) - (2)].strval)));}
     break;
 
   case 30:
 
 /* Line 1806 of yacc.c  */
-#line 142 "simple_java.y"
-    {(yyval.assignment) = new AssignmentImpl( Symbol::getSymbol("_"), (yyvsp[(3) - (3)].expression));}
+#line 141 "simple_java.y"
+    {(yyval.assignment) = new AssignmentImpl( Symbol::getSymbol((yyvsp[(1) - (3)].strval)), (yyvsp[(3) - (3)].expression));}
     break;
 
   case 31:
 
 /* Line 1806 of yacc.c  */
-#line 145 "simple_java.y"
+#line 144 "simple_java.y"
     { (yyval.expression) = new ArithmExp(Arithm::PLUS, (yyvsp[(1) - (3)].expression), (yyvsp[(3) - (3)].expression));}
     break;
 
   case 32:
 
 /* Line 1806 of yacc.c  */
-#line 146 "simple_java.y"
+#line 145 "simple_java.y"
     { (yyval.expression) = new ArithmExp(Arithm::MINUS, (yyvsp[(1) - (3)].expression), (yyvsp[(3) - (3)].expression));}
     break;
 
   case 33:
 
 /* Line 1806 of yacc.c  */
-#line 147 "simple_java.y"
+#line 146 "simple_java.y"
     { (yyval.expression) = new ArithmExp(Arithm::MUL, (yyvsp[(1) - (3)].expression), (yyvsp[(3) - (3)].expression));}
     break;
 
   case 34:
 
 /* Line 1806 of yacc.c  */
-#line 148 "simple_java.y"
+#line 147 "simple_java.y"
     { (yyval.expression) = new ArithmExp(Arithm::DIV, (yyvsp[(1) - (3)].expression), (yyvsp[(3) - (3)].expression));}
     break;
 
   case 35:
 
 /* Line 1806 of yacc.c  */
-#line 149 "simple_java.y"
+#line 148 "simple_java.y"
     { (yyval.expression) = new LogicExp(Logic::L_AND, (yyvsp[(1) - (3)].expression), (yyvsp[(3) - (3)].expression));}
     break;
 
   case 36:
 
 /* Line 1806 of yacc.c  */
-#line 150 "simple_java.y"
+#line 149 "simple_java.y"
     { (yyval.expression) = new LogicExp(Logic::L_LT, (yyvsp[(1) - (3)].expression), (yyvsp[(3) - (3)].expression));}
     break;
 
   case 37:
 
 /* Line 1806 of yacc.c  */
-#line 151 "simple_java.y"
+#line 150 "simple_java.y"
     { (yyval.expression) = new ArrValExp((yyvsp[(1) - (4)].expression), (yyvsp[(3) - (4)].expression));}
     break;
 
   case 38:
 
 /* Line 1806 of yacc.c  */
-#line 152 "simple_java.y"
+#line 151 "simple_java.y"
     { (yyval.expression) = new LenExp((yyvsp[(1) - (3)].expression));}
     break;
 
   case 39:
 
 /* Line 1806 of yacc.c  */
-#line 153 "simple_java.y"
-    { (yyval.expression) = new CallMethodExp((yyvsp[(1) - (6)].expression), Symbol::getSymbol("_"), (yyvsp[(5) - (6)].expressionList));}
+#line 152 "simple_java.y"
+    { (yyval.expression) = new CallMethodExp((yyvsp[(1) - (6)].expression), Symbol::getSymbol((yyvsp[(3) - (6)].strval)), (yyvsp[(5) - (6)].expressionList));}
     break;
 
   case 40:
 
 /* Line 1806 of yacc.c  */
-#line 154 "simple_java.y"
+#line 153 "simple_java.y"
     {(yyval.expression) = new IntVal((yyvsp[(1) - (1)].intval));}
     break;
 
   case 41:
 
 /* Line 1806 of yacc.c  */
-#line 156 "simple_java.y"
+#line 155 "simple_java.y"
     { (yyval.expression) = new BoolVal(true);}
     break;
 
   case 42:
 
 /* Line 1806 of yacc.c  */
-#line 157 "simple_java.y"
+#line 156 "simple_java.y"
     { (yyval.expression) = new BoolVal(false);}
     break;
 
   case 43:
 
 /* Line 1806 of yacc.c  */
-#line 158 "simple_java.y"
-    { (yyval.expression) = new IdExp(Symbol::getSymbol("_"));}
+#line 157 "simple_java.y"
+    { (yyval.expression) = new IdExp(Symbol::getSymbol((yyvsp[(1) - (1)].strval)));}
     break;
 
   case 44:
 
 /* Line 1806 of yacc.c  */
-#line 159 "simple_java.y"
+#line 158 "simple_java.y"
     { (yyval.expression) = new ThisExp(Symbol::getSymbol("_"));}
     break;
 
   case 45:
 
 /* Line 1806 of yacc.c  */
-#line 160 "simple_java.y"
+#line 159 "simple_java.y"
     { (yyval.expression) = new NewIntArrExp((yyvsp[(4) - (5)].expression));}
     break;
 
   case 46:
 
 /* Line 1806 of yacc.c  */
-#line 161 "simple_java.y"
-    { (yyval.expression) = new NewExp(Symbol::getSymbol("_"));}
+#line 160 "simple_java.y"
+    { (yyval.expression) = new NewExp(Symbol::getSymbol((yyvsp[(2) - (4)].strval)));}
     break;
 
   case 47:
 
 /* Line 1806 of yacc.c  */
-#line 162 "simple_java.y"
+#line 161 "simple_java.y"
     { (yyval.expression) = new LogicExp(Logic::L_NOT, (yyvsp[(2) - (2)].expression));}
     break;
 
   case 48:
 
 /* Line 1806 of yacc.c  */
-#line 163 "simple_java.y"
+#line 162 "simple_java.y"
     { (yyval.expression) = (yyvsp[(2) - (3)].expression);}
     break;
 
   case 49:
 
 /* Line 1806 of yacc.c  */
-#line 166 "simple_java.y"
+#line 165 "simple_java.y"
     {(yyval.expressionList) = NULL;}
     break;
 
   case 50:
 
 /* Line 1806 of yacc.c  */
-#line 167 "simple_java.y"
+#line 166 "simple_java.y"
     {(yyval.expressionList) = new ExpressionListImpl((yyvsp[(1) - (3)].expression), (yyvsp[(3) - (3)].expressionList));}
     break;
 
   case 51:
 
 /* Line 1806 of yacc.c  */
-#line 168 "simple_java.y"
+#line 167 "simple_java.y"
     {(yyval.expressionList) = new ExpressionListImpl((yyvsp[(1) - (1)].expression));}
     break;
 
@@ -2214,6 +2214,6 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 170 "simple_java.y"
+#line 169 "simple_java.y"
 
 

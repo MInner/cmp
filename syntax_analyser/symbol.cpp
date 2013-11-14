@@ -17,6 +17,11 @@ const Symbol* Symbol::getSymbol(const std::string& str)
 	}
 }
 
+const std::string& Symbol::getStr() const
+{
+	return str;
+}
+
 Symbol::Symbol(std::string _str)
 {
 	str = _str;

@@ -938,43 +938,42 @@ YY_RULE_SETUP
 case 23:
 YY_RULE_SETUP
 #line 66 "file.lex"
-{update_loc(); n_chars += yyleng; return INTEGER;} /*yylval.intval = atoi(yytext);*/ 
+{update_loc(); n_chars += yyleng; yylval.intval = atoi(yytext); return INTEGER;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 67 "file.lex"
-{update_loc(); n_chars += yyleng; return ID;}
+{update_loc(); n_chars += yyleng; yylval.strval = strdup(yytext); return ID;}
 	YY_BREAK
-/*{STRING} 		printf("STRING(%s){%d, %d} ", yytext, n_chars, n_lines); n_chars += yyleng;*/
 /* other symbols */
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 71 "file.lex"
+#line 70 "file.lex"
 {update_loc(); n_lines++; n_chars = 1;}
 	YY_BREAK
 case 26:
 /* rule 26 can match eol */
 YY_RULE_SETUP
-#line 72 "file.lex"
+#line 71 "file.lex"
 {update_loc(); n_chars++;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 73 "file.lex"
+#line 72 "file.lex"
 {update_loc(); n_chars++; return *yytext;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 74 "file.lex"
+#line 73 "file.lex"
 {update_loc(); n_chars += yyleng; yyerror("Unknown symbol\n"); printf("Symbol:%c", *yytext);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 76 "file.lex"
+#line 75 "file.lex"
 ECHO;
 	YY_BREAK
-#line 978 "fl.cpp"
+#line 977 "fl.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1935,7 +1934,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 76 "file.lex"
+#line 75 "file.lex"
 
 
 

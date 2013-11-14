@@ -4,7 +4,6 @@ class Factorial {
 	}
 }
 
-
 class Fac {
 	public int ComputeFac(int num) {
 		int num_aux;
@@ -16,5 +15,20 @@ class Fac {
 			num_aux = num * (this.ComputeFac(num-1));
 		}
 		return num_aux;
+	}
+
+	public int test1(int var1, int var2, int var3) {
+		int locvar1;
+		int locvar2;
+		int locvar3;
+		return locvar1;
+	}
+}
+
+class B
+{
+	public int do()	{
+		int a;
+		return a; 
 	}
 }

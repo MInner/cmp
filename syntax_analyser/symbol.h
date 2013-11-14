@@ -13,6 +13,7 @@ class Symbol
 	std::string str;
 public:
 	static const Symbol* getSymbol(const std::string&);
+	const std::string& getStr() const;
 	friend ostream& operator<<(ostream& os, const Symbol*& s);
 	friend ostream& operator<<(ostream& os, Symbol*& s);
 

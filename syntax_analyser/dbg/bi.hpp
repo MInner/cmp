@@ -131,7 +131,7 @@ const IArguement* arguement;
 const IAssignment* assignment; 
 const IExpression* expression; 
 const IExpressionList* expressionList;
-const Symbol* strval;
+const char* strval;
 int intval;
 bool boolval;
 

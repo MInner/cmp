@@ -1,1 +1,2 @@
+echo "===RUN==="
 ./mjv < sample.java

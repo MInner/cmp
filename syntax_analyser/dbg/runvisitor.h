@@ -150,6 +150,12 @@ public:
 	int visit(const VarDeclarationImpl* n)
 	{
 		if(n->type) { n->type->Accept(this); }
+		
+		if (curmethod)
+			curmethod->addLocalVar(n->id, n->type);
+		else
+			curclass->addField(n->id, n->type);
+
 		return 0;
 	}
 	int visit(const VarDeclarationsImpl* n)
@@ -173,6 +179,8 @@ public:
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->statements) { n->statements->Accept(this); }
 		if(n->exp) { n->exp->Accept(this); }
+
+		curmethod = NULL;
 		return 0;
 	}
 	int visit(const ClassDeclarationsImpl* n)
@@ -183,11 +191,12 @@ public:
 	}
 	int visit(const ClassDeclarationImpl* n)
 	{
-
 		curclass = curclasstable->addClass(n->id, n->extId);
 
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->methods) { n->methods->Accept(this); }
+
+		curclass = NULL;
 		return 0;
 	}
 	int visit(const ProgramImpl* n)

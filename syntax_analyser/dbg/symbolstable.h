@@ -11,7 +11,7 @@ class VarInfo;
 class ClassTable {
 	public:
 		std::vector<ClassInfo*> classes;
-
+		
 		ClassInfo* addClass(const Symbol* name, const Symbol* parentName);
 		ClassInfo* getClass(const Symbol* name);
 
@@ -35,12 +35,12 @@ class ClassInfo {
 class MethodInfo {
 	public:
 		const Symbol* name;
-		const IType* returnType;
+		const IType* returnType;	
 		std::vector<VarInfo*> params;
 		std::vector<VarInfo*> localVars;
 
 		MethodInfo(const Symbol* name_, const IType* returnType_):
-			name(name_), returnType(returnType_){   }
+			name(name_), returnType(returnType_){};
 		VarInfo* addParam(const Symbol* name, const IType* type);
 		VarInfo* getParam(const Symbol* name, const IType* type);
 		VarInfo* addLocalVar(const Symbol* name, const IType* type);
@@ -51,7 +51,7 @@ class MethodInfo {
 class VarInfo {
 	public:
 		const Symbol* name;
-		const IType* type;
+		const IType* type;		
 		VarInfo(const Symbol* name_, const IType* type_):
 			name(name_), type(type_){};
 };

@@ -39,6 +39,8 @@
 		<Unit filename="classes.h" />
 		<Unit filename="classes.txt" />
 		<Unit filename="dbg.cbp" />
+		<Unit filename="dbg.depend" />
+		<Unit filename="dbg.layout" />
 		<Unit filename="enums.h" />
 		<Unit filename="file.lex" />
 		<Unit filename="fl.cpp" />
@@ -52,7 +54,12 @@
 		<Unit filename="mjv" />
 		<Unit filename="printvisitor.h" />
 		<Unit filename="run" />
+		<Unit filename="runvisitor.h" />
 		<Unit filename="simple_java.y" />
+		<Unit filename="symbol.cpp" />
+		<Unit filename="symbol.h" />
+		<Unit filename="symbolstable.cpp" />
+		<Unit filename="symbolstable.h" />
 		<Unit filename="todo.txt" />
 		<Unit filename="tree.txt" />
 		<Unit filename="types.h" />

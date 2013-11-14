@@ -63,9 +63,8 @@ ID [a-zA-Z_][a-zA-Z0-9_-]*
 "String" 			{update_loc(); n_chars += 6; return STRING_TYPE;}
 
 	/* entities */
-{NUMBER} 	{update_loc(); n_chars += yyleng; return INTEGER;} /*yylval.intval = atoi(yytext);*/ 
-{ID} 		{update_loc(); n_chars += yyleng; return ID;}
-	/*{STRING} 		printf("STRING(%s){%d, %d} ", yytext, n_chars, n_lines); n_chars += yyleng;*/
+{NUMBER} 	{update_loc(); n_chars += yyleng; yylval.intval = atoi(yytext); return INTEGER;}
+{ID} 		{update_loc(); n_chars += yyleng; yylval.strval = strdup(yytext); return ID;}
 
 	/* other symbols */
 [\r\n]			{update_loc(); n_lines++; n_chars = 1;}
