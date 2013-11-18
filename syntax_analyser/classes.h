@@ -565,8 +565,6 @@ public:
 		return v->visit(this);
 	}
 
-
-
 	const Symbol* id;
 	const Symbol* argId;
 	const IStatement*  stm;

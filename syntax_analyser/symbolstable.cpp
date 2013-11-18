@@ -6,9 +6,9 @@
 
 ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
 	std::cout << "New class: " << name << std::endl;
-	for(int i = 0; i < classes.size(); i++){
+	for(unsigned int i = 0; i < classes.size(); i++){
 		if(classes.at(i)->name == name){
-			std::cout << "WARNING: class already exists" << std::endl;
+			std::cout << "WARNING: class already exists" << std::endl; return NULL;
 		}
 	}
 	ClassInfo* a = new ClassInfo(name, parentName);
@@ -17,21 +17,21 @@ ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
 }
 
 ClassInfo* ClassTable::getClass(const Symbol* name){
-	for(int i = 0; i < classes.size(); i++){
+	for(unsigned int i = 0; i < classes.size(); i++){
 		if(classes.at(i)->name == name){
 			return classes.at(i);
 		}
 	}
-	std::cout << "WARNING: there is no such class" << std::endl;
+	std::cout << "WARNING: there is no such class" << std::endl; return NULL;
 }
 
 //--------------------------------------------------
 
 VarInfo* ClassInfo::addField(const Symbol* fname, const IType* type){
 	std::cout << "New field: " << name << "::" << fname << std::endl;
-	for(int i = 0; i < fields.size(); i++){
+	for(unsigned int i = 0; i < fields.size(); i++){
 		if(fields.at(i)->name == fname){
-			std::cout << "WARNING: field already exists" << std::endl;
+			std::cout << "WARNING: field already exists" << std::endl; return NULL;
 		}
 	}
 	VarInfo* a = new VarInfo(name, type);
@@ -40,19 +40,19 @@ VarInfo* ClassInfo::addField(const Symbol* fname, const IType* type){
 }
 
 VarInfo* ClassInfo::getField(const Symbol* name){
-	for(int i = 0; i < fields.size(); i++){
+	for(unsigned int i = 0; i < fields.size(); i++){
 		if(fields.at(i)->name == name){
 			return fields.at(i);
 		}
 	}
-	std::cout << "WARNING: there is no such field" << std::endl;
+	std::cout << "WARNING: there is no such field" << std::endl; return NULL;
 }
 
 MethodInfo* ClassInfo::addMethod(const Symbol* mname,const IType* returnType){	
 	std::cout << "New method: " << name << "::" << mname << std::endl;
-	for(int i = 0; i < methods.size(); i++){
+	for(unsigned int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == mname){
-			std::cout << "WARNING: method already exists" << std::endl;
+			std::cout << "WARNING: method already exists" << std::endl; return NULL;
 		}
 	}
 	MethodInfo* a = new MethodInfo(mname, returnType);
@@ -61,12 +61,12 @@ MethodInfo* ClassInfo::addMethod(const Symbol* mname,const IType* returnType){
 }
 
 MethodInfo* ClassInfo::getMethod(const Symbol* name){
-	for(int i = 0; i < methods.size(); i++){
+	for(unsigned int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == name){
 			return methods.at(i);
 		}
 	}
-	std::cout << "WARNING: there is no such method" << std::endl;
+	std::cout << "WARNING: there is no such method" << std::endl; return NULL;
 }
 
 //------------------------------------------------
@@ -74,9 +74,9 @@ MethodInfo* ClassInfo::getMethod(const Symbol* name){
 
 VarInfo* MethodInfo::addParam(const Symbol* pname, const IType* type){
 	std::cout << "New param: CLASS::" << name << " ( .. " << pname << " .. )" << std::endl;
-	for(int i = 0; i < params.size(); i++){
+	for(unsigned int i = 0; i < params.size(); i++){
 		if(params.at(i)->name == pname){
-			std::cout << "WARNING: param already exists" << std::endl;
+			std::cout << "WARNING: param already exists" << std::endl; return NULL;
 		}
 }
 	VarInfo* a = new VarInfo(pname, type);
@@ -85,19 +85,19 @@ VarInfo* MethodInfo::addParam(const Symbol* pname, const IType* type){
 }
 
 VarInfo* MethodInfo::getParam(const Symbol* name, const IType* type){
-	for(int i = 0; i < params.size(); i++){
+	for(unsigned int i = 0; i < params.size(); i++){
 		if(params.at(i)->name == name){
 			return params.at(i);
 		}
 	}
-	std::cout << "WARNING: there is no such param" << std::endl;
+	std::cout << "WARNING: there is no such param" << std::endl; return NULL;
 }
 
 VarInfo* MethodInfo::addLocalVar(const Symbol* vname, const IType* type){
 	std::cout << "New locvar: CLASS::" << name << " { def " << vname << " }" << std::endl;
-	for(int i = 0; i < localVars.size(); i++){
+	for(unsigned int i = 0; i < localVars.size(); i++){
 		if(localVars.at(i)->name == vname){
-			std::cout << "WARNING: localVar already exists" << std::endl;
+			std::cout << "WARNING: localVar already exists" << std::endl; return NULL;
 		}
 	}
 	VarInfo* a = new VarInfo(vname, type);
@@ -106,10 +106,10 @@ VarInfo* MethodInfo::addLocalVar(const Symbol* vname, const IType* type){
 }
 
 VarInfo* MethodInfo::getLocalVar(const Symbol* name, const IType* type){
-	for(int i = 0; i < localVars.size(); i++){
+	for(unsigned int i = 0; i < localVars.size(); i++){
 		if(localVars.at(i)->name == name){
 			return localVars.at(i);
 		}
 	}
-	std::cout << "WARNING: there is no such localVar" << std::endl;
+	std::cout << "WARNING: there is no such localVar" << std::endl; return NULL;
 }

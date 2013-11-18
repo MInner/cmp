@@ -14,6 +14,13 @@ public:
 	ClassInfo* curclass;
 	MethodInfo* curmethod;
 
+	struct TypeStruct
+	{
+		CustomType* ct;
+		InternalType* it;
+		bool isInternal;
+	};
+
 	BuildTableVisitor()
 	{
 		curclasstable = new ClassTable();
@@ -142,20 +149,24 @@ public:
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
+
 	int visit(const InternalType* n)
 	{
-
+		t.lastinternaltype = n->type;
+		t.isInternal = true;
 		return 0;
 	}
 	int visit(const CustomType* n)
 	{
-
+		t.lastcustomtype = n->type;
 		return 0;
 	}
 	int visit(const VarDeclarationImpl* n)
 	{
+		t.lastcustomtype = NULL;
+		t.lastinternaltype = NULL;
 		if(n->type) { n->type->Accept(this); }
-		
+		// структурку передаем в local var
 		if (curmethod)
 			curmethod->addLocalVar(n->id, n->type);
 		else

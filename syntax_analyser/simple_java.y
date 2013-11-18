@@ -154,7 +154,7 @@ expression: /*ok*/
 	| INTEGER 									{$$ = new IntVal($1);}
 	| TRUE			{ $$ = new BoolVal(true);}
 	| FALSE			{ $$ = new BoolVal(false);}
-	| ID			{ std::cout << "ID -> exp " << $1 << std::endl; $$ = new IdExp(Symbol::getSymbol($1));}
+	| ID			{ $$ = new IdExp(Symbol::getSymbol($1));}
 	| THIS			{ $$ = new ThisExp(Symbol::getSymbol("_"));} 
 	| NEW INT_TYPE '[' expression ']' { $$ = new NewIntArrExp($4);}
 	| NEW ID '(' ')'		{ $$ = new NewExp(Symbol::getSymbol($2));}

@@ -9,52 +9,72 @@ class TypeCheckerVisitor : public IVisitor
 {
 public:
 
+	ClassTable* curclasstable;
+
+	InternalType* lastinternaltype;
+	CustomType* lastcustomtype;
+	bool staticmethod;
+
 	int visit(const ArithmExp* n)
 	{
+		// left, right types are 
 		if(n->left) { n->left->Accept(this); }
+		// save type
 		if(n->right) { n->right->Accept(this); }
+		// save and check
 		return 0;
 	}
 	int visit(const LogicExp* n)
 	{
+		// same 
 		if(n->left) { n->left->Accept(this); }
 		if(n->right) { n->right->Accept(this); }
 		return 0;
 	}
 	int visit(const IntVal* n)
 	{
-
+		// type.isinter = ture;
+		// type.it = tyep::int_type
 		return 0;
 	}
 	int visit(const BoolVal* n)
 	{
-
+		// .it = type::bool_type
 		return 0;
 	}
 	int visit(const IdExp* n)
 	{
-
+		// check if var exists (in symbable)
+		// struct type = ... 
 		return 0;
 	}
 	int visit(const NewExp* n)
 	{
-
+		// class (id) exists
+		// type = getClass(n->name)
 		return 0;
 	}
 	int visit(const ThisExp* n)
 	{
-
+		// if (staticmethod ) {error}
+		// type = get(curclass)
 		return 0;
 	}
 	int visit(const LenExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		// type = int
 		return 0;
 	}
 	int visit(const CallMethodExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		// save type1
+		// check type.isinternal = false
+		// check m = type.getMethod(id) or parent.getMethod(id)
 		if(n->list) { n->list->Accept(this); }
+		// TODO: ADD FIELD currentfunctionparams
+		// if (m) : 
 		return 0;
 	}
 	int visit(const NewIntArrExp* n)
@@ -181,7 +201,10 @@ public:
 	}
 	int visit(const MainClassImpl* n)
 	{
+		// todo write that it is static method
+		// staticMethod = true;
 		if(n->stm) { n->stm->Accept(this); }
+		// staticmethod = flase;
 		return 0;
 	}
 };
