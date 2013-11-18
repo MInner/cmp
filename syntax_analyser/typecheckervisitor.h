@@ -80,12 +80,16 @@ public:
 	int visit(const NewIntArrExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		//type = Type::INT_ARR
 		return 0;
 	}
 	int visit(const ArrValExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		//check exp type is INT_ARR
 		if(n->inExp) { n->inExp->Accept(this); }
+		//check inExp type is int_type
+		// type.it = type::int_type
 		return 0;
 	}
 	int visit(const BlockStm* n)
@@ -101,29 +105,37 @@ public:
 	int visit(const PrintStmPrintStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		// check exp type is INT_Type
 		return 0;
 	}
 	int visit(const WhileStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		// check exp type is type::bool_type
 		if(n->stm) { n->stm->Accept(this); }
 		return 0;
 	}
 	int visit(const IfElseStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		// check exp type is type::bool_type
 		if(n->stm) { n->stm->Accept(this); }
 		if(n->elseStm) { n->elseStm->Accept(this); }
 		return 0;
 	}
 	int visit(const AssignArrStm* n)
 	{
+		// check in SymbolTable existence of such array
 		if(n->exp) { n->exp->Accept(this); }
-		if(n->stm) { n->stm->Accept(this); }
+		// check exp type is INT_Type
+		if(n->stm) { n->stm->Accept(this); } // тут правило надо каскадно менять начиная с бизоновского файла, там id[exp] = exp;(а не stm как сейчас)
+		// check exp2 type is INT_Type 
 		return 0;
 	}
 	int visit(const ExpressionListImpl* n)
 	{
+		// это список аргументов для вызова метода
+		// их нужно сравнить хутрым методом с семинара
 		if(n->exp) { n->exp->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -136,7 +148,9 @@ public:
 	}
 	int visit(const AssignmentImpl* n)
 	{
+		// check in SymbolTable existence of such ID 
 		if(n->exp) { n->exp->Accept(this); }
+		// check ID.type == exp.type
 		return 0;
 	}
 	int visit(const ArguementImpl* n)
@@ -191,6 +205,7 @@ public:
 	{
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->methods) { n->methods->Accept(this); }
+		
 		return 0;
 	}
 	int visit(const ProgramImpl* n)
