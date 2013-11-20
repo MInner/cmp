@@ -4,54 +4,99 @@
 #include "fwdclasses.h"
 #include <iostream>
 #include <string>
+#include "symbolstable.h"
+#include "enums.h"
+
+
+struct MemStruct
+{
+	bool isInternal; // is internal type
+	InternalType* internalType;
+	CustomType* customType;
+
+};
 
 class TypeCheckerVisitor : public IVisitor
 {
 public:
 
 	ClassTable* curclasstable;
+	MethodInfo* curMethodInfo;
 
 	InternalType* lastinternaltype;
 	CustomType* lastcustomtype;
+
+
 	bool staticmethod;
+	MemStruct type;
 
 	int visit(const ArithmExp* n)
 	{
-		// left, right types are 
-		if(n->left) { n->left->Accept(this); }
-		// save type
-		if(n->right) { n->right->Accept(this); }
-		// save and check
+		MemStruct localMemRight;
+		MemStruct localMemLeft;
+		// left, right types are int
+		if(n->left) 
+		{
+			n->left->Accept(this); 
+			localMemLeft = type;
+			type = NULL;
+		}
+		if(n->right) 
+		{
+			n->right->Accept(this); 
+			localMemRight = type;
+			type = NULL;
+		}
+		
+		//if (localMemRight != localMemLeft)
+		//{
+			//stop!
+		//}
 		return 0;
 	}
 	int visit(const LogicExp* n)
 	{
-		// same 
-		if(n->left) { n->left->Accept(this); }
-		if(n->right) { n->right->Accept(this); }
+		MemStruct localMemRight;
+		MemStruct localMemLeft;
+		
+		if(n->left) { 
+			n->left->Accept(this); 
+			localMemLeft = type;
+			type = NULL;
+		}
+		if(n->right) 
+		{ 
+			n->right->Accept(this); 
+			localMemRight = type;
+			type = NULL;
+		}
 		return 0;
 	}
 	int visit(const IntVal* n)
 	{
-		// type.isinter = ture;
-		// type.it = tyep::int_type
+		type.isInternal = true;
+		type->internalType = type::int_type;
 		return 0;
 	}
 	int visit(const BoolVal* n)
 	{
-		// .it = type::bool_type
+		type.isInternal = true;
+		type->internalType = Type::bool_type
 		return 0;
 	}
 	int visit(const IdExp* n)
 	{
 		// check if var exists (in symbable)
-		// struct type = ... 
+		// struct type = ... ???
 		return 0;
 	}
 	int visit(const NewExp* n)
 	{
 		// class (id) exists
-		// type = getClass(n->name)
+		if(getClass(n->name))
+		{
+			type->CustomType = getClass(n->name)
+		}
 		return 0;
 	}
 	int visit(const ThisExp* n)
