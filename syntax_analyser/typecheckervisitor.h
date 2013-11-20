@@ -11,8 +11,8 @@
 struct MemStruct
 {
 	bool isInternal; // is internal type
-	InternalType* internalType;
-	CustomType* customType;
+	InternalType internalType;
+	Symbol* customType;
 
 };
 
@@ -75,13 +75,13 @@ public:
 	int visit(const IntVal* n)
 	{
 		type.isInternal = true;
-		type->internalType = type::int_type;
+		type.internalType = type::int_type;
 		return 0;
 	}
 	int visit(const BoolVal* n)
 	{
 		type.isInternal = true;
-		type->internalType = Type::bool_type
+		type.internalType = Type::bool_type;
 		return 0;
 	}
 	int visit(const IdExp* n)
@@ -92,10 +92,9 @@ public:
 	}
 	int visit(const NewExp* n)
 	{
-		// class (id) exists
 		if(getClass(n->name))
 		{
-			type->CustomType = getClass(n->name)
+			type.customType = (getClass(n->name))->name;
 		}
 		return 0;
 	}
