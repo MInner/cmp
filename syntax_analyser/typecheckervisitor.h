@@ -27,7 +27,11 @@ public:
 	CustomType* lastcustomtype;
 
 
-	bool staticmethod;
+	bool staticmethod = false;
+	Symbol* curClass;
+	Symbol* curMethod;
+	std::vector<VarInfo*> currentMethodParams; // есть сомнения
+
 	MemStruct type;
 
 	int visit(const ArithmExp* n)
@@ -75,19 +79,31 @@ public:
 	int visit(const IntVal* n)
 	{
 		type.isInternal = true;
-		type.internalType = type::int_type;
+		type.internalType = type::INT;
 		return 0;
 	}
 	int visit(const BoolVal* n)
 	{
 		type.isInternal = true;
-		type.internalType = Type::bool_type;
+		type.internalType = Type::BOOL;
 		return 0;
 	}
 	int visit(const IdExp* n)
 	{
 		// check if var exists (in symbable)
-		// struct type = ... ???
+		if ( (getClass(curClass))->getField(n->name))
+		{
+			// struct type = ((getClass(curClass))->getField(n->name))->type; // <- returns IType!!! TODO!!!
+		} 
+		else if ( ((getClass(curClass))->getMethod(curMethod))->getLocalVar(n->name) )
+		{
+			// struct type = (((getClass(curClass))->getMethod(curMethod))->getLocalVar(n->name))->type; // <- returns IType!!! TODO!!!
+		}
+		else
+		{
+			//error
+		}
+		
 		return 0;
 	}
 	int visit(const NewExp* n)
@@ -100,40 +116,71 @@ public:
 	}
 	int visit(const ThisExp* n)
 	{
-		// if (staticmethod ) {error}
-		// type = get(curclass)
+		if (staticmethod) 
+		{
+			//error!
+		}
+		type.CustomType = (getClass(curClass))->name;
 		return 0;
 	}
 	int visit(const LenExp* n)
 	{
-		if(n->exp) { n->exp->Accept(this); }
-		// type = int
+		if(n->exp) 
+		{	n->exp->Accept(this); 
+			type.isInternal = true;
+			type.internalType = Type::INT; // type = int
+		}
+		else 
+		{
+			//error?!
+		}
 		return 0;
 	}
 	int visit(const CallMethodExp* n)
 	{
+		MemStruct localMem;
 		if(n->exp) { n->exp->Accept(this); }
 		// save type1
-		// check type.isinternal = false
+		if (type.isInternal == true) // check type.isinternal = false
+		{
+			//error
+		}// так?
+		
 		// check m = type.getMethod(id) or parent.getMethod(id)
 		if(n->list) { n->list->Accept(this); }
-		// TODO: ADD FIELD currentfunctionparams
-		// if (m) : 
+		// TODO: ADD FIELD currentfunctionparams // добавил, но нафига, если в методе уже хранятся параметры?!
+		// if (m) : // что сделать-то?
 		return 0;
 	}
 	int visit(const NewIntArrExp* n)
 	{
-		if(n->exp) { n->exp->Accept(this); }
-		//type = Type::INT_ARR
+		if(n->exp) 
+		{ 
+			n->exp->Accept(this); 
+			type.isInternal = true;
+			type.internalType = Type::INT; //type = Type::INT_ARR
+		}
+		else
+		{
+			//error?!
+		}
 		return 0;
 	}
 	int visit(const ArrValExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		//check exp type is INT_ARR
+		
+		if (type.internalType != Type::INT) //check exp type is INT_ARR
+		{
+			//error
+		}
+
 		if(n->inExp) { n->inExp->Accept(this); }
-		//check inExp type is int_type
-		// type.it = type::int_type
+		if (n->inExp->type != Type::INT) //check inExp type is int_type
+		{
+			//error
+		}
+		type.internalType = Type::INT; // type.it = type::int_type
 		return 0;
 	}
 	int visit(const BlockStm* n)
@@ -149,20 +196,30 @@ public:
 	int visit(const PrintStmPrintStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		// check exp type is INT_Type
+
+		if(n->exp->type != Type::INT) // check exp type is INT_Type
+		{
+			//error
+		}
 		return 0;
 	}
 	int visit(const WhileStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		// check exp type is type::bool_type
+		if(n->exp->type != Type::BOOL) // check exp type is type::bool_type
+		{
+			//error
+		}
 		if(n->stm) { n->stm->Accept(this); }
 		return 0;
 	}
 	int visit(const IfElseStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		// check exp type is type::bool_type
+		if(n->exp->type != Type::BOOL) // check exp type is type::bool_type
+		{
+			//error
+		}
 		if(n->stm) { n->stm->Accept(this); }
 		if(n->elseStm) { n->elseStm->Accept(this); }
 		return 0;
