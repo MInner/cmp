@@ -27,7 +27,7 @@ public:
 	CustomType* lastcustomtype;
 
 
-	bool staticmethod = false;
+	bool isCurMethodStatic = false;
 	Symbol* curClass;
 	Symbol* curMethod;
 	std::vector<VarInfo*> currentMethodParams; // есть сомнения
@@ -116,7 +116,7 @@ public:
 	}
 	int visit(const ThisExp* n)
 	{
-		if (staticmethod) 
+		if (isCurMethodStatic) 
 		{
 			//error!
 		}
@@ -226,17 +226,23 @@ public:
 	}
 	int visit(const AssignArrStm* n)
 	{
-		// check in SymbolTable existence of such array
+		// check in SymbolTable existence of such array serge^ how?
 		if(n->exp) { n->exp->Accept(this); }
-		// check exp type is INT_Type
-		if(n->stm) { n->stm->Accept(this); } // тут правило надо каскадно менять начиная с бизоновского файла, там id[exp] = exp;(а не stm как сейчас)
-		// check exp2 type is INT_Type 
+		if(n->exp->type != Type::INT) // check exp type is INT_Type
+		{
+			//error
+		}
+		if(n->stm) { n->stm->Accept(this); } // !!! тут правило надо каскадно менять начиная с бизоновского файла, там id[exp] = exp;(а не stm как сейчас)
+		if(n->exp->type != Type::INT) // check exp type is INT_Type
+		{
+			//error
+		}
 		return 0;
 	}
 	int visit(const ExpressionListImpl* n)
 	{
 		// это список аргументов для вызова метода
-		// их нужно сравнить хутрым методом с семинара
+		// их нужно сравнить хутрым методом с семинара. // dont remember the method
 		if(n->exp) { n->exp->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -251,7 +257,10 @@ public:
 	{
 		// check in SymbolTable existence of such ID 
 		if(n->exp) { n->exp->Accept(this); }
-		// check ID.type == exp.type
+		if (ID.type != exp.type) //dont understand, where is ID
+		{
+			//error
+		}
 		return 0;
 	}
 	int visit(const ArguementImpl* n)
@@ -318,9 +327,9 @@ public:
 	int visit(const MainClassImpl* n)
 	{
 		// todo write that it is static method
-		// staticMethod = true;
+		isCurMethodStatic = true;
 		if(n->stm) { n->stm->Accept(this); }
-		// staticmethod = flase;
+		isCurMethodStatic = false;
 		return 0;
 	}
 };
