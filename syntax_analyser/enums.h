@@ -2,6 +2,7 @@
 
 #include "symbol.h"
 
+
 namespace Type
 {
 
@@ -13,6 +14,13 @@ namespace Type
 	};
 
 }
+
+struct TypeData
+{
+	bool isInternal; // is internal type
+	Type::Type internalType;
+	const Symbol* customType;
+};
 
 namespace Arithm
 {

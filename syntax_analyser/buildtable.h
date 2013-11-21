@@ -14,6 +14,9 @@ public:
 	ClassInfo* curclass;
 	MethodInfo* curmethod;
 
+	TypeData t;
+	static const TypeData NULLTYPE;
+
 	struct TypeStruct
 	{
 		CustomType* ct;
@@ -82,7 +85,7 @@ public:
 	int visit(const ArrValExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		if(n->inExp) { n->inExp->Accept(this); }
+		if(n->idExp) { n->idExp->Accept(this); }
 		return 0;
 	}
 	int visit(const BlockStm* n)
@@ -116,7 +119,7 @@ public:
 	int visit(const AssignArrStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		if(n->stm) { n->stm->Accept(this); }
+		if(n->newexp) { n->newexp->Accept(this); }
 		return 0;
 	}
 	int visit(const ExpressionListImpl* n)
@@ -138,9 +141,12 @@ public:
 	}
 	int visit(const ArguementImpl* n)
 	{
-		curmethod->addParam(n->id, n->type);
+		t = NULLTYPE;
 
 		if(n->type) { n->type->Accept(this); }
+
+		curmethod->addParam(n->id, t);
+
 		return 0;
 	}
 	int visit(const ArguementsImpl* n)
@@ -152,25 +158,26 @@ public:
 
 	int visit(const InternalType* n)
 	{
-		t.lastinternaltype = n->type;
 		t.isInternal = true;
+		t.internalType = n->type; // is of enum Type::Type
 		return 0;
 	}
 	int visit(const CustomType* n)
 	{
-		t.lastcustomtype = n->type;
+		t.isInternal = false;
+		t.customType = n->type; // is of Symbol*
 		return 0;
 	}
 	int visit(const VarDeclarationImpl* n)
 	{
-		t.lastcustomtype = NULL;
-		t.lastinternaltype = NULL;
+		t = NULLTYPE;
+
 		if(n->type) { n->type->Accept(this); }
-		// структурку передаем в local var
+		
 		if (curmethod)
-			curmethod->addLocalVar(n->id, n->type);
+			curmethod->addLocalVar(n->id, t);
 		else
-			curclass->addField(n->id, n->type);
+			curclass->addField(n->id, t);
 
 		return 0;
 	}
@@ -188,9 +195,12 @@ public:
 	}
 	int visit(const MethodDeclarationImpl* n)
 	{
-		curmethod = curclass->addMethod(n->id, n->type);
+		t = NULLTYPE;
 
 		if(n->type) { n->type->Accept(this); }
+
+		curmethod = curclass->addMethod(n->id, t);
+
 		if(n->args) { n->args->Accept(this); }
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->statements) { n->statements->Accept(this); }

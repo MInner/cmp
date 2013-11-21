@@ -7,149 +7,173 @@
 #include "symbolstable.h"
 #include "enums.h"
 
-
-struct MemStruct
+void err()
 {
-	bool isInternal; // is internal type
-	InternalType internalType;
-	Symbol* customType;
+	std::cout << "Noname Error ;(" << std::endl;
+}
 
-};
+inline bool operator==(const TypeData& l, const TypeData& r)
+{
+	if (l.isInternal != r.isInternal)
+		return false;
+
+	if (l.isInternal)
+		return l.internalType == r.internalType;
+	else
+		return l.customType == r.customType;
+
+	return false;
+
+}
 
 class TypeCheckerVisitor : public IVisitor
 {
 public:
 
-	ClassTable* curclasstable;
-	MethodInfo* curMethodInfo;
+	TypeData type;
+	static const TypeData NULLTYPE;
 
-	InternalType* lastinternaltype;
-	CustomType* lastcustomtype;
+	ClassTable* ct;
+	ClassInfo* curclass;
+	MethodInfo* curmethod;
 
+	bool isCurMethodStatic;
 
-	bool isCurMethodStatic = false;
-	Symbol* curClass;
-	Symbol* curMethod;
-	std::vector<VarInfo*> currentMethodParams; // есть сомнения
+//	std::vector<VarInfo*> currentMethodParams;
 
-	MemStruct type;
+	TypeCheckerVisitor(ClassTable* ct_)
+	{
+		ct = ct_;
+	}
 
 	int visit(const ArithmExp* n)
 	{
-		MemStruct localMemRight;
-		MemStruct localMemLeft;
-		// left, right types are int
 		if(n->left) 
 		{
 			n->left->Accept(this); 
-			localMemLeft = type;
-			type = NULL;
+
+			if (!type.isInternal || type.internalType != Type::INT )
+				std::cout << "ArExp: not ints" << std::endl; 
+
+			type = NULLTYPE;
 		}
 		if(n->right) 
 		{
-			n->right->Accept(this); 
-			localMemRight = type;
-			type = NULL;
+			n->right->Accept(this);
+
+			if (!type.isInternal || type.internalType != Type::INT )
+				std::cout << "ArExp: not ints" << std::endl; 
+
+			type = NULLTYPE;
 		}
+
+		type.isInternal = true;
+		type.internalType = Type::INT;
 		
-		//if (localMemRight != localMemLeft)
-		//{
-			//stop!
-		//}
 		return 0;
 	}
+
 	int visit(const LogicExp* n)
 	{
-		MemStruct localMemRight;
-		MemStruct localMemLeft;
+		TypeData localMemRight;
+		TypeData localMemLeft;
 		
 		if(n->left) { 
 			n->left->Accept(this); 
-			localMemLeft = type;
-			type = NULL;
+
+			if (!type.isInternal || type.internalType != Type::BOOL )
+				std::cout << "WARNING: Logic Operation not bools" << std::endl; 
+
+			type = NULLTYPE;
 		}
 		if(n->right) 
 		{ 
 			n->right->Accept(this); 
-			localMemRight = type;
-			type = NULL;
+
+			if (!type.isInternal || type.internalType != Type::BOOL )
+				std::cout << "WARNING: Logic Operation not bools"  << std::endl; 
+
+			type = NULLTYPE;
 		}
+
+		type.isInternal = true;
+		type.internalType = Type::BOOL;
+
 		return 0;
 	}
 	int visit(const IntVal* n)
 	{
 		type.isInternal = true;
-		type.internalType = type::INT;
+		type.internalType = Type::INT;
 		return 0;
 	}
+
 	int visit(const BoolVal* n)
 	{
 		type.isInternal = true;
 		type.internalType = Type::BOOL;
 		return 0;
 	}
+
 	int visit(const IdExp* n)
 	{
-		// check if var exists (in symbable)
-		if ( (getClass(curClass))->getField(n->name))
-		{
-			// struct type = ((getClass(curClass))->getField(n->name))->type; // <- returns IType!!! TODO!!!
-		} 
-		else if ( ((getClass(curClass))->getMethod(curMethod))->getLocalVar(n->name) )
-		{
-			// struct type = (((getClass(curClass))->getMethod(curMethod))->getLocalVar(n->name))->type; // <- returns IType!!! TODO!!!
-		}
+		VarInfo* var;
+
+		if ( var = curmethod->getLocalVar(n->id) )
+			type = var->type;
+		else if ( var = curmethod->getParam(n->id) )
+			type = var->type;
+		else if ( var = curclass->getField(n->id))
+			type = var->type;
 		else
-		{
-			//error
-		}
+			err();
 		
 		return 0;
 	}
+
 	int visit(const NewExp* n)
 	{
-		if(getClass(n->name))
-		{
-			type.customType = (getClass(n->name))->name;
-		}
+		type.isInternal = false;
+		type.customType = n->id;
 		return 0;
 	}
+
 	int visit(const ThisExp* n)
 	{
 		if (isCurMethodStatic) 
 		{
-			//error!
+			std::cout << "WARNING!!: THIS in static method" << std::endl;
 		}
-		type.CustomType = (getClass(curClass))->name;
+		type.customType = curclass->name;
 		return 0;
 	}
+
 	int visit(const LenExp* n)
 	{
 		if(n->exp) 
 		{	n->exp->Accept(this); 
 			type.isInternal = true;
-			type.internalType = Type::INT; // type = int
+			type.internalType = Type::INT;
 		}
-		else 
-		{
-			//error?!
-		}
+
 		return 0;
 	}
 	int visit(const CallMethodExp* n)
 	{
-		MemStruct localMem;
 		if(n->exp) { n->exp->Accept(this); }
-		// save type1
-		if (type.isInternal == true) // check type.isinternal = false
+		if (type.isInternal == true) 
 		{
-			//error
-		}// так?
+			std::cout << "WARNING: Trying to call method of internal method" << std::endl;
+		}
+
+		ClassInfo* ci = ct->getClass(type.customType);
 		
-		// check m = type.getMethod(id) or parent.getMethod(id)
+		MethodInfo* mi = ci->getMethod(n->id);
+
+		if (!mi)
+			std::cout << "WARNING: No such method at class" << std::endl;
+
 		if(n->list) { n->list->Accept(this); }
-		// TODO: ADD FIELD currentfunctionparams // добавил, но нафига, если в методе уже хранятся параметры?!
-		// if (m) : // что сделать-то?
 		return 0;
 	}
 	int visit(const NewIntArrExp* n)
@@ -158,11 +182,7 @@ public:
 		{ 
 			n->exp->Accept(this); 
 			type.isInternal = true;
-			type.internalType = Type::INT; //type = Type::INT_ARR
-		}
-		else
-		{
-			//error?!
+			type.internalType = Type::INT_ARR; //type = Type::INT_ARR
 		}
 		return 0;
 	}
@@ -170,17 +190,16 @@ public:
 	{
 		if(n->exp) { n->exp->Accept(this); }
 		
-		if (type.internalType != Type::INT) //check exp type is INT_ARR
-		{
-			//error
-		}
+		if (type.internalType != Type::INT_ARR) //check exp type is INT_ARR
+			std::cout << "WARNING: Trying [] of not ARRAY type" << std::endl;
 
-		if(n->inExp) { n->inExp->Accept(this); }
-		if (n->inExp->type != Type::INT) //check inExp type is int_type
-		{
-			//error
-		}
-		type.internalType = Type::INT; // type.it = type::int_type
+		if(n->idExp) { n->idExp->Accept(this); }
+
+		if (type.internalType != Type::INT)
+			std::cout << "WARNING: Inside [] must be INT" << std::endl;
+		
+		type.isInternal = true;
+		type.internalType = Type::INT;
 		return 0;
 	}
 	int visit(const BlockStm* n)
@@ -197,28 +216,26 @@ public:
 	{
 		if(n->exp) { n->exp->Accept(this); }
 
-		if(n->exp->type != Type::INT) // check exp type is INT_Type
-		{
-			//error
-		}
+		if(type.internalType != Type::INT) // check exp type is INT_Type
+			std::cout << "Can print only INTs" << std::endl;
 		return 0;
 	}
+
 	int visit(const WhileStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		if(n->exp->type != Type::BOOL) // check exp type is type::bool_type
-		{
-			//error
-		}
+		if(type.internalType != Type::BOOL)
+			std::cout << "Not Bool in WHILE" << std::endl;
+
 		if(n->stm) { n->stm->Accept(this); }
 		return 0;
 	}
 	int visit(const IfElseStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
-		if(n->exp->type != Type::BOOL) // check exp type is type::bool_type
+		if(type.internalType != Type::BOOL) // check exp type is type::bool_type
 		{
-			//error
+			std::cout << "Not Bool in IF" << std::endl;
 		}
 		if(n->stm) { n->stm->Accept(this); }
 		if(n->elseStm) { n->elseStm->Accept(this); }
@@ -228,21 +245,18 @@ public:
 	{
 		// check in SymbolTable existence of such array serge^ how?
 		if(n->exp) { n->exp->Accept(this); }
-		if(n->exp->type != Type::INT) // check exp type is INT_Type
+		if(type.internalType != Type::INT) // check exp type is INT_Type
 		{
-			//error
+			err();
 		}
-		if(n->stm) { n->stm->Accept(this); } // !!! тут правило надо каскадно менять начиная с бизоновского файла, там id[exp] = exp;(а не stm как сейчас)
-		if(n->exp->type != Type::INT) // check exp type is INT_Type
-		{
-			//error
-		}
+		if(n->newexp) { n->newexp->Accept(this); }
+		if(type.internalType != Type::INT) 
+			err();
+
 		return 0;
 	}
 	int visit(const ExpressionListImpl* n)
 	{
-		// это список аргументов для вызова метода
-		// их нужно сравнить хутрым методом с семинара. // dont remember the method
 		if(n->exp) { n->exp->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -255,69 +269,113 @@ public:
 	}
 	int visit(const AssignmentImpl* n)
 	{
-		// check in SymbolTable existence of such ID 
+		
+		VarInfo* var;
+		TypeData lefttype;
+
+		if ( var = curmethod->getLocalVar(n->id) )
+			lefttype = var->type;
+		else if ( var = curmethod->getParam(n->id) )
+			lefttype = var->type;
+		else if ( var = curclass->getField(n->id))
+			lefttype = var->type;
+		else
+			err();
+
+		
 		if(n->exp) { n->exp->Accept(this); }
-		if (ID.type != exp.type) //dont understand, where is ID
-		{
-			//error
-		}
+
+		if ( !( lefttype == type ) )
+			err();
+
 		return 0;
 	}
+
 	int visit(const ArguementImpl* n)
 	{
 		if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
+	
 	int visit(const ArguementsImpl* n)
 	{
 		if(n->arg) { n->arg->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
+	
+	int visit(const CustomType* n)
+	{
+		type.isInternal = false;
+		type.customType = n->type;
+		
+		return 0;
+	}
+
 	int visit(const InternalType* n)
 	{
+		type.isInternal = true;
+		type.internalType = n->type;
 
 		return 0;
 	}
+	
 	int visit(const VarDeclarationImpl* n)
 	{
 		if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
+	
 	int visit(const VarDeclarationsImpl* n)
 	{
 		if(n->dec) { n->dec->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
+	
 	int visit(const MethodDeclarationsImpl* n)
 	{
 		if(n->dec) { n->dec->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
+	
 	int visit(const MethodDeclarationImpl* n)
 	{
+		curmethod = curclass->getMethod(n->id);
+
+		// TODO returnvalcheck !
 		if(n->type) { n->type->Accept(this); }
+		// here we Call InternalType or CustomType depending on VirtualFunctionTable, so we can look into type
 		if(n->args) { n->args->Accept(this); }
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->statements) { n->statements->Accept(this); }
 		if(n->exp) { n->exp->Accept(this); }
+
+		curmethod = NULL;
+
 		return 0;
 	}
+
 	int visit(const ClassDeclarationsImpl* n)
 	{
 		if(n->dec) { n->dec->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
+
 	int visit(const ClassDeclarationImpl* n)
 	{
+		curclass = ct->getClass(n->id);
+
 		if(n->vars) { n->vars->Accept(this); }
 		if(n->methods) { n->methods->Accept(this); }
+
+		curclass = NULL;
 		
 		return 0;
 	}
+
 	int visit(const ProgramImpl* n)
 	{
 		if(n->cl) { n->cl->Accept(this); }
@@ -326,7 +384,6 @@ public:
 	}
 	int visit(const MainClassImpl* n)
 	{
-		// todo write that it is static method
 		isCurMethodStatic = true;
 		if(n->stm) { n->stm->Accept(this); }
 		isCurMethodStatic = false;

@@ -5,6 +5,7 @@
 #include "bi.hpp"
 #include "printvisitor.h"
 #include "buildtable.h"
+#include "typecheckervisitor.h"
 #include "classes.h"
 #include "symbol.h"
 
@@ -15,6 +16,8 @@ void yyerror(const char* descr){
 }
 
 const ProgramImpl* ProgramImpl::me = 0;
+const TypeData BuildTableVisitor::NULLTYPE = TypeData();
+const TypeData TypeCheckerVisitor::NULLTYPE = TypeData();
 
 int main(void){
 
@@ -25,7 +28,13 @@ int main(void){
 	yyparse();
 
 	BuildTableVisitor* rv = new BuildTableVisitor();
-
 	ProgramImpl::me->Accept(rv);
+
+	ClassTable* ctable = rv->curclasstable;
+
+	TypeCheckerVisitor* tch = new TypeCheckerVisitor(ctable);
+	ProgramImpl::me->Accept(tch);
+
+
 	return 0;
 }

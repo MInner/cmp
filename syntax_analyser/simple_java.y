@@ -121,7 +121,7 @@ statement: /*ok*/
 	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStm($3, $5, $7);}
 	| WHILE '(' expression ')' statement				{ $$ = new WhileStm($3, $5);}
 	| SYSPRINT '(' expression ')' ';'					{ $$ = new PrintStmPrintStm($3);}
-	| ID '['expression']' ASSIGN statement ';'			{ $$ = new AssignArrStm(Symbol::getSymbol($1), $3, $6);}  // TODO третий аргумент должен быть экспрешеном
+	| ID '['expression']' ASSIGN expression ';'			{ $$ = new AssignArrStm(Symbol::getSymbol($1), $3, $6);}  // TODO третий аргумент должен быть экспрешеном
 
 type: /*ok*/
 	 INT_TYPE '['']'	{ $$ = new InternalType(Type::INT_ARR);}
@@ -155,7 +155,7 @@ expression: /*ok*/
 	| TRUE			{ $$ = new BoolVal(true);}
 	| FALSE			{ $$ = new BoolVal(false);}
 	| ID			{ $$ = new IdExp(Symbol::getSymbol($1));}
-	| THIS			{ $$ = new ThisExp(Symbol::getSymbol("_"));} 
+	| THIS			{ $$ = new ThisExp(); } 
 	| NEW INT_TYPE '[' expression ']' { $$ = new NewIntArrExp($4);}
 	| NEW ID '(' ')'		{ $$ = new NewExp(Symbol::getSymbol($2));}
 	| '!' expression 		{ $$ = new LogicExp(Logic::L_NOT, $2);}
