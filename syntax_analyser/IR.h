@@ -2,16 +2,80 @@ namespace Translate
 {
 	class Expression{
 	public: 
-		const Tree::Expression* ToExpression() const = 0;
-		const Tree::Expression* ToStatement() const = 0;
-		const Tree::Expression* ToConditional() const = 0;
-
+		const Tree::Expression* toExpression() const = 0;
+		const Tree::Statement* toStatement() const = 0;
+		const Tree::Statement* toConditional() const = 0;
+		
 		
 	};
 	class Statement{
 	public:
 		Move()
 	};
+
+	class Ex: Expression
+	{
+	public:
+		Tree::Expression* expression;
+		Ex(Tree::Expression* exp){}
+		~Ex();
+		Tree::Expression toExpression()
+		{
+			return expression;
+		}
+		Tree::Statement toStatement()
+		{
+			//TODO
+		}
+		Tree::Statement toConditional(Label* trueLabel, Label* falseLabel)
+		{
+			//TODO
+		}
+		
+	};
+
+	class Nx: Expression
+	{
+	public:
+		Tree::Statement* statement;
+		Nx(Tree::Statement* statement){}
+		~Nx();
+		Tree::Expression toExpression()
+		{
+			//TODO
+		}
+		Tree::Statement toStatement()
+		{
+			return statement
+		}
+		Tree::Statement toConditional(Label* trueLabel, Label* falseLabel)
+		{
+			//TODO
+		}
+	};
+
+	class Cx: Expression
+	{
+	public:
+		Cx(arguments){}
+		~Cx();
+
+		Tree::Expression toExpression()
+		{
+			//TODO
+		}
+		Tree::Statement toStatement()
+		{
+			//TODO
+		}
+		Tree::Statement toConditional(Label* trueLabel, Label* falseLabel)
+		{
+			//TODO
+		}
+	};
+
+
+
 }
 
 
