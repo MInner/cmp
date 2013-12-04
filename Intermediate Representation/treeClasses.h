@@ -79,7 +79,7 @@ public:
 class CALL : public Exp
 {
 public:
-	CALL(const Exp* func_, const ExpList* args_) :
+	CALL(const Exp* func_, const ExpList* args_):
 		func(func_), args(args_) {}
 
 	int Accept(IVisitor* v) const
@@ -109,7 +109,7 @@ public:
 	const Exp* right;
 };
 
-abstract class Stm (управляющие конструкции)
+//abstract class Stm (управляющие конструкции)
 class MOVE(Exp dst, Exp src): MOVE(Temp(t), e) vs MOVE(MEM(e1), e2) : public Stm
 class EXP(Exp exp) : public Stm
 class JUMP(Exp exp, Temp.LabelList targets) : public Stm
@@ -119,11 +119,37 @@ class LABEL(Label label) : public Stm
 
 
 
-other classes:
-class ExpList(Exp head, ExpList tail)
-class StmList(Stm head, StmList tail)
-other constants:
-BINOP.PLUS, BINOP.MINUS, BINOP.MUL, BINOP.DIV, BINOP.AND,
-BINOP.OR, BINOP.LSHIFT, BINOP.RSHIFT, BINOP.ARSHIFT, BINOP.XOR;
-CJUMP.EQ, CJUMP.NE, CJUMP.LT, CJUMP.GT, CJUMP.LE,
-CJUMP.GE, CJUMP.ULT, CJUMP.ULE, CJUMP.UGT, CJUMP.UGE;
+//other classes:
+class ExpList
+{
+public:
+	ExpList(const Exp* head_, const ExpList* tail_):
+		head(head_), tail(tail_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Exp* head;
+	const ExpList* tail;
+};
+
+class StmList
+{
+public:
+	StmList(const Stm* head, const StmList* tail):
+		head(head_), tail(tail_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Stm* head;
+	const StmList* tail;
+};
+
+
