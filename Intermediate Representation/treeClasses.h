@@ -29,11 +29,85 @@ public:
 	const label* label;	
 };
 
-class TEMP(Temp.Temp temp) : public Exp
-class BINOP(int binop, Exp left, Exp right) : public Exp
-class MEM(Exp exp) : public Exp
-class CALL(Exp func, ExpList args) : public Exp
+class TEMP : public Exp 
+{
+public:
+	TEMP(const Temp::Temp* temp_):
+		temp(temp_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Temp::Temp* temp	
+};
+
+class BINOP : public Exp
+{
+public:
+	BINOP(int binop_, const Exp* left_, const Exp* right_):
+		binop(binop_), left(left_), right(right_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const int binop;
+	const Exp* left;
+	const Exp* right;
+};
+
+class MEM : public Exp
+{
+public:
+	MEM(const Exp* exp_):
+		exp(exp_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Exp* exp;
+};
+
+class CALL : public Exp
+{
+public:
+	CALL(const Exp* func_, const ExpList* args_) :
+		func(func_), args(args_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Exp* func;
+	const ExpList* args;
+};
+
 class ESEQ(Stm stm, Exp exp) : public Exp
+{
+public:
+	BINOP(int binop_, const Exp* left_, const Exp* right_):
+		binop(binop_), left(left_), right(right_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const int binop;
+	const Exp* left;
+	const Exp* right;
+};
 
 abstract class Stm (управляющие конструкции)
 class MOVE(Exp dst, Exp src): MOVE(Temp(t), e) vs MOVE(MEM(e1), e2) : public Stm
