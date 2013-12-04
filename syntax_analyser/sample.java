@@ -36,7 +36,7 @@ class B
 		int a;
 		f = new Fac();
 		a = f.ComputeFac(5);
-		f = d + 3;
+		f = d;
 		return a; 
 	}
 }
