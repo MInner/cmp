@@ -92,11 +92,29 @@ public:
 	const ExpList* args;
 };
 
-class ESEQ(Stm stm, Exp exp) : public Exp
+class ESEQ : public Exp
 {
 public:
-	BINOP(int binop_, const Exp* left_, const Exp* right_):
-		binop(binop_), left(left_), right(right_) {}
+	ESEQ(const Stm* stm_, const Exp* exp_):
+		stm(stm_), exp(exp_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Stm* stm
+	const Exp* exp;
+};
+
+//abstract class Stm (управляющие конструкции)
+//class MOVE(Exp dst, Exp src): MOVE(Temp(t), e) vs MOVE(MEM(e1), e2) 
+class MOVE : public Stm
+{
+public:
+	MOVE(const Exp* dst_, const src* src_):
+		dst(dst_), src(src_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -105,18 +123,90 @@ public:
 
 
 	const int binop;
-	const Exp* left;
-	const Exp* right;
+	const Exp* dst;
+	const Exp* src;
 };
 
-//abstract class Stm (управляющие конструкции)
-class MOVE(Exp dst, Exp src): MOVE(Temp(t), e) vs MOVE(MEM(e1), e2) : public Stm
-class EXP(Exp exp) : public Stm
-class JUMP(Exp exp, Temp.LabelList targets) : public Stm
-class CJUMP(int relop, Exp left, Exp right, Label iftrue, Label iffalse) : public Stm
-class SEQ(Stm left, Stm right) : public Stm
-class LABEL(Label label) : public Stm
+class EXP : public Stm
+{
+public:
+	EXP(const Exp* exp_):
+		exp(exp_) {}
 
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Exp* exp;
+};
+
+class JUMP : public Stm
+{
+public:
+	JUMP(const Exp* exp_, const Temp::LabelList* targets_):
+		exp(exp_), targets(targets_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Exp* exp;
+	const Temp::LabelList* targets;
+};
+
+class CJUMP : public Stm
+{
+public:
+	BINOP(int relop_, const Exp* left_, const Exp* right_, const Label* iftrue_, const Label* iffalse_):
+		relop(relop_), left(left_), right(right_), iftrue(iftrue_), iffalse(iffalse_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const int relop;
+	const Exp* left;
+	const Exp* right;
+	const Label* iftrue;
+	const Label* iffalse;
+};
+
+class SEQ : public Stm
+{
+public:
+	SEQ(const Stm* left_, const Stm* right):
+		left(left_), right(right_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Stm* left;
+	const Stm* right;
+};
+
+class LABEL : public Stm // не уверен что у нас существует класс Label, ну тогда надо создать
+{
+public:
+	LABEL(const Label* label_):
+		label(label_) {}
+
+	int Accept(IVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const Label* label;
+};
 
 
 //other classes:
