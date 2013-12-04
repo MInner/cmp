@@ -5,7 +5,7 @@
 #include <iostream>
 
 ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
-	std::cout << "New class: " << name << std::endl;
+	// std::cout << "New class: " << name << std::endl;
 	for(unsigned int i = 0; i < classes.size(); i++){
 		if(classes.at(i)->name == name){
 			std::cout << "WARNING: class already exists" << std::endl; 
@@ -30,7 +30,7 @@ ClassInfo* ClassTable::getClass(const Symbol* name){
 //--------------------------------------------------
 
 VarInfo* ClassInfo::addField(const Symbol* fname, TypeData type){
-	std::cout << "New field: " << name << "::" << fname << std::endl;
+	// std::cout << "New field: " << name << "::" << fname << std::endl;
 	for(unsigned int i = 0; i < fields.size(); i++){
 		if(fields.at(i)->name == fname){
 			std::cout << "WARNING: field already exists" << std::endl; 
@@ -53,7 +53,7 @@ VarInfo* ClassInfo::getField(const Symbol* name){
 }
 
 MethodInfo* ClassInfo::addMethod(const Symbol* mname,TypeData returnType){	
-	std::cout << "New method: " << name << "::" << mname << std::endl;
+	// std::cout << "New method: " << name << "::" << mname << std::endl;
 	for(unsigned int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == mname){
 			std::cout << "WARNING: method already exists" << std::endl; 
@@ -79,7 +79,7 @@ MethodInfo* ClassInfo::getMethod(const Symbol* name){
 
 
 VarInfo* MethodInfo::addParam(const Symbol* pname, TypeData type){
-	std::cout << "New param: CLASS::" << name << " ( .. " << pname << " .. )" << std::endl;
+	// std::cout << "New param: CLASS::" << name << " ( .. " << pname << " .. )" << std::endl;
 	for(unsigned int i = 0; i < params.size(); i++){
 		if(params.at(i)->name == pname){
 			std::cout << "WARNING: param already exists" << std::endl; 
@@ -102,7 +102,7 @@ VarInfo* MethodInfo::getParam(const Symbol* name){
 }
 
 VarInfo* MethodInfo::addLocalVar(const Symbol* vname, TypeData type){
-	std::cout << "New locvar: CLASS::" << name << " { def " << vname << " }" << std::endl;
+	// std::cout << "New locvar: CLASS::" << name << " { def " << vname << " }" << std::endl;
 	for(unsigned int i = 0; i < localVars.size(); i++){
 		if(localVars.at(i)->name == vname){
 			std::cout << "WARNING: localVar already exists" << std::endl; 

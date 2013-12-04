@@ -8,12 +8,14 @@ class Fac {
 	public int ComputeFac(int num) {
 		int num_aux;
 		bool b;
+		b = true;
 		if (num < 1){
 	  		num_aux = 1;
 		}
 		else
 		{
-			num_aux = num * (this.ComputeFac(num-1));
+			b = 3 < 2;
+			num_aux = num * (this.ComputeFac(num - 1));
 		}
 		return num_aux;
 	}
@@ -22,7 +24,7 @@ class Fac {
 		int locvar1;
 		int locvar2;
 		int locvar3;
-		return locvar1;
+		return var1;
 	}
 }
 
@@ -30,9 +32,11 @@ class B
 {
 	public int do()	{
 		Fac f;
+		Fac d;
 		int a;
 		f = new Fac();
 		a = f.ComputeFac(5);
+		f = d + 3;
 		return a; 
 	}
 }

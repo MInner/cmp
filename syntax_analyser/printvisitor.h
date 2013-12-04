@@ -4,6 +4,7 @@
 #include "fwdclasses.h"
 #include <iostream>
 #include <string>
+#include "symbol.h"
 
 class PrintVisitor : public IVisitor
 {
@@ -248,6 +249,16 @@ public:
 		std::cout << std::string(padding, ' ') << "InternalType: (" << n->type <<  ")" << std::endl;
 
 		std::cout << std::string(padding, ' ') << "/InternalType" << std::endl;
+		padding -= 1;
+		return 0;
+	}
+
+	int visit(const CustomType* n)
+	{
+		padding += 1;
+		std::cout << std::string(padding, ' ') << "CustomType: (" << n->type <<  ")" << std::endl;
+
+		std::cout << std::string(padding, ' ') << "/CustomType" << std::endl;
 		padding -= 1;
 		return 0;
 	}

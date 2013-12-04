@@ -7,9 +7,9 @@
 #include "symbolstable.h"
 #include "enums.h"
 
-void err()
+void err(int a)
 {
-	std::cout << "Noname Error ;(" << std::endl;
+	std::cout << "Noname Error code " << a << std::endl;
 }
 
 inline bool operator==(const TypeData& l, const TypeData& r)
@@ -53,7 +53,7 @@ public:
 			n->left->Accept(this); 
 
 			if (!type.isInternal || type.internalType != Type::INT )
-				std::cout << "ArExp: not ints" << std::endl; 
+				std::cout << "WARNING: ArythmeticExp: LEFT is not of type INT" << std::endl; 
 
 			type = NULLTYPE;
 		}
@@ -62,7 +62,7 @@ public:
 			n->right->Accept(this);
 
 			if (!type.isInternal || type.internalType != Type::INT )
-				std::cout << "ArExp: not ints" << std::endl; 
+				std::cout << "WARNING: ArythmeticExp: RIGHT is not of type INT" << std::endl; 
 
 			type = NULLTYPE;
 		}
@@ -77,24 +77,48 @@ public:
 	{
 		TypeData localMemRight;
 		TypeData localMemLeft;
+
+		if (n->op == Logic::L_LT)
+		{
+			if(n->left) { 
+				n->left->Accept(this);
+
+				if (!type.isInternal || type.internalType != Type::INT )
+					std::cout << "WARNING: Logic Operation: LEFT is not bools" << std::endl; 
+
+				type = NULLTYPE;
+			}
+			if(n->right)
+			{ 
+				n->right->Accept(this); 
+
+				if (!type.isInternal || type.internalType != Type::INT )
+					std::cout << "WARNING: Logic Operation: RIGHT is not bools"  << std::endl; 
+
+				type = NULLTYPE;
+			}	
+		}
+		else
+		{
+			if(n->left) { 
+				n->left->Accept(this);
+
+				if (!type.isInternal || type.internalType != Type::BOOL )
+					std::cout << "WARNING: Logic Operation: LEFT is not bools" << std::endl; 
+
+				type = NULLTYPE;
+			}
+			if(n->right)
+			{ 
+				n->right->Accept(this); 
+
+				if (!type.isInternal || type.internalType != Type::BOOL )
+					std::cout << "WARNING: Logic Operation: RIGHT is not bools"  << std::endl; 
+
+				type = NULLTYPE;
+			}	
+		}
 		
-		if(n->left) { 
-			n->left->Accept(this); 
-
-			if (!type.isInternal || type.internalType != Type::BOOL )
-				std::cout << "WARNING: Logic Operation not bools" << std::endl; 
-
-			type = NULLTYPE;
-		}
-		if(n->right) 
-		{ 
-			n->right->Accept(this); 
-
-			if (!type.isInternal || type.internalType != Type::BOOL )
-				std::cout << "WARNING: Logic Operation not bools"  << std::endl; 
-
-			type = NULLTYPE;
-		}
 
 		type.isInternal = true;
 		type.internalType = Type::BOOL;
@@ -126,8 +150,10 @@ public:
 		else if ( var = curclass->getField(n->id))
 			type = var->type;
 		else
-			err();
-		
+		{
+			const Symbol* s = n->id;
+			std::cout << "WARNING: variable " << s << " not found in this scope :(" << std::endl;
+		}
 		return 0;
 	}
 
@@ -142,7 +168,7 @@ public:
 	{
 		if (isCurMethodStatic) 
 		{
-			std::cout << "WARNING!!: THIS in static method" << std::endl;
+			std::cout << "WARNING: THIS in static method" << std::endl;
 		}
 		type.customType = curclass->name;
 		return 0;
@@ -235,7 +261,7 @@ public:
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::BOOL) // check exp type is type::bool_type
 		{
-			std::cout << "Not Bool in IF" << std::endl;
+			std::cout << "WARNING: Not bool val in IF" << std::endl;
 		}
 		if(n->stm) { n->stm->Accept(this); }
 		if(n->elseStm) { n->elseStm->Accept(this); }
@@ -247,11 +273,11 @@ public:
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::INT) // check exp type is INT_Type
 		{
-			err();
+			std::cout << "WARNING: array id is not of type INT" << std::endl;
 		}
 		if(n->newexp) { n->newexp->Accept(this); }
 		if(type.internalType != Type::INT) 
-			err();
+			std::cout << "WARNING: new value of an array element is not of type INT" << std::endl;
 
 		return 0;
 	}
@@ -280,14 +306,18 @@ public:
 		else if ( var = curclass->getField(n->id))
 			lefttype = var->type;
 		else
-			err();
-
+		{
+			const Symbol* s = n->id;
+			std::cout << "WARNING: assigment to the variable '" << s << "' before declaration" << std::endl;
+		}
 		
 		if(n->exp) { n->exp->Accept(this); }
 
 		if ( !( lefttype == type ) )
-			err();
-
+		{
+			const Symbol* s = n->id;
+			std::cout << "WARNING: type mismatch when assigning to '" << s << "'" << std::endl;
+		}
 		return 0;
 	}
 

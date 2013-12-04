@@ -21,17 +21,17 @@ const TypeData TypeCheckerVisitor::NULLTYPE = TypeData();
 
 int main(void){
 
-	// std::cout << Symbol::getSymbol("a") << std::endl << Symbol::getSymbol("b") << std::endl << Symbol::getSymbol("a") << std::endl;
-	// const Symbol* d = Symbol::getSymbol("a");
-	// std::cout << d << std::endl;
-
+	std::cout << "--- Building intermediate representation tree --- " << std::endl;
 	yyparse();
+	PrintVisitor* pv = new PrintVisitor();
+	// ProgramImpl::me->Accept(pv);
 
+	std::cout << "--- Building table --- " << std::endl;
 	BuildTableVisitor* rv = new BuildTableVisitor();
 	ProgramImpl::me->Accept(rv);
-
 	ClassTable* ctable = rv->curclasstable;
 
+	std::cout << "--- Checking types ---" << std::endl;
 	TypeCheckerVisitor* tch = new TypeCheckerVisitor(ctable);
 	ProgramImpl::me->Accept(tch);
 
