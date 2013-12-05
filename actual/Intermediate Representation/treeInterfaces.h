@@ -1,3 +1,5 @@
+namespace IRTree{
+
 class Exp 
 {
 public: 
@@ -11,3 +13,5 @@ public:
 	virtual ~Stm() {};
 	virtual int Accept(IVisitor* v) const = 0;
 }; 
+
+}

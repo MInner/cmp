@@ -1,3 +1,4 @@
+namespace IRTree{
 
 class CONST : public Exp
 {
@@ -161,7 +162,7 @@ public:
 class CJUMP : public Stm
 {
 public:
-	BINOP(int relop_, const Exp* left_, const Exp* right_, const Label* iftrue_, const Label* iffalse_):
+	CJUMP(int relop_, const Exp* left_, const Exp* right_, const Label* iftrue_, const Label* iffalse_):
 		relop(relop_), left(left_), right(right_), iftrue(iftrue_), iffalse(iffalse_) {}
 
 	int Accept(IVisitor* v) const
@@ -242,4 +243,4 @@ public:
 	const StmList* tail;
 };
 
-
+} 
