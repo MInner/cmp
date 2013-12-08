@@ -18,7 +18,7 @@ public:
 class NAME : public Exp
 {
 public:
-	NAME(Label label_):
+	NAME(const Temp::Label* label_):
 		label(label_) {}
 
 	int Accept(IVisitor* v) const
@@ -27,7 +27,7 @@ public:
 	}
 
 
-	const label* label;	
+	const Temp::Label* label;	
 };
 
 class TEMP : public Exp 
@@ -162,7 +162,7 @@ public:
 class CJUMP : public Stm
 {
 public:
-	CJUMP(int relop_, const Exp* left_, const Exp* right_, const Label* iftrue_, const Label* iffalse_):
+	CJUMP(int relop_, const Exp* left_, const Exp* right_, const Temp::Label* iftrue_, const Temp::Label* iffalse_):
 		relop(relop_), left(left_), right(right_), iftrue(iftrue_), iffalse(iffalse_) {}
 
 	int Accept(IVisitor* v) const
@@ -174,8 +174,8 @@ public:
 	const int relop;
 	const Exp* left;
 	const Exp* right;
-	const Label* iftrue;
-	const Label* iffalse;
+	const Temp::Label* iftrue;
+	const Temp::Label* iffalse;
 };
 
 class SEQ : public Stm
@@ -194,10 +194,10 @@ public:
 	const Stm* right;
 };
 
-class LABEL : public Stm // не уверен что у нас существует класс Label, ну тогда надо создать
+class LABEL : public Stm 
 {
 public:
-	LABEL(const Label* label_):
+	LABEL(const Temp::Label* label_):
 		label(label_) {}
 
 	int Accept(IVisitor* v) const
@@ -206,7 +206,7 @@ public:
 	}
 
 
-	const Label* label;
+	const Temp::Label* label;
 };
 
 
