@@ -13,7 +13,7 @@ public://vitrual and destructor
     virtual const IRTree::Exp* ToExp() const = 0;
     virtual const IRTree::Stm* ToStm() const = 0;
     virtual const IRTree::Stm* ToConditional(const Temp::Label* t, const Temp::Label* f) const =0;     
-}
+};
 
 class ExpWrapper : public IRTreeNodeConverter {
 public:
@@ -27,7 +27,7 @@ public:
     }
     
     const IRTree::Exp* exp;
-}
+};
 
 class StmWrapper : public IRTreeNodeConverter {
 public:
@@ -39,7 +39,7 @@ public:
     const IRTree::Stm* ToConditional(const Temp::Label* t, const Temp::Label* f) {assert(false)} // no sense
     
     const IRTree::Stm* stm;
-}
+};
 
 class ConditionalWrapper : public IRTreeNodeConverter {
 public:
@@ -69,7 +69,7 @@ public:
     virtual const IRTree::Stm* ToConditional(const Temp::Label* t, const Temp::Label* f) const =0; 
     
     const Stm* stm;
-}
+};
 
 class AndConditionWrapper : public ConditionalWrapper {
 public:
@@ -87,7 +87,7 @@ public:
     
     const IRTree::Exp* left;
 	const IRTree::Exp* right;
-}
+};
 
 class OrConditionWrapper : public ConditionalWrapper {
 public:
@@ -106,7 +106,7 @@ public:
     
     const IRTree::Exp* left;
 	const IRTree::Exp* right;
-}
+};
 
 class RelativeConditionWrapper : public ConditionalWrapper {
 public:
@@ -120,6 +120,6 @@ public:
     
     const IRTree::Exp* left;
 	const IRTree::Exp* right;
-}
+};
 
 }
