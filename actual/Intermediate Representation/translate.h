@@ -122,4 +122,29 @@ public:
 	const IRTree::Exp* right;
 };
 
+class Translator{
+
+    void Visit(const AssingStm* assign)
+    {
+        // доп записи на доске
+        // move - leftVal
+        //     |- rightVal
+        // id=exp; -> IAccess / exp
+
+        assign->Accept(this);
+        const IRTree::IExp* rightValue = lastReturnValue->ToExp();
+        const IRTree::IExp* rightValue = 0;
+        if (locals.Has(Id))
+        { //локальная переменная
+            leftValue = locals[id]->ToExp();
+        }
+        else
+        { //переменная класса
+            //currentClass.Lookup(id, ...)
+            // ...
+        }
+    }
+};
+
+
 }
