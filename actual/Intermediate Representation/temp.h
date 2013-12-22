@@ -14,7 +14,7 @@ namespace Temp{
             currId++;
         };
         Temp(const std::string s){
-            name = Symbol::getSymbol(s).getStr();
+            name = s;
         };
         
         std::string name;
@@ -31,7 +31,7 @@ namespace Temp{
             currId++;
         };
         Label(const std::string s){
-            name = Symbol::getSymbol(s).getStr();
+            name = s;
         };
         
         std::string name;
