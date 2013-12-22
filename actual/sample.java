@@ -20,11 +20,11 @@ class Fac {
 		return num_aux;
 	}
 
-	public int test1(int var1, int var2, int var3) {
+	public int test1() {
 		int locvar1;
 		int locvar2;
 		int locvar3;
-		return var1;
+		return locvar1;
 	}
 }
 

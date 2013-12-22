@@ -40,3 +40,39 @@ enum Logic {
 	L_NOT	
 };
 }
+
+//other constants:
+/*
+BINOP.PLUS, BINOP.MINUS, BINOP.MUL, BINOP.DIV, BINOP.AND,
+BINOP.OR, BINOP.LSHIFT, BINOP.RSHIFT, BINOP.ARSHIFT, BINOP.XOR;
+CJUMP.EQ, CJUMP.NE, CJUMP.LT, CJUMP.GT, CJUMP.LE,
+CJUMP.GE, CJUMP.ULT, CJUMP.ULE, CJUMP.UGT, CJUMP.UGE;
+*/
+namespace IRTree{
+    enum BINOP {
+	    PLUS,
+	    MINUS, 
+	    MUL,
+	    DIV,
+	    AND,
+	    OR, 
+	    LSHIFT,
+	    RSHIFT,
+	    ARSHIFT,
+	    XOR
+    };
+
+    enum CJUMP { 
+        EQ,
+        NE, 
+        LT, 
+        GT, 
+        LE,
+        GE, 
+        ULT, 
+        ULE, 
+        UGT, 
+        UGE
+    };
+
+}

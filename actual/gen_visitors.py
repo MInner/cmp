@@ -93,6 +93,6 @@ public:
 	f.write('\n};')
 
 def main():
-	gen_visitor_scafold("TypeCheckerVisitor")
+	gen_visitor_scafold("IRTreeVisitor")
 
 main()

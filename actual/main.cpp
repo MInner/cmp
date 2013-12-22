@@ -8,6 +8,7 @@
 #include "typecheckervisitor.h"
 #include "classes.h"
 #include "symbol.h"
+#include "irtreevisitor.h"
 
 extern int yyparse();
 
@@ -35,6 +36,8 @@ int main(void){
 	TypeCheckerVisitor* tch = new TypeCheckerVisitor(ctable);
 	ProgramImpl::me->Accept(tch);
 
-
+	std::cout << "--- Building Intermediate tree ---" << std::endl;
+	IRTreeVisitor* irvisitor = new IRTreeVisitor();
+	ProgramImpl::me->Accept(irvisitor);
 	return 0;
 }

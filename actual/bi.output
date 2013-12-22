@@ -1,0 +1,1764 @@
+Терминалы не используются в грамматике
+
+   BOOLEAN
+
+
+Грамматика
+
+    0 $accept: program $end
+
+    1 program: mainClass classDeclarations
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    3 classDeclarations: /* пусто */
+    4                  | classDeclaration classDeclarations
+
+    5 classDeclaration: CLASS ID '{' varDeclarations methodDeclarations '}'
+    6                 | CLASS ID EXTENDS ID '{' varDeclarations methodDeclarations '}'
+
+    7 varDeclarations: /* пусто */
+    8                | varDeclarations varDeclaration
+
+    9 varDeclaration: type ID ';'
+
+   10 methodDeclarations: /* пусто */
+   11                   | methodDeclaration methodDeclarations
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
+
+   13 statements: /* пусто */
+   14           | statement statements
+
+   15 statement: '{' statements '}'
+   16          | assignment ';'
+   17          | IF '(' expression ')' statement ELSE statement
+   18          | WHILE '(' expression ')' statement
+   19          | SYSPRINT '(' expression ')' ';'
+   20          | ID '[' expression ']' ASSIGN expression ';'
+
+   21 type: INT_TYPE '[' ']'
+   22     | BOOLEAN_TYPE
+   23     | STRING_TYPE
+   24     | INT_TYPE
+   25     | ID
+
+   26 arguements: /* пусто */
+   27           | arguement ',' arguements
+   28           | arguement
+
+   29 arguement: type ID
+
+   30 assignment: ID ASSIGN expression
+
+   31 expression: expression '+' expression
+   32           | expression '-' expression
+   33           | expression '*' expression
+   34           | expression '/' expression
+   35           | expression AND expression
+   36           | expression LT expression
+   37           | expression '[' expression ']'
+   38           | expression '.' LENGTH
+   39           | expression '.' ID '(' expressionList ')'
+   40           | INTEGER
+   41           | TRUE
+   42           | FALSE
+   43           | ID
+   44           | THIS
+   45           | NEW INT_TYPE '[' expression ']'
+   46           | NEW ID '(' ')'
+   47           | '!' expression
+   48           | '(' expression ')'
+
+   49 expressionList: /* пусто */
+   50               | expression ',' expressionList
+   51               | expression
+
+
+Терминальные символы с правилами, в которых они появляются
+
+$end (0) 0
+'!' (33) 47
+'(' (40) 2 12 17 18 19 39 46 48
+')' (41) 2 12 17 18 19 39 46 48
+'*' (42) 33
+'+' (43) 31
+',' (44) 27 50
+'-' (45) 32
+'.' (46) 38 39
+'/' (47) 34
+';' (59) 9 12 16 19 20
+'[' (91) 2 20 21 37 45
+']' (93) 2 20 21 37 45
+'{' (123) 2 5 6 12 15
+'}' (125) 2 5 6 12 15
+error (256)
+INTEGER (258) 40
+BOOLEAN (259)
+ID (260) 2 5 6 9 12 20 25 29 30 39 43 46
+CLASS (261) 2 5 6
+EXTENDS (262) 6
+PUBLIC (263) 2 12
+STATIC (264) 2
+MAIN (265) 2
+IF (266) 17
+WHILE (267) 18
+TRUE (268) 41
+FALSE (269) 42
+NEW (270) 45 46
+THIS (271) 44
+VOID (272) 2
+RETURN (273) 12
+SYSPRINT (274) 19
+LENGTH (275) 38
+ELSE (276) 17
+INT_TYPE (277) 21 24 45
+BOOLEAN_TYPE (278) 22
+STRING_TYPE (279) 2 23
+ASSIGN (280) 20 30
+AND (281) 35
+LT (282) 36
+
+
+Нетерминальные символы с правилами, в которых они появляются
+
+$accept (42)
+    налево: 0
+program (43)
+    налево: 1, направо: 0
+mainClass (44)
+    налево: 2, направо: 1
+classDeclarations (45)
+    налево: 3 4, направо: 1 4
+classDeclaration (46)
+    налево: 5 6, направо: 4
+varDeclarations (47)
+    налево: 7 8, направо: 5 6 8 12
+varDeclaration (48)
+    налево: 9, направо: 8
+methodDeclarations (49)
+    налево: 10 11, направо: 5 6 11
+methodDeclaration (50)
+    налево: 12, направо: 11
+statements (51)
+    налево: 13 14, направо: 12 14 15
+statement (52)
+    налево: 15 16 17 18 19 20, направо: 2 14 17 18
+type (53)
+    налево: 21 22 23 24 25, направо: 9 12 29
+arguements (54)
+    налево: 26 27 28, направо: 12 27
+arguement (55)
+    налево: 29, направо: 27 28
+assignment (56)
+    налево: 30, направо: 16
+expression (57)
+    налево: 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+    48, направо: 12 17 18 19 20 30 31 32 33 34 35 36 37 38 39
+    45 47 48 50 51
+expressionList (58)
+    налево: 49 50 51, направо: 39 50
+
+
+состояние 0
+
+    0 $accept: . program $end
+
+    CLASS  сдвиг, и переход в состояние 1
+
+    program    переход в состояние 2
+    mainClass  переход в состояние 3
+
+
+состояние 1
+
+    2 mainClass: CLASS . ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    ID  сдвиг, и переход в состояние 4
+
+
+состояние 2
+
+    0 $accept: program . $end
+
+    $end  сдвиг, и переход в состояние 5
+
+
+состояние 3
+
+    1 program: mainClass . classDeclarations
+
+    CLASS  сдвиг, и переход в состояние 6
+
+    $default  вывод с использованием правила 3 (classDeclarations)
+
+    classDeclarations  переход в состояние 7
+    classDeclaration   переход в состояние 8
+
+
+состояние 4
+
+    2 mainClass: CLASS ID . '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    '{'  сдвиг, и переход в состояние 9
+
+
+состояние 5
+
+    0 $accept: program $end .
+
+    $default  принять
+
+
+состояние 6
+
+    5 classDeclaration: CLASS . ID '{' varDeclarations methodDeclarations '}'
+    6                 | CLASS . ID EXTENDS ID '{' varDeclarations methodDeclarations '}'
+
+    ID  сдвиг, и переход в состояние 10
+
+
+состояние 7
+
+    1 program: mainClass classDeclarations .
+
+    $default  вывод с использованием правила 1 (program)
+
+
+состояние 8
+
+    4 classDeclarations: classDeclaration . classDeclarations
+
+    CLASS  сдвиг, и переход в состояние 6
+
+    $default  вывод с использованием правила 3 (classDeclarations)
+
+    classDeclarations  переход в состояние 11
+    classDeclaration   переход в состояние 8
+
+
+состояние 9
+
+    2 mainClass: CLASS ID '{' . PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    PUBLIC  сдвиг, и переход в состояние 12
+
+
+состояние 10
+
+    5 classDeclaration: CLASS ID . '{' varDeclarations methodDeclarations '}'
+    6                 | CLASS ID . EXTENDS ID '{' varDeclarations methodDeclarations '}'
+
+    EXTENDS  сдвиг, и переход в состояние 13
+    '{'      сдвиг, и переход в состояние 14
+
+
+состояние 11
+
+    4 classDeclarations: classDeclaration classDeclarations .
+
+    $default  вывод с использованием правила 4 (classDeclarations)
+
+
+состояние 12
+
+    2 mainClass: CLASS ID '{' PUBLIC . STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    STATIC  сдвиг, и переход в состояние 15
+
+
+состояние 13
+
+    6 classDeclaration: CLASS ID EXTENDS . ID '{' varDeclarations methodDeclarations '}'
+
+    ID  сдвиг, и переход в состояние 16
+
+
+состояние 14
+
+    5 classDeclaration: CLASS ID '{' . varDeclarations methodDeclarations '}'
+
+    $default  вывод с использованием правила 7 (varDeclarations)
+
+    varDeclarations  переход в состояние 17
+
+
+состояние 15
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC . VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    VOID  сдвиг, и переход в состояние 18
+
+
+состояние 16
+
+    6 classDeclaration: CLASS ID EXTENDS ID . '{' varDeclarations methodDeclarations '}'
+
+    '{'  сдвиг, и переход в состояние 19
+
+
+состояние 17
+
+    5 classDeclaration: CLASS ID '{' varDeclarations . methodDeclarations '}'
+    8 varDeclarations: varDeclarations . varDeclaration
+
+    ID            сдвиг, и переход в состояние 20
+    PUBLIC        сдвиг, и переход в состояние 21
+    INT_TYPE      сдвиг, и переход в состояние 22
+    BOOLEAN_TYPE  сдвиг, и переход в состояние 23
+    STRING_TYPE   сдвиг, и переход в состояние 24
+
+    $default  вывод с использованием правила 10 (methodDeclarations)
+
+    varDeclaration      переход в состояние 25
+    methodDeclarations  переход в состояние 26
+    methodDeclaration   переход в состояние 27
+    type                переход в состояние 28
+
+
+состояние 18
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID . MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    MAIN  сдвиг, и переход в состояние 29
+
+
+состояние 19
+
+    6 classDeclaration: CLASS ID EXTENDS ID '{' . varDeclarations methodDeclarations '}'
+
+    $default  вывод с использованием правила 7 (varDeclarations)
+
+    varDeclarations  переход в состояние 30
+
+
+состояние 20
+
+   25 type: ID .
+
+    $default  вывод с использованием правила 25 (type)
+
+
+состояние 21
+
+   12 methodDeclaration: PUBLIC . type ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
+
+    ID            сдвиг, и переход в состояние 20
+    INT_TYPE      сдвиг, и переход в состояние 22
+    BOOLEAN_TYPE  сдвиг, и переход в состояние 23
+    STRING_TYPE   сдвиг, и переход в состояние 24
+
+    type  переход в состояние 31
+
+
+состояние 22
+
+   21 type: INT_TYPE . '[' ']'
+   24     | INT_TYPE .
+
+    '['  сдвиг, и переход в состояние 32
+
+    $default  вывод с использованием правила 24 (type)
+
+
+состояние 23
+
+   22 type: BOOLEAN_TYPE .
+
+    $default  вывод с использованием правила 22 (type)
+
+
+состояние 24
+
+   23 type: STRING_TYPE .
+
+    $default  вывод с использованием правила 23 (type)
+
+
+состояние 25
+
+    8 varDeclarations: varDeclarations varDeclaration .
+
+    $default  вывод с использованием правила 8 (varDeclarations)
+
+
+состояние 26
+
+    5 classDeclaration: CLASS ID '{' varDeclarations methodDeclarations . '}'
+
+    '}'  сдвиг, и переход в состояние 33
+
+
+состояние 27
+
+   11 methodDeclarations: methodDeclaration . methodDeclarations
+
+    PUBLIC  сдвиг, и переход в состояние 21
+
+    $default  вывод с использованием правила 10 (methodDeclarations)
+
+    methodDeclarations  переход в состояние 34
+    methodDeclaration   переход в состояние 27
+
+
+состояние 28
+
+    9 varDeclaration: type . ID ';'
+
+    ID  сдвиг, и переход в состояние 35
+
+
+состояние 29
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN . '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    '('  сдвиг, и переход в состояние 36
+
+
+состояние 30
+
+    6 classDeclaration: CLASS ID EXTENDS ID '{' varDeclarations . methodDeclarations '}'
+    8 varDeclarations: varDeclarations . varDeclaration
+
+    ID            сдвиг, и переход в состояние 20
+    PUBLIC        сдвиг, и переход в состояние 21
+    INT_TYPE      сдвиг, и переход в состояние 22
+    BOOLEAN_TYPE  сдвиг, и переход в состояние 23
+    STRING_TYPE   сдвиг, и переход в состояние 24
+
+    $default  вывод с использованием правила 10 (methodDeclarations)
+
+    varDeclaration      переход в состояние 25
+    methodDeclarations  переход в состояние 37
+    methodDeclaration   переход в состояние 27
+    type                переход в состояние 28
+
+
+состояние 31
+
+   12 methodDeclaration: PUBLIC type . ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
+
+    ID  сдвиг, и переход в состояние 38
+
+
+состояние 32
+
+   21 type: INT_TYPE '[' . ']'
+
+    ']'  сдвиг, и переход в состояние 39
+
+
+состояние 33
+
+    5 classDeclaration: CLASS ID '{' varDeclarations methodDeclarations '}' .
+
+    $default  вывод с использованием правила 5 (classDeclaration)
+
+
+состояние 34
+
+   11 methodDeclarations: methodDeclaration methodDeclarations .
+
+    $default  вывод с использованием правила 11 (methodDeclarations)
+
+
+состояние 35
+
+    9 varDeclaration: type ID . ';'
+
+    ';'  сдвиг, и переход в состояние 40
+
+
+состояние 36
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' . STRING_TYPE '[' ']' ID ')' '{' statement '}' '}'
+
+    STRING_TYPE  сдвиг, и переход в состояние 41
+
+
+состояние 37
+
+    6 classDeclaration: CLASS ID EXTENDS ID '{' varDeclarations methodDeclarations . '}'
+
+    '}'  сдвиг, и переход в состояние 42
+
+
+состояние 38
+
+   12 methodDeclaration: PUBLIC type ID . '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
+
+    '('  сдвиг, и переход в состояние 43
+
+
+состояние 39
+
+   21 type: INT_TYPE '[' ']' .
+
+    $default  вывод с использованием правила 21 (type)
+
+
+состояние 40
+
+    9 varDeclaration: type ID ';' .
+
+    $default  вывод с использованием правила 9 (varDeclaration)
+
+
+состояние 41
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE . '[' ']' ID ')' '{' statement '}' '}'
+
+    '['  сдвиг, и переход в состояние 44
+
+
+состояние 42
+
+    6 classDeclaration: CLASS ID EXTENDS ID '{' varDeclarations methodDeclarations '}' .
+
+    $default  вывод с использованием правила 6 (classDeclaration)
+
+
+состояние 43
+
+   12 methodDeclaration: PUBLIC type ID '(' . arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
+
+    ID            сдвиг, и переход в состояние 20
+    INT_TYPE      сдвиг, и переход в состояние 22
+    BOOLEAN_TYPE  сдвиг, и переход в состояние 23
+    STRING_TYPE   сдвиг, и переход в состояние 24
+
+    $default  вывод с использованием правила 26 (arguements)
+
+    type        переход в состояние 45
+    arguements  переход в состояние 46
+    arguement   переход в состояние 47
+
+
+состояние 44
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' . ']' ID ')' '{' statement '}' '}'
+
+    ']'  сдвиг, и переход в состояние 48
+
+
+состояние 45
+
+   29 arguement: type . ID
+
+    ID  сдвиг, и переход в состояние 49
+
+
+состояние 46
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements . ')' '{' varDeclarations statements RETURN expression ';' '}'
+
+    ')'  сдвиг, и переход в состояние 50
+
+
+состояние 47
+
+   27 arguements: arguement . ',' arguements
+   28           | arguement .
+
+    ','  сдвиг, и переход в состояние 51
+
+    $default  вывод с использованием правила 28 (arguements)
+
+
+состояние 48
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' . ID ')' '{' statement '}' '}'
+
+    ID  сдвиг, и переход в состояние 52
+
+
+состояние 49
+
+   29 arguement: type ID .
+
+    $default  вывод с использованием правила 29 (arguement)
+
+
+состояние 50
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' . '{' varDeclarations statements RETURN expression ';' '}'
+
+    '{'  сдвиг, и переход в состояние 53
+
+
+состояние 51
+
+   27 arguements: arguement ',' . arguements
+
+    ID            сдвиг, и переход в состояние 20
+    INT_TYPE      сдвиг, и переход в состояние 22
+    BOOLEAN_TYPE  сдвиг, и переход в состояние 23
+    STRING_TYPE   сдвиг, и переход в состояние 24
+
+    $default  вывод с использованием правила 26 (arguements)
+
+    type        переход в состояние 45
+    arguements  переход в состояние 54
+    arguement   переход в состояние 47
+
+
+состояние 52
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID . ')' '{' statement '}' '}'
+
+    ')'  сдвиг, и переход в состояние 55
+
+
+состояние 53
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' . varDeclarations statements RETURN expression ';' '}'
+
+    $default  вывод с использованием правила 7 (varDeclarations)
+
+    varDeclarations  переход в состояние 56
+
+
+состояние 54
+
+   27 arguements: arguement ',' arguements .
+
+    $default  вывод с использованием правила 27 (arguements)
+
+
+состояние 55
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' . '{' statement '}' '}'
+
+    '{'  сдвиг, и переход в состояние 57
+
+
+состояние 56
+
+    8 varDeclarations: varDeclarations . varDeclaration
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' varDeclarations . statements RETURN expression ';' '}'
+
+    ID            сдвиг, и переход в состояние 58
+    IF            сдвиг, и переход в состояние 59
+    WHILE         сдвиг, и переход в состояние 60
+    SYSPRINT      сдвиг, и переход в состояние 61
+    INT_TYPE      сдвиг, и переход в состояние 22
+    BOOLEAN_TYPE  сдвиг, и переход в состояние 23
+    STRING_TYPE   сдвиг, и переход в состояние 24
+    '{'           сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 13 (statements)
+
+    varDeclaration  переход в состояние 25
+    statements      переход в состояние 63
+    statement       переход в состояние 64
+    type            переход в состояние 28
+    assignment      переход в состояние 65
+
+
+состояние 57
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' . statement '}' '}'
+
+    ID        сдвиг, и переход в состояние 66
+    IF        сдвиг, и переход в состояние 59
+    WHILE     сдвиг, и переход в состояние 60
+    SYSPRINT  сдвиг, и переход в состояние 61
+    '{'       сдвиг, и переход в состояние 62
+
+    statement   переход в состояние 67
+    assignment  переход в состояние 65
+
+
+состояние 58
+
+   20 statement: ID . '[' expression ']' ASSIGN expression ';'
+   25 type: ID .
+   30 assignment: ID . ASSIGN expression
+
+    '['     сдвиг, и переход в состояние 68
+    ASSIGN  сдвиг, и переход в состояние 69
+
+    $default  вывод с использованием правила 25 (type)
+
+
+состояние 59
+
+   17 statement: IF . '(' expression ')' statement ELSE statement
+
+    '('  сдвиг, и переход в состояние 70
+
+
+состояние 60
+
+   18 statement: WHILE . '(' expression ')' statement
+
+    '('  сдвиг, и переход в состояние 71
+
+
+состояние 61
+
+   19 statement: SYSPRINT . '(' expression ')' ';'
+
+    '('  сдвиг, и переход в состояние 72
+
+
+состояние 62
+
+   15 statement: '{' . statements '}'
+
+    ID        сдвиг, и переход в состояние 66
+    IF        сдвиг, и переход в состояние 59
+    WHILE     сдвиг, и переход в состояние 60
+    SYSPRINT  сдвиг, и переход в состояние 61
+    '{'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 13 (statements)
+
+    statements  переход в состояние 73
+    statement   переход в состояние 64
+    assignment  переход в состояние 65
+
+
+состояние 63
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' varDeclarations statements . RETURN expression ';' '}'
+
+    RETURN  сдвиг, и переход в состояние 74
+
+
+состояние 64
+
+   14 statements: statement . statements
+
+    ID        сдвиг, и переход в состояние 66
+    IF        сдвиг, и переход в состояние 59
+    WHILE     сдвиг, и переход в состояние 60
+    SYSPRINT  сдвиг, и переход в состояние 61
+    '{'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 13 (statements)
+
+    statements  переход в состояние 75
+    statement   переход в состояние 64
+    assignment  переход в состояние 65
+
+
+состояние 65
+
+   16 statement: assignment . ';'
+
+    ';'  сдвиг, и переход в состояние 76
+
+
+состояние 66
+
+   20 statement: ID . '[' expression ']' ASSIGN expression ';'
+   30 assignment: ID . ASSIGN expression
+
+    '['     сдвиг, и переход в состояние 68
+    ASSIGN  сдвиг, и переход в состояние 69
+
+
+состояние 67
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement . '}' '}'
+
+    '}'  сдвиг, и переход в состояние 77
+
+
+состояние 68
+
+   20 statement: ID '[' . expression ']' ASSIGN expression ';'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 86
+
+
+состояние 69
+
+   30 assignment: ID ASSIGN . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 87
+
+
+состояние 70
+
+   17 statement: IF '(' . expression ')' statement ELSE statement
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 88
+
+
+состояние 71
+
+   18 statement: WHILE '(' . expression ')' statement
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 89
+
+
+состояние 72
+
+   19 statement: SYSPRINT '(' . expression ')' ';'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 90
+
+
+состояние 73
+
+   15 statement: '{' statements . '}'
+
+    '}'  сдвиг, и переход в состояние 91
+
+
+состояние 74
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN . expression ';' '}'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 92
+
+
+состояние 75
+
+   14 statements: statement statements .
+
+    $default  вывод с использованием правила 14 (statements)
+
+
+состояние 76
+
+   16 statement: assignment ';' .
+
+    $default  вывод с использованием правила 16 (statement)
+
+
+состояние 77
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' . '}'
+
+    '}'  сдвиг, и переход в состояние 93
+
+
+состояние 78
+
+   40 expression: INTEGER .
+
+    $default  вывод с использованием правила 40 (expression)
+
+
+состояние 79
+
+   43 expression: ID .
+
+    $default  вывод с использованием правила 43 (expression)
+
+
+состояние 80
+
+   41 expression: TRUE .
+
+    $default  вывод с использованием правила 41 (expression)
+
+
+состояние 81
+
+   42 expression: FALSE .
+
+    $default  вывод с использованием правила 42 (expression)
+
+
+состояние 82
+
+   45 expression: NEW . INT_TYPE '[' expression ']'
+   46           | NEW . ID '(' ')'
+
+    ID        сдвиг, и переход в состояние 94
+    INT_TYPE  сдвиг, и переход в состояние 95
+
+
+состояние 83
+
+   44 expression: THIS .
+
+    $default  вывод с использованием правила 44 (expression)
+
+
+состояние 84
+
+   47 expression: '!' . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 96
+
+
+состояние 85
+
+   48 expression: '(' . expression ')'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 97
+
+
+состояние 86
+
+   20 statement: ID '[' expression . ']' ASSIGN expression ';'
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    ']'  сдвиг, и переход в состояние 100
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+
+состояние 87
+
+   30 assignment: ID ASSIGN expression .
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+    $default  вывод с использованием правила 30 (assignment)
+
+
+состояние 88
+
+   17 statement: IF '(' expression . ')' statement ELSE statement
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+    ')'  сдвиг, и переход в состояние 107
+
+
+состояние 89
+
+   18 statement: WHILE '(' expression . ')' statement
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+    ')'  сдвиг, и переход в состояние 108
+
+
+состояние 90
+
+   19 statement: SYSPRINT '(' expression . ')' ';'
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+    ')'  сдвиг, и переход в состояние 109
+
+
+состояние 91
+
+   15 statement: '{' statements '}' .
+
+    $default  вывод с использованием правила 15 (statement)
+
+
+состояние 92
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN expression . ';' '}'
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+    ';'  сдвиг, и переход в состояние 110
+
+
+состояние 93
+
+    2 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '(' STRING_TYPE '[' ']' ID ')' '{' statement '}' '}' .
+
+    $default  вывод с использованием правила 2 (mainClass)
+
+
+состояние 94
+
+   46 expression: NEW ID . '(' ')'
+
+    '('  сдвиг, и переход в состояние 111
+
+
+состояние 95
+
+   45 expression: NEW INT_TYPE . '[' expression ']'
+
+    '['  сдвиг, и переход в состояние 112
+
+
+состояние 96
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+   47           | '!' expression .
+
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+    $default  вывод с использованием правила 47 (expression)
+
+
+состояние 97
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+   48           | '(' expression . ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+    ')'  сдвиг, и переход в состояние 113
+
+
+состояние 98
+
+   38 expression: expression '.' . LENGTH
+   39           | expression '.' . ID '(' expressionList ')'
+
+    ID      сдвиг, и переход в состояние 114
+    LENGTH  сдвиг, и переход в состояние 115
+
+
+состояние 99
+
+   37 expression: expression '[' . expression ']'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 116
+
+
+состояние 100
+
+   20 statement: ID '[' expression ']' . ASSIGN expression ';'
+
+    ASSIGN  сдвиг, и переход в состояние 117
+
+
+состояние 101
+
+   35 expression: expression AND . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 118
+
+
+состояние 102
+
+   36 expression: expression LT . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 119
+
+
+состояние 103
+
+   31 expression: expression '+' . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 120
+
+
+состояние 104
+
+   32 expression: expression '-' . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 121
+
+
+состояние 105
+
+   33 expression: expression '*' . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 122
+
+
+состояние 106
+
+   34 expression: expression '/' . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 123
+
+
+состояние 107
+
+   17 statement: IF '(' expression ')' . statement ELSE statement
+
+    ID        сдвиг, и переход в состояние 66
+    IF        сдвиг, и переход в состояние 59
+    WHILE     сдвиг, и переход в состояние 60
+    SYSPRINT  сдвиг, и переход в состояние 61
+    '{'       сдвиг, и переход в состояние 62
+
+    statement   переход в состояние 124
+    assignment  переход в состояние 65
+
+
+состояние 108
+
+   18 statement: WHILE '(' expression ')' . statement
+
+    ID        сдвиг, и переход в состояние 66
+    IF        сдвиг, и переход в состояние 59
+    WHILE     сдвиг, и переход в состояние 60
+    SYSPRINT  сдвиг, и переход в состояние 61
+    '{'       сдвиг, и переход в состояние 62
+
+    statement   переход в состояние 125
+    assignment  переход в состояние 65
+
+
+состояние 109
+
+   19 statement: SYSPRINT '(' expression ')' . ';'
+
+    ';'  сдвиг, и переход в состояние 126
+
+
+состояние 110
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' . '}'
+
+    '}'  сдвиг, и переход в состояние 127
+
+
+состояние 111
+
+   46 expression: NEW ID '(' . ')'
+
+    ')'  сдвиг, и переход в состояние 128
+
+
+состояние 112
+
+   45 expression: NEW INT_TYPE '[' . expression ']'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 129
+
+
+состояние 113
+
+   48 expression: '(' expression ')' .
+
+    $default  вывод с использованием правила 48 (expression)
+
+
+состояние 114
+
+   39 expression: expression '.' ID . '(' expressionList ')'
+
+    '('  сдвиг, и переход в состояние 130
+
+
+состояние 115
+
+   38 expression: expression '.' LENGTH .
+
+    $default  вывод с использованием правила 38 (expression)
+
+
+состояние 116
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   37           | expression '[' expression . ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    ']'  сдвиг, и переход в состояние 131
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+
+состояние 117
+
+   20 statement: ID '[' expression ']' ASSIGN . expression ';'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 132
+
+
+состояние 118
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   35           | expression AND expression .
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+    $default  вывод с использованием правила 35 (expression)
+
+
+состояние 119
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   36           | expression LT expression .
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+    $default  вывод с использованием правила 36 (expression)
+
+
+состояние 120
+
+   31 expression: expression . '+' expression
+   31           | expression '+' expression .
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+    $default  вывод с использованием правила 31 (expression)
+
+
+состояние 121
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   32           | expression '-' expression .
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+    $default  вывод с использованием правила 32 (expression)
+
+
+состояние 122
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   33           | expression '*' expression .
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '/'  сдвиг, и переход в состояние 106
+
+    $default  вывод с использованием правила 33 (expression)
+
+
+состояние 123
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   34           | expression '/' expression .
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    $default  вывод с использованием правила 34 (expression)
+
+
+состояние 124
+
+   17 statement: IF '(' expression ')' statement . ELSE statement
+
+    ELSE  сдвиг, и переход в состояние 133
+
+
+состояние 125
+
+   18 statement: WHILE '(' expression ')' statement .
+
+    $default  вывод с использованием правила 18 (statement)
+
+
+состояние 126
+
+   19 statement: SYSPRINT '(' expression ')' ';' .
+
+    $default  вывод с использованием правила 19 (statement)
+
+
+состояние 127
+
+   12 methodDeclaration: PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}' .
+
+    $default  вывод с использованием правила 12 (methodDeclaration)
+
+
+состояние 128
+
+   46 expression: NEW ID '(' ')' .
+
+    $default  вывод с использованием правила 46 (expression)
+
+
+состояние 129
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+   45           | NEW INT_TYPE '[' expression . ']'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    ']'  сдвиг, и переход в состояние 134
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+
+
+состояние 130
+
+   39 expression: expression '.' ID '(' . expressionList ')'
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    $default  вывод с использованием правила 49 (expressionList)
+
+    expression      переход в состояние 135
+    expressionList  переход в состояние 136
+
+
+состояние 131
+
+   37 expression: expression '[' expression ']' .
+
+    $default  вывод с использованием правила 37 (expression)
+
+
+состояние 132
+
+   20 statement: ID '[' expression ']' ASSIGN expression . ';'
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+    ';'  сдвиг, и переход в состояние 137
+
+
+состояние 133
+
+   17 statement: IF '(' expression ')' statement ELSE . statement
+
+    ID        сдвиг, и переход в состояние 66
+    IF        сдвиг, и переход в состояние 59
+    WHILE     сдвиг, и переход в состояние 60
+    SYSPRINT  сдвиг, и переход в состояние 61
+    '{'       сдвиг, и переход в состояние 62
+
+    statement   переход в состояние 138
+    assignment  переход в состояние 65
+
+
+состояние 134
+
+   45 expression: NEW INT_TYPE '[' expression ']' .
+
+    $default  вывод с использованием правила 45 (expression)
+
+
+состояние 135
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+   50 expressionList: expression . ',' expressionList
+   51               | expression .
+
+    '.'  сдвиг, и переход в состояние 98
+    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 101
+    LT   сдвиг, и переход в состояние 102
+    '+'  сдвиг, и переход в состояние 103
+    '-'  сдвиг, и переход в состояние 104
+    '*'  сдвиг, и переход в состояние 105
+    '/'  сдвиг, и переход в состояние 106
+    ','  сдвиг, и переход в состояние 139
+
+    $default  вывод с использованием правила 51 (expressionList)
+
+
+состояние 136
+
+   39 expression: expression '.' ID '(' expressionList . ')'
+
+    ')'  сдвиг, и переход в состояние 140
+
+
+состояние 137
+
+   20 statement: ID '[' expression ']' ASSIGN expression ';' .
+
+    $default  вывод с использованием правила 20 (statement)
+
+
+состояние 138
+
+   17 statement: IF '(' expression ')' statement ELSE statement .
+
+    $default  вывод с использованием правила 17 (statement)
+
+
+состояние 139
+
+   50 expressionList: expression ',' . expressionList
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    $default  вывод с использованием правила 49 (expressionList)
+
+    expression      переход в состояние 135
+    expressionList  переход в состояние 141
+
+
+состояние 140
+
+   39 expression: expression '.' ID '(' expressionList ')' .
+
+    $default  вывод с использованием правила 39 (expression)
+
+
+состояние 141
+
+   50 expressionList: expression ',' expressionList .
+
+    $default  вывод с использованием правила 50 (expressionList)
