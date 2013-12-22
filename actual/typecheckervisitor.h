@@ -186,8 +186,8 @@ public:
 	}
 	int visit(const CallMethodExp* n)
 	{
-		if(n->exp) { n->exp->Accept(this); }
-		if (type.isInternal == true) 
+		if (n->exp) { n->exp->Accept(this); }
+		if (type.isInternal == true)
 		{
 			std::cout << "WARNING: Trying to call method of internal method" << std::endl;
 		}
@@ -200,6 +200,8 @@ public:
 			std::cout << "WARNING: No such method at class" << std::endl;
 
 		if(n->list) { n->list->Accept(this); }
+
+		type = mi->returnType;
 		return 0;
 	}
 	int visit(const NewIntArrExp* n)
@@ -382,6 +384,10 @@ public:
 		if(n->statements) { n->statements->Accept(this); }
 		if(n->exp) { n->exp->Accept(this); }
 
+		if ( !(type == curmethod->returnType) )
+		{
+			std::cout << "WARNING: Return type of method " << curmethod->name << " is wrong" << std::endl;
+		}
 		curmethod = NULL;
 
 		return 0;

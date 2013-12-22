@@ -6,7 +6,6 @@ namespace Translate
 		const Tree::Statement* toStatement() const = 0;
 		const Tree::Statement* toConditional() const = 0;
 		
-		
 	};
 	class Statement{
 	public:
