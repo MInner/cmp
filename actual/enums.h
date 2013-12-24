@@ -48,7 +48,10 @@ BINOP.OR, BINOP.LSHIFT, BINOP.RSHIFT, BINOP.ARSHIFT, BINOP.XOR;
 CJUMP.EQ, CJUMP.NE, CJUMP.LT, CJUMP.GT, CJUMP.LE,
 CJUMP.GE, CJUMP.ULT, CJUMP.ULE, CJUMP.UGT, CJUMP.UGE;
 */
-namespace IRTree{
+namespace IRTree
+{
+	namespace OPERATOR
+	{
     enum BINOP {
 	    PLUS,
 	    MINUS, 
@@ -62,7 +65,7 @@ namespace IRTree{
 	    XOR
     };
 
-    enum CJUMP { 
+    enum CONDOP { 
         EQ,
         NE, 
         LT, 
@@ -74,5 +77,6 @@ namespace IRTree{
         UGT, 
         UGE
     };
+	}
 
 }

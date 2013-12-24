@@ -50,8 +50,8 @@ ID [a-zA-Z_][a-zA-Z0-9_-]*
 "<" 			{update_loc(); n_chars += 1; return LT; }
 "=" 			{update_loc(); n_chars += 1; return ASSIGN; }
 
-"true"			{update_loc(); n_chars += 4; yylval.intval = 1; return BOOLEAN; }
-"false"			{update_loc(); n_chars += 5; yylval.intval = 0; return BOOLEAN; }
+"true"			{update_loc(); n_chars += 4; yylval.intval = 1; return TRUE; }
+"false"			{update_loc(); n_chars += 5; yylval.intval = 0; return FALSE; }
 
 	/* func */
 "System.out.println"	{update_loc(); n_chars += 18; return SYSPRINT;}

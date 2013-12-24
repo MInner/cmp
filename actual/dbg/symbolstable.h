@@ -3,6 +3,7 @@
 #include <vector>
 #include "symbol.h"
 #include "interfaces.h"
+#include "enums.h"
 
 class ClassInfo;
 class MethodInfo;
@@ -26,32 +27,32 @@ class ClassInfo {
 
 		ClassInfo(const Symbol* name_, const Symbol* parentName_):
 			name(name_), parentName(parentName_){};
-		VarInfo* addField(const Symbol* name_, const IType* type_);
+		VarInfo* addField(const Symbol* name_, TypeData type_);
 		VarInfo* getField(const Symbol* name);
-		MethodInfo* addMethod(const Symbol* name, const IType* returnType);
+		MethodInfo* addMethod(const Symbol* name, TypeData returnType);
 		MethodInfo* getMethod(const Symbol* name);
 };
 
 class MethodInfo {
 	public:
 		const Symbol* name;
-		const IType* returnType;	
+		TypeData returnType;	
 		std::vector<VarInfo*> params;
 		std::vector<VarInfo*> localVars;
 
-		MethodInfo(const Symbol* name_, const IType* returnType_):
+		MethodInfo(const Symbol* name_, TypeData returnType_):
 			name(name_), returnType(returnType_){};
-		VarInfo* addParam(const Symbol* name, const IType* type);
-		VarInfo* getParam(const Symbol* name, const IType* type);
-		VarInfo* addLocalVar(const Symbol* name, const IType* type);
-		VarInfo* getLocalVar(const Symbol* name, const IType* type);
+		VarInfo* addParam(const Symbol* name, TypeData type);
+		VarInfo* getParam(const Symbol* name);
+		VarInfo* addLocalVar(const Symbol* name, TypeData type);
+		VarInfo* getLocalVar(const Symbol* name);
 };
 
 
 class VarInfo {
 	public:
 		const Symbol* name;
-		const IType* type;		
-		VarInfo(const Symbol* name_, const IType* type_):
+		TypeData type;
+		VarInfo(const Symbol* name_, TypeData type_):
 			name(name_), type(type_){};
 };

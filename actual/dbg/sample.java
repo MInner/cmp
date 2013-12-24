@@ -7,17 +7,20 @@ class Factorial {
 class Fac {
 	public int ComputeFac(int num) {
 		int num_aux;
+		bool b;
+		b = true;
 		if (num < 1){
 	  		num_aux = 1;
 		}
 		else
 		{
-			num_aux = num * (this.ComputeFac(num-1));
+			b = 3 < 2;
+			num_aux = num * (this.ComputeFac(num - 1));
 		}
 		return num_aux;
 	}
 
-	public int test1(int var1, int var2, int var3) {
+	public int test1() {
 		int locvar1;
 		int locvar2;
 		int locvar3;
@@ -29,9 +32,11 @@ class B
 {
 	public int do()	{
 		Fac f;
-		f = new Fac();
-		f.ComputeFac(5);
+		Fac d;
 		int a;
+		f = new Fac();
+		a = f.ComputeFac(5);
+		f = d;
 		return a; 
 	}
 }

@@ -104,7 +104,6 @@ public:
 		return v->visit(this);
 	}
 
-
 	const Symbol* id;
 };
 
@@ -113,16 +112,13 @@ public:
 class ThisExp : public IExpression
 {
 public:
-	ThisExp(const Symbol* val_):
-		val(val_) {}
+	ThisExp() {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-
-	const Symbol* val;
 };
 
 class LenExp : public IExpression
@@ -152,7 +148,6 @@ public:
 		return v->visit(this);
 	}
 
-
 	const IExpression* exp;
 	const Symbol* id;
 	const IExpressionList* list;
@@ -176,8 +171,8 @@ public:
 class ArrValExp : public IExpression
 {
 public:
-	ArrValExp(const IExpression* exp_, const IExpression*  inExp_):
-		exp(exp_), inExp(inExp_) {}
+	ArrValExp(const IExpression* exp_, const IExpression*  idExp_):
+		exp(exp_), idExp(idExp_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -186,7 +181,7 @@ public:
 
 
 	const IExpression*  exp;
-	const IExpression*  inExp;
+	const IExpression*  idExp;
 };
 
 // Statement
@@ -273,18 +268,17 @@ public:
 class AssignArrStm : public IStatement
 {
 public:
-	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IStatement*  stm_):
-		exp(exp_), stm(stm_) {}
+	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IExpression*  newexp_):
+		exp(exp_), newexp(newexp_) {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-
 	const Symbol* id;
 	const IExpression*  exp;
-	const IStatement*  stm;
+	const IExpression* newexp;
 };
 
 // StatementsImpl  AssignmentImpl expressionListImpl
@@ -564,8 +558,6 @@ public:
 	{
 		return v->visit(this);
 	}
-
-
 
 	const Symbol* id;
 	const Symbol* argId;

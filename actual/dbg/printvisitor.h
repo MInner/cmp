@@ -4,6 +4,7 @@
 #include "fwdclasses.h"
 #include <iostream>
 #include <string>
+#include "symbol.h"
 
 class PrintVisitor : public IVisitor
 {
@@ -76,7 +77,7 @@ public:
 	int visit(const ThisExp* n)
 	{
 		padding += 1;
-		std::cout << std::string(padding, ' ') << "ThisExp: (" << n->val <<  ")" << std::endl;
+		std::cout << std::string(padding, ' ') << "ThisExp: (" << ")" << std::endl;
 
 		std::cout << std::string(padding, ' ') << "/ThisExp" << std::endl;
 		padding -= 1;
@@ -119,7 +120,7 @@ public:
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "ArrValExp: (" <<  ")" << std::endl;
 		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
-		if(n->inExp) { n->inExp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "inExp::NULL" << std::endl; }
+		if(n->idExp) { n->idExp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "idExp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/ArrValExp" << std::endl;
 		padding -= 1;
 		return 0;
@@ -183,7 +184,7 @@ public:
 		padding += 1;
 		std::cout << std::string(padding, ' ') << "AssignArrStm: (" << n->id <<  ")" << std::endl;
 		if(n->exp) { n->exp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "exp::NULL" << std::endl; }
-		if(n->stm) { n->stm->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "stm::NULL" << std::endl; }
+		if(n->newexp) { n->newexp->Accept(this); } else { std::cout << std::string(padding + 1, ' ') << "newexp::NULL" << std::endl; }
 		std::cout << std::string(padding, ' ') << "/AssignArrStm" << std::endl;
 		padding -= 1;
 		return 0;
@@ -248,6 +249,16 @@ public:
 		std::cout << std::string(padding, ' ') << "InternalType: (" << n->type <<  ")" << std::endl;
 
 		std::cout << std::string(padding, ' ') << "/InternalType" << std::endl;
+		padding -= 1;
+		return 0;
+	}
+
+	int visit(const CustomType* n)
+	{
+		padding += 1;
+		std::cout << std::string(padding, ' ') << "CustomType: (" << n->type <<  ")" << std::endl;
+
+		std::cout << std::string(padding, ' ') << "/CustomType" << std::endl;
 		padding -= 1;
 		return 0;
 	}

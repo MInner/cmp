@@ -32,3 +32,23 @@ class ClassDeclarationsImpl;
 class ClassDeclarationImpl;
 class ProgramImpl;
 class MainClassImpl;
+
+
+namespace IRTree 
+{
+	class CONST;
+	class NAME;
+	class TEMP;
+	class BINOP;
+	class MEM;
+	class CALL;
+	class ESEQ;
+	class MOVE;
+	class EXP;
+	class JUMP;
+	class CJUMP;
+	class SEQ;
+	class LABEL;
+	class ExpList;
+	class StmList;
+}

@@ -904,12 +904,12 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 53 "file.lex"
-{update_loc(); n_chars += 4; yylval.intval = 1; return BOOLEAN; }
+{update_loc(); n_chars += 4; yylval.intval = 1; return TRUE; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 54 "file.lex"
-{update_loc(); n_chars += 5; yylval.intval = 0; return BOOLEAN; }
+{update_loc(); n_chars += 5; yylval.intval = 0; return FALSE; }
 	YY_BREAK
 /* func */
 case 19:

@@ -1,23 +1,8 @@
-#include "treeClasses.h"
+#pragma once
 
-class ITreeVisitor
-{
-public:
-	virtual int visit(const CONST* n) = 0;
-	virtual int visit(const NAME* n) = 0;
-	virtual int visit(const TEMP* n) = 0;
-	virtual int visit(const BINOP* n) = 0;
-	virtual int visit(const MEM* n) = 0;
-	virtual int visit(const CALL* n) = 0;
-	virtual int visit(const ESEQ* n) = 0;
-	virtual int visit(const EXP* n) = 0;
-	virtual int visit(const JUMP* n) = 0;
-	virtual int visit(const CJUMP* n) = 0;
-	virtual int visit(const SEQ* n) = 0;
-	virtual int visit(const LABEL* n) = 0;
-	virtual int visit(const ExpList* n) = 0;
-	virtual int visit(const StmList* n) = 0;
-};
+#include "fwdclasses.h"
+
+namespace IRTree {
 
 class TreeVisitor : public ITreeVisitor
 {
@@ -46,6 +31,10 @@ class TreeVisitor : public ITreeVisitor
 		return 0;
 	}
 	int visit(const ESEQ* n)
+	{
+		return 0;
+	}
+	int visit(const MOVE* n)
 	{
 		return 0;
 	}
@@ -78,3 +67,5 @@ class TreeVisitor : public ITreeVisitor
 		return 0;
 	}
 };
+
+}

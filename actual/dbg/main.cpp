@@ -5,8 +5,12 @@
 #include "bi.hpp"
 #include "printvisitor.h"
 #include "buildtable.h"
+#include "typecheckervisitor.h"
 #include "classes.h"
 #include "symbol.h"
+#include "irtreevisitor.h"
+#include "codefragment.h"
+#include "temp.h"
 
 extern int yyparse();
 
@@ -14,18 +18,36 @@ void yyerror(const char* descr){
 	printf("%s on line #%d\n", descr, yylloc.first_line);
 }
 
-const ProgramImpl* ProgramImpl::me = 0;
+// -- some STATIC things
 
+const ProgramImpl* ProgramImpl::me = 0;
+const TypeData BuildTableVisitor::NULLTYPE = TypeData();
+const TypeData TypeCheckerVisitor::NULLTYPE = TypeData();
+/*int Temp::Temp::curId = 1;
+int Temp::Label::curId = 1;
+*/
+// !- static thigs
 int main(void){
 
-	// std::cout << Symbol::getSymbol("a") << std::endl << Symbol::getSymbol("b") << std::endl << Symbol::getSymbol("a") << std::endl;
-	// const Symbol* d = Symbol::getSymbol("a");
-	// std::cout << d << std::endl;
-
+	std::cout << "--- Building intermediate representation tree --- " << std::endl;
 	yyparse();
+	PrintVisitor* pv = new PrintVisitor();
+	// ProgramImpl::me->Accept(pv);
 
+	std::cout << "--- Building table --- " << std::endl;
 	BuildTableVisitor* rv = new BuildTableVisitor();
-
 	ProgramImpl::me->Accept(rv);
+	ClassTable* ctable = rv->curclasstable;
+
+	std::cout << "--- Checking types ---" << std::endl;
+	TypeCheckerVisitor* tch = new TypeCheckerVisitor(ctable);
+	ProgramImpl::me->Accept(tch);
+
+	std::cout << "--- Building Intermediate tree ---" << std::endl;
+
+	IFrameFactory* fac = new FrameFactory_x86();
+
+	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac);
+	ProgramImpl::me->Accept(irvisitor);
 	return 0;
 }

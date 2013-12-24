@@ -2,7 +2,7 @@ pragma once
 
 #include "fwdIRClasses.h"
 
-class IVisitor
+class ITreeVisitor
 {
 public:
 	virtual int visit(const CONST* n) = 0;

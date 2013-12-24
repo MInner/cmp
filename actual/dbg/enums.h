@@ -2,6 +2,7 @@
 
 #include "symbol.h"
 
+
 namespace Type
 {
 
@@ -13,6 +14,13 @@ namespace Type
 	};
 
 }
+
+struct TypeData
+{
+	bool isInternal; // is internal type
+	Type::Type internalType;
+	const Symbol* customType;
+};
 
 namespace Arithm
 {
@@ -31,4 +39,44 @@ enum Logic {
 	L_LT, 
 	L_NOT	
 };
+}
+
+//other constants:
+/*
+BINOP.PLUS, BINOP.MINUS, BINOP.MUL, BINOP.DIV, BINOP.AND,
+BINOP.OR, BINOP.LSHIFT, BINOP.RSHIFT, BINOP.ARSHIFT, BINOP.XOR;
+CJUMP.EQ, CJUMP.NE, CJUMP.LT, CJUMP.GT, CJUMP.LE,
+CJUMP.GE, CJUMP.ULT, CJUMP.ULE, CJUMP.UGT, CJUMP.UGE;
+*/
+namespace IRTree
+{
+	namespace OPERATOR
+	{
+    enum BINOP {
+	    PLUS,
+	    MINUS, 
+	    MUL,
+	    DIV,
+	    AND,
+	    OR, 
+	    LSHIFT,
+	    RSHIFT,
+	    ARSHIFT,
+	    XOR
+    };
+
+    enum CONDOP { 
+        EQ,
+        NE, 
+        LT, 
+        GT, 
+        LE,
+        GE, 
+        ULT, 
+        ULE, 
+        UGT, 
+        UGE
+    };
+	}
+
 }

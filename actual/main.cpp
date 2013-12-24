@@ -9,6 +9,8 @@
 #include "classes.h"
 #include "symbol.h"
 #include "irtreevisitor.h"
+#include "codefragment.h"
+#include "temp.h"
 
 extern int yyparse();
 
@@ -16,10 +18,15 @@ void yyerror(const char* descr){
 	printf("%s on line #%d\n", descr, yylloc.first_line);
 }
 
+// -- some STATIC things
+
 const ProgramImpl* ProgramImpl::me = 0;
 const TypeData BuildTableVisitor::NULLTYPE = TypeData();
 const TypeData TypeCheckerVisitor::NULLTYPE = TypeData();
-
+/*int Temp::Temp::curId = 1;
+int Temp::Label::curId = 1;
+*/
+// !- static thigs
 int main(void){
 
 	std::cout << "--- Building intermediate representation tree --- " << std::endl;
@@ -37,7 +44,10 @@ int main(void){
 	ProgramImpl::me->Accept(tch);
 
 	std::cout << "--- Building Intermediate tree ---" << std::endl;
-	IRTreeVisitor* irvisitor = new IRTreeVisitor();
+
+	IFrameFactory* fac = new FrameFactory_x86();
+
+	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac);
 	ProgramImpl::me->Accept(irvisitor);
 	return 0;
 }
