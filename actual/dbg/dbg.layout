@@ -4,8 +4,14 @@
 	<File name="classes.h" open="1" top="0" tabpos="2">
 		<Cursor position="8189" topLine="465" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="645" topLine="7" />
+	<File name="frame.h" open="1" top="0" tabpos="8">
+		<Cursor position="119" topLine="3" />
+	</File>
+	<File name="irtreevisitor.h" open="1" top="1" tabpos="10">
+		<Cursor position="399" topLine="12" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="404" topLine="7" />
 	</File>
 	<File name="printvisitor.h" open="1" top="0" tabpos="4">
 		<Cursor position="8897" topLine="222" />
@@ -13,11 +19,14 @@
 	<File name="simple_java.y" open="1" top="0" tabpos="5">
 		<Cursor position="1877" topLine="72" />
 	</File>
-	<File name="symbolstable.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="3461" topLine="88" />
-	</File>
-	<File name="symbolstable.h" open="1" top="0" tabpos="7">
+	<File name="symbolstable.h" open="1" top="0" tabpos="6">
 		<Cursor position="987" topLine="29" />
+	</File>
+	<File name="temp.h" open="1" top="0" tabpos="9">
+		<Cursor position="244" topLine="3" />
+	</File>
+	<File name="typecheckervisitor.h" open="1" top="0" tabpos="7">
+		<Cursor position="2632" topLine="137" />
 	</File>
 	<File name="visitor.h" open="1" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />

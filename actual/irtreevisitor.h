@@ -16,6 +16,7 @@ public:
 
 	const IFrameFactory* frameFactory;
 	Wrapper::IRTreeWrapper* wrapper;
+	IRTree::CodeFragment* curFragment;
 
 	IRTreeVisitor(IFrameFactory* _fac) : frameFactory(_fac) {}
 
@@ -207,8 +208,10 @@ public:
 
 	int visit(const MainClassImpl* n)
 	{
-		IRTree::CodeFragment* cf = new IRTree::CodeFragment( frameFactory->create( NameGenerator::gen( n->id->getStr(), std::string("MAIN") ), 0, 0 ) );
+		curFragment = new IRTree::CodeFragment( frameFactory->create( NameGenerator::gen( n->id->getStr(), std::string("MAIN") ), 0, 0 ) );
 		if(n->stm) { n->stm->Accept(this); }
+		curFragment->body = wrapper->ToStm();
+		curFragment->retval = new IRTree::ESEQ(curFragment->body, new IRTree::CONST (0) );
 		return 0;
 	}
 };

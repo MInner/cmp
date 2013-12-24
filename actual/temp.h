@@ -9,7 +9,7 @@ namespace Temp{
     {
     public: 
         Temp(){
-            name = "TEMP#" + std::to_string(currId++);
+            name = "TEMP#" + std::to_string(curId++);
         }
 
         Temp(const std::string& s){
@@ -20,17 +20,17 @@ namespace Temp{
             return name;
         }
 
+        static int curId;
+
     private:
-        
         std::string name;
-        static int currId;
     }; 
 
     class Label 
     {
     public:
         Label(){
-            name = "LABEL#" + std::to_string(currId++);
+            name = "LABEL#" + std::to_string(curId++);
         }
 
         Label(const std::string& s){
@@ -43,7 +43,7 @@ namespace Temp{
 
     private:
         std::string name;
-        static int currId;
+        static int curId;
     };
 
     class LabelList

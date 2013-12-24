@@ -9,7 +9,7 @@ namespace IRTree {
 	public:
 		CodeFragment( const IFrame* _frame ): frame(_frame) {}
 		const IFrame* frame;
-		const IRTree::IStm* stm;
+		const IRTree::IStm* body;
 		const IRTree::IExp* retval;
 		const IRTree::CodeFragment* next;
 	};

@@ -23,10 +23,14 @@ void yyerror(const char* descr){
 const ProgramImpl* ProgramImpl::me = 0;
 const TypeData BuildTableVisitor::NULLTYPE = TypeData();
 const TypeData TypeCheckerVisitor::NULLTYPE = TypeData();
-/*int Temp::Temp::curId = 1;
-int Temp::Label::curId = 1;
-*/
+namespace Temp
+{
+	int Temp::curId = 1;
+	int Label::curId = 1;
+}
+
 // !- static thigs
+
 int main(void){
 
 	std::cout << "--- Building intermediate representation tree --- " << std::endl;
@@ -50,4 +54,5 @@ int main(void){
 	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac);
 	ProgramImpl::me->Accept(irvisitor);
 	return 0;
+
 }

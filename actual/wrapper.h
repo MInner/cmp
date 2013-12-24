@@ -8,7 +8,7 @@ namespace Wrapper {
 
 class IRTreeWrapper 
 {
-public://vitrual and destructor
+public:
     virtual ~IRTreeWrapper() {};
     
     virtual const IRTree::IExp* ToExp() const = 0;
