@@ -115,7 +115,7 @@ public:
 		if(n->stm) { n->stm->Accept(this); }
 		return 0;
 	}
-	int visit(constIfElseStm* n)
+	int visit(const IfElseStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
 		if(n->stm) { n->stm->Accept(this); }
@@ -129,10 +129,10 @@ public:
 		if(n->newexp) { n->newexp->Accept(this); }
 		wrapper = new Wrapper::StmWrapper(
 			new IRTree::MOVE(
-				IRTree::MEM( 
-					IRTree::BINOP(
+				new IRTree::MEM( 
+					new IRTree::BINOP(
 						IRTree::OPERATOR::PLUS, 
-						IRTree::NAME( new Temp::Label(n->id) ),
+						new IRTree::NAME( new Temp::Label(n->id->getStr() ) ),
 						new IRTree::BINOP(
 							IRTree::OPERATOR::MUL, 
 							index, 
