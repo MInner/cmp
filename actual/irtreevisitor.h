@@ -24,6 +24,8 @@ public:
 	std::map<const Symbol*, int> curMethodArgumentsShifts;
 	std::map<const Symbol*, int> curMethodLocalVariablesShifts;
 
+	IRTree::ExpList* curExpList;
+
 	IRTreeVisitor(IFrameFactory* _fac) : frameFactory(_fac) {}
 
 	int visit(const ArithmExp* n)
@@ -113,7 +115,7 @@ public:
 		if(n->stm) { n->stm->Accept(this); }
 		return 0;
 	}
-	int visit(const IfElseStm* n)
+	int visit(constIfElseStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
 		if(n->stm) { n->stm->Accept(this); }
@@ -123,15 +125,37 @@ public:
 	int visit(const AssignArrStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		const IRTree::IExp* index = wrapper->ToExp();
 		if(n->newexp) { n->newexp->Accept(this); }
+		wrapper = new Wrapper::StmWrapper(
+			new IRTree::MOVE(
+				IRTree::MEM( 
+					IRTree::BINOP(
+						IRTree::OPERATOR::PLUS, 
+						IRTree::NAME( new Temp::Label(n->id) ),
+						new IRTree::BINOP(
+							IRTree::OPERATOR::MUL, 
+							index, 
+							new IRTree::CONST( curFragment->frame->wordSize() ) 
+						)
+					)
+				),
+				wrapper->ToExp()
+			)
+		);
 		return 0;
 	}
 	int visit(const ExpressionListImpl* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		const IRTree::IExp* e = wrapper->ToExp();
+
 		if(n->list) { n->list->Accept(this); }
+		curExpList = new IRTree::ExpList(e, curExpList);
+
 		return 0;
 	}
+
 	int visit(const StatementsImpl* n)
 	{
 		const IRTree::IStm* left = NULL;
