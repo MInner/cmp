@@ -1,15 +1,23 @@
 #pragma once
 
 #include <string>
+#include <sstream>  
 #include "symbol.h"
 
 namespace Temp{
+    template <typename T> 
+    std::string NumberToString(T Number)
+    {
+        std::stringstream ss;
+        ss << Number;
+        return ss.str();
+    }    
 
     class Temp 
     {
     public: 
         Temp(){
-            name = "TEMP#" + std::to_string(curId++);
+            name = "TEMP#" + NumberToString(curId++);
         }
 
         Temp(const std::string& s){
@@ -30,7 +38,7 @@ namespace Temp{
     {
     public:
         Label(){
-            name = "LABEL#" + std::to_string(curId++);
+            name = "LABEL#" + NumberToString(curId++);
         }
 
         Label(const std::string& s){
