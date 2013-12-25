@@ -17,11 +17,11 @@ public:
 			: nargs(_nlocvar), nlocvar(_nlocvar) { name = new Temp::Label(_name); }
 
 	virtual const Temp::Label* getName() const { return name; }
-	virtual int paramsCount() const { return nargs; }
+	virtual int argsCount() const { return nargs; }
 	virtual int localVarCount() const { return nlocvar; }
 
 	virtual int wordSize() const = 0;
-	virtual const IAccess* paramByShift( int shift ) const = 0;
+	virtual const IAccess* argByShift( int shift ) const = 0;
 	virtual const IAccess* localVarByShift( int shift ) const = 0;
 	virtual const Temp::Temp* framePointer() const = 0;
 	virtual const IRTree::IExp* externalCall( const std::string& name, const IRTree::ExpList* args ) const = 0;
@@ -60,7 +60,7 @@ public:
 			: IFrame(_name, _nargs, _nlocvar) {}
 
 	virtual int wordSize() const { return 4; }	
-	virtual const IAccess* paramByShift( int shift ) const { return new AccessX86( this, -1 - shift ); }
+	virtual const IAccess* argByShift( int shift ) const { return new AccessX86( this, -1 - shift ); }
 	virtual const IAccess* localVarByShift( int shift ) const { return new AccessX86( this, shift ); }
 	virtual const Temp::Temp* framePointer() const { return new Temp::Temp( "##FP" ); }
 	virtual const IRTree::IExp* externalCall( const std::string& name, const IRTree::ExpList* args ) const { return new IRTree::CALL( new Temp::Label( name ), args ); }

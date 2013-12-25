@@ -134,20 +134,68 @@ public:
 	}
 	int visit(const StatementsImpl* n)
 	{
-		if(n->stm) { n->stm->Accept(this); }
-		if(n->list) { n->list->Accept(this); }
+		const IRTree::IStm* left = NULL;
+		const IRTree::IStm* right = NULL;
+
+		if(n->stm) 
+		{ 
+			n->stm->Accept(this); 
+			left = wrapper->ToStm();
+		}
+
+		if(n->list) 
+		{
+			n->list->Accept(this);
+			right = wrapper->ToStm();
+		}
+
+		if (left && right) {
+			wrapper = new Wrapper::StmWrapper( new IRTree::SEQ(left, right) );
+			return 0;
+		}
+
+		if (left) {
+			wrapper = new Wrapper::StmWrapper( left );
+			return 0;
+		}
+
+		if (right) {
+			wrapper = new Wrapper::StmWrapper( right );
+			return 0;
+		}
+
+		wrapper = new Wrapper::StmWrapper( new IRTree::EXP( new IRTree::CONST( 0 ) ) );
+
 		return 0;
 	}
+	
 	int visit(const AssignmentImpl* n)
 	{
+		(new IdExp(n->id))->Accept(this);
+		const IRTree::IExp* var = wrapper->ToExp();
 		if(n->exp) { n->exp->Accept(this); }
+		wrapper = new Wrapper::StmWrapper( new IRTree::MOVE(var, wrapper->ToExp()));
 		return 0;
 	}
+
 	int visit(const ArguementImpl* n)
 	{
-		if(n->type) { n->type->Accept(this); }
+		int newshift = curMethodArgumentsShifts.size() + 1;
+		curMethodArgumentsShifts[n->id] = newshift;
+		wrapper = new Wrapper::StmWrapper( 
+			new IRTree::SEQ(
+				wrapper->ToStm(),
+				new IRTree::MOVE(
+					curFragment->frame->argByShift(newshift)->Exp( curFragment->frame->framePointer() ),
+					new IRTree::CONST(0) 
+				)
+			)
+		);
+
+		// if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
+
 	int visit(const ArguementsImpl* n)
 	{
 		if(n->arg) { n->arg->Accept(this); }
@@ -167,11 +215,15 @@ public:
 	int visit(const VarDeclarationImpl* n)
 	{
 		if(n->type) { n->type->Accept(this); }
-		curMethodLocalVariablesShifts[n->id] = curMethodLocalVariablesShifts.size();
+		int newshift = curMethodLocalVariablesShifts.size();
+		curMethodLocalVariablesShifts[n->id] = newshift;
 		wrapper = new Wrapper::StmWrapper( 
 			new IRTree::SEQ( 
 				wrapper->ToStm(), 
-				new IRTree::MOVE( curFragment->frame-> ) 
+				new IRTree::MOVE( 
+					curFragment->frame->localVarByShift(newshift)->Exp( curFragment->frame->framePointer() ),
+					new IRTree::CONST( 0 ) 
+				) 
 			)
 		);
 		return 0;
