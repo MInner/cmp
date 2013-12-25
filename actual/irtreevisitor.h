@@ -10,6 +10,7 @@
 #include "wrapper.h"
 #include "treeInterfaces.h"
 
+
 class IRTreeVisitor : public IVisitor
 {
 public:
@@ -17,6 +18,10 @@ public:
 	const IFrameFactory* frameFactory;
 	Wrapper::IRTreeWrapper* wrapper;
 	IRTree::CodeFragment* curFragment;
+	const Symbol* curClassName;
+	const Symbol* curMethodName;
+	int argnum;
+	int varnum;
 
 	IRTreeVisitor(IFrameFactory* _fac) : frameFactory(_fac) {}
 
@@ -139,6 +144,7 @@ public:
 	}
 	int visit(const ArguementImpl* n)
 	{
+		argnum += 1;
 		if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
@@ -161,6 +167,8 @@ public:
 	int visit(const VarDeclarationImpl* n)
 	{
 		if(n->type) { n->type->Accept(this); }
+		varnum += 1;
+
 		return 0;
 	}
 	int visit(const VarDeclarationsImpl* n)
@@ -177,11 +185,29 @@ public:
 	}
 	int visit(const MethodDeclarationImpl* n)
 	{
+		curMethodName = n->id;
+
+		argnum = 0;
+		varnum = 0;
+
 		if(n->type) { n->type->Accept(this); }
 		if(n->args) { n->args->Accept(this); }
 		if(n->vars) { n->vars->Accept(this); }
+		
+		IRTree::CodeFragment* newCodeFragment = new IRTree::CodeFragment( 
+			frameFactory->create(NameGenerator::gen(curClassName, curMethodName), argnum, varnum) );
+
+		curFragment->next = newCodeFragment;
+		curFragment = newCodeFragment;
+
+		wrapper = new Wrapper::StmWrapper( new IRTree::EXP( new IRTree::CONST(0) ));
+
 		if(n->statements) { n->statements->Accept(this); }
+		curFragment->body = wrapper->ToStm();
+
 		if(n->exp) { n->exp->Accept(this); }
+		curFragment->retval = new IRTree::ESEQ( curFragment->body, wrapper->ToExp() );
+
 		return 0;
 	}
 	
@@ -194,8 +220,11 @@ public:
 	
 	int visit(const ClassDeclarationImpl* n)
 	{
-		if(n->vars) { n->vars->Accept(this); }
+		curClassName = n->id;
+		// ignoring class vars ?
+		// if(n->vars) { n->vars->Accept(this); } 
 		if(n->methods) { n->methods->Accept(this); }
+		curClassName = NULL;
 		return 0;
 	}
 	
