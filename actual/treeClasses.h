@@ -84,7 +84,7 @@ public:
 class CALL : public IExp
 {
 public:
-	CALL(const IExp* func_, const ExpList* args_):
+	CALL(const Temp::Label* func_, const ExpList* args_):
 		func(func_), args(args_) {}
 
 	int Accept(ITreeVisitor* v) const
@@ -93,7 +93,7 @@ public:
 	}
 
 
-	const IExp* func;
+	const Temp::Label* func;
 	const ExpList* args;
 };
 

@@ -20,8 +20,9 @@ public:
 	IRTree::CodeFragment* curFragment;
 	const Symbol* curClassName;
 	const Symbol* curMethodName;
-	int argnum;
-	int varnum;
+
+	std::map<const Symbol*, int> curMethodArgumentsShifts;
+	std::map<const Symbol*, int> curMethodLocalVariablesShifts;
 
 	IRTreeVisitor(IFrameFactory* _fac) : frameFactory(_fac) {}
 
@@ -144,7 +145,6 @@ public:
 	}
 	int visit(const ArguementImpl* n)
 	{
-		argnum += 1;
 		if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
@@ -167,8 +167,13 @@ public:
 	int visit(const VarDeclarationImpl* n)
 	{
 		if(n->type) { n->type->Accept(this); }
-		varnum += 1;
-
+		curMethodLocalVariablesShifts[n->id] = curMethodLocalVariablesShifts.size();
+		wrapper = new Wrapper::StmWrapper( 
+			new IRTree::SEQ( 
+				wrapper->ToStm(), 
+				new IRTree::MOVE( curFragment->frame-> ) 
+			)
+		);
 		return 0;
 	}
 	int visit(const VarDeclarationsImpl* n)
@@ -187,15 +192,19 @@ public:
 	{
 		curMethodName = n->id;
 
-		argnum = 0;
-		varnum = 0;
+		curMethodArgumentsShifts.clear();
+		curMethodLocalVariablesShifts.clear();
 
 		if(n->type) { n->type->Accept(this); }
 		if(n->args) { n->args->Accept(this); }
 		if(n->vars) { n->vars->Accept(this); }
 		
 		IRTree::CodeFragment* newCodeFragment = new IRTree::CodeFragment( 
-			frameFactory->create(NameGenerator::gen(curClassName, curMethodName), argnum, varnum) );
+			frameFactory->create(NameGenerator::gen(curClassName, curMethodName), 
+				curMethodArgumentsShifts.size(), 
+				curMethodLocalVariablesShifts.size() 
+			) 
+		);
 
 		curFragment->next = newCodeFragment;
 		curFragment = newCodeFragment;
