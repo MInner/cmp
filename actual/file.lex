@@ -75,5 +75,5 @@ ID [a-zA-Z_][a-zA-Z0-9_-]*
 %%
 
 void yyerror(const char* descr){
-	printf("%s on line #%d at column %d\n", descr, yylloc.first_line, yylloc.first_column);
+	printf("%s on line #%d at column %d\n", descr, yylloc.first_line, yylloc.last_column);
 }

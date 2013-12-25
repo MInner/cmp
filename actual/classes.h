@@ -533,9 +533,11 @@ class ProgramImpl : public IProgram
 {
 public:
 	const static ProgramImpl* me;
-
-	ProgramImpl(const IMainClass* cl_, const IClassDeclarations*  decs_):
-		cl(cl_), decs(decs_) { me = this;}
+	const int line;
+	const int column;
+	ProgramImpl(const IMainClass* cl_, const IClassDeclarations*  decs_, int line_, int column_):
+		cl(cl_), decs(decs_), line(line_), column(column_) 
+		{ me = this;}
 
 	int Accept(IVisitor* v) const
 	{

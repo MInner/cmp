@@ -80,7 +80,7 @@ bool boolval;
 
 %%
 
-program: mainClass classDeclarations  /*ok*/ 	{ $$ = new ProgramImpl($1, $2);}
+program: mainClass classDeclarations  /*ok*/ 	{ $$ = new ProgramImpl($1, $2, @$.first_line, @$.first_column);}
 
 
 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '('STRING_TYPE '['']' ID ')' '{' statement '}' '}' /*ok*/
