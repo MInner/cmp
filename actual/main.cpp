@@ -9,6 +9,7 @@
 #include "classes.h"
 #include "symbol.h"
 #include "irtreevisitor.h"
+#include "irtreeprintvisitor.h"
 #include "codefragment.h"
 #include "temp.h"
 
@@ -49,7 +50,7 @@ int main(void){
 
 	IFrameFactory* fac = new FrameFactory_x86();
 
-	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac);
+	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
 	return 0;
 
