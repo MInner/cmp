@@ -155,6 +155,11 @@ public:
 	{
 	}
 
+	int visit(const StmList* stm)
+	{
+		return 0;
+	}
+
 private:
 	std::ostream& out;
 	long clust;

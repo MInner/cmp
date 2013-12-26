@@ -1,49 +1,48 @@
 #pragma once
 
 #include <string>
+#include <sstream>  
 #include "symbol.h"
 
 namespace Temp{
+    template <typename T> 
+    std::string NumberToString(T Number)
+    {
+        std::stringstream ss;
+        ss << Number;
+        return ss.str();
+    }    
 
     class Temp 
     {
     public: 
         Temp(){
-            name = "TEMP#" + std::to_string(currId++);
+            name = "TEMP#" + NumberToString(curId++);
         }
 
         Temp(const std::string& s){
             name = s;
         }
-
-        std::string& getName() {
-            return name;
-        }
-
-    private:
         
+        static int curId;
+    
         std::string name;
-        static int currId;
     }; 
 
     class Label 
     {
     public:
         Label(){
-            name = "LABEL#" + std::to_string(currId++);
+            name = "LABEL#" + NumberToString(curId++);
         }
 
         Label(const std::string& s){
             name = s;
         }
-        
-        std::string& getName() {
-            return name;
-        }
-
-    private:
+    
         std::string name;
-        static int currId;
+    private:
+        static int curId;
     };
 
     class LabelList
@@ -52,7 +51,7 @@ namespace Temp{
         const Label* label;
         const LabelList* rest;
 
-        LabelList(const Label* lb, const LabelList* rest) : label(lb), rest(rest) {}
+        LabelList(const Label* lb, const LabelList* rest = NULL) : label(lb), rest(rest) {}
 
     };
     

@@ -3,6 +3,7 @@
 #include "interfaces.h"
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
 	// std::cout << "New class: " << name << std::endl;
@@ -23,7 +24,7 @@ ClassInfo* ClassTable::getClass(const Symbol* name){
 			return classes.at(i);
 		}
 	}
-	std::cout << "WARNING: there is no such class" << std::endl; 
+	std::cout << "WARNING: there is no such class " << name << std::endl; 
 	return NULL;
 }
 
@@ -66,6 +67,8 @@ MethodInfo* ClassInfo::addMethod(const Symbol* mname,TypeData returnType){
 }
 
 MethodInfo* ClassInfo::getMethod(const Symbol* name){
+	if (name == NULL)
+		return NULL;
 	for(unsigned int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == name){
 			return methods.at(i);
@@ -73,6 +76,20 @@ MethodInfo* ClassInfo::getMethod(const Symbol* name){
 	}
 	std::cout << "WARNING: there is no such method" << std::endl; 
 	return NULL;
+}
+
+int ClassInfo::getSize()
+{
+	return fields.size(); // TODO!!!!: ADD hierarchy SUPPORT LIKE (paernt ? table->get(parnt)->getsize() : 0 )
+}
+
+int ClassInfo::getFiledShift(const Symbol* name)
+{
+	for (int i=0; i<fields.size(); i++)
+	{
+		if (fields[i]->name == name)
+			return i;
+	}
 }
 
 //------------------------------------------------

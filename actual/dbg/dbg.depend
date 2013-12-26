@@ -103,7 +103,7 @@
 	<string>
 	"symbolstable.h"
 
-1387903426 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/bi.cpp
+1388050670 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/bi.cpp
 	<stdio.h>
 	"interfaces.h"
 	"enums.h"
@@ -134,7 +134,7 @@
 
 1387894683 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/fwdclasses.h
 
-1387890264 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/classes.h
+1388020144 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/classes.h
 	<string>
 	<iostream>
 	"visitor.h"
@@ -142,7 +142,7 @@
 	"interfaces.h"
 	"symbol.h"
 
-1387903426 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/fl.cpp
+1388050670 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/fl.cpp
 	<stdio.h>
 	<string.h>
 	<errno.h>
@@ -153,15 +153,16 @@
 	<stdio.h>
 	<unistd.h>
 
-1387903426 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/bi.hpp
+1388050670 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/bi.hpp
 	"interfaces.h"
 	"enums.h"
 	"classes.h"
 	"symbol.h"
 
-1387903121 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/main.cpp
+1388049703 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/main.cpp
 	<stdio.h>
 	<iostream>
+	<fstream>
 	"enums.h"
 	"bi.hpp"
 	"printvisitor.h"
@@ -170,6 +171,7 @@
 	"classes.h"
 	"symbol.h"
 	"irtreevisitor.h"
+	"irtreeprintvisitor.h"
 	"codefragment.h"
 	"temp.h"
 
@@ -180,20 +182,20 @@
 	<string>
 	"symbol.h"
 
-1386230939 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/buildtable.h
+1388051751 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/buildtable.h
 	"visitor.h"
 	"fwdclasses.h"
 	<iostream>
 	<string>
 	"symbolstable.h"
 
-1386230939 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/symbolstable.h
+1388014961 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/symbolstable.h
 	<vector>
 	"symbol.h"
 	"interfaces.h"
 	"enums.h"
 
-1387903501 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/typecheckervisitor.h
+1388051780 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/typecheckervisitor.h
 	"visitor.h"
 	"fwdclasses.h"
 	<iostream>
@@ -201,7 +203,7 @@
 	"symbolstable.h"
 	"enums.h"
 
-1387891474 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/irtreevisitor.h
+1388051971 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/irtreevisitor.h
 	"visitor.h"
 	"fwdclasses.h"
 	<iostream>
@@ -211,12 +213,17 @@
 	"namegenerator.h"
 	"wrapper.h"
 	"treeInterfaces.h"
+	"symbolstable.h"
+	<typeinfo>
 
-1387891510 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/codefragment.h
+1387905870 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/codefragment.h
 	"frame.h"
 	"treeInterfaces.h"
 
-1387903531 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/frame.h
+1388000587 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/frame.h
+	"temp.h"
+	"treeInterfaces.h"
+	"treeClasses.h"
 
 1387895281 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/treeInterfaces.h
 	"itreevisitor.h"
@@ -224,19 +231,20 @@
 1387894745 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/itreevisitor.h
 	"fwdclasses.h"
 
-1387888964 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/namegenerator.h
+1387979781 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/namegenerator.h
 	"symbol.h"
 
-1387903326 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/wrapper.h
+1388015797 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/wrapper.h
 	<assert.h>
 	"temp.h"
 	"treeClasses.h"
 
-1387895084 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/temp.h
+1388018121 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/temp.h
 	<string>
+	<sstream>
 	"symbol.h"
 
-1387895158 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/treeClasses.h
+1388014151 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/treeClasses.h
 	"itreevisitor.h"
 
 1386230939 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/symbol.cpp
@@ -245,10 +253,16 @@
 	<string>
 	<iostream>
 
-1386230939 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/symbolstable.cpp
+1388050469 source:/home/ben/Dropbox/bt/comp/cmp/actual/dbg/symbolstable.cpp
 	"symbolstable.h"
 	<vector>
 	"interfaces.h"
 	<string>
+	<iostream>
+	<algorithm>
+
+1388046780 /home/ben/Dropbox/bt/comp/cmp/actual/dbg/irtreeprintvisitor.h
+	"irtreevisitor.h"
+	"treeClasses.h"
 	<iostream>
 

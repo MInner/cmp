@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 
 #include "enums.h"
 #include "bi.hpp"
@@ -9,24 +10,29 @@
 #include "classes.h"
 #include "symbol.h"
 #include "irtreevisitor.h"
+#include "irtreeprintvisitor.h"
 #include "codefragment.h"
 #include "temp.h"
 
 extern int yyparse();
 
-void yyerror(const char* descr){
-	printf("%s on line #%d\n", descr, yylloc.first_line);
-}
+
 
 // -- some STATIC things
 
 const ProgramImpl* ProgramImpl::me = 0;
 const TypeData BuildTableVisitor::NULLTYPE = TypeData();
 const TypeData TypeCheckerVisitor::NULLTYPE = TypeData();
-/*int Temp::Temp::curId = 1;
-int Temp::Label::curId = 1;
-*/
+namespace Temp
+{
+	int Temp::curId = 1;
+	int Label::curId = 1;
+}
+
+int TypeCheckerVisitor::line = 0;
+
 // !- static thigs
+
 int main(void){
 
 	std::cout << "--- Building intermediate representation tree --- " << std::endl;
@@ -47,7 +53,17 @@ int main(void){
 
 	IFrameFactory* fac = new FrameFactory_x86();
 
-	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac);
+	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
+
+	IRTree::CodeFragment* codeFragment = NULL;
+
+	codeFragment = irvisitor->getMainFragment();
+	
+	std::ofstream outputFile("testgraph.txt");
+	IRTree::IRTreePrintVisitor* printVisitor = new IRTree::IRTreePrintVisitor(outputFile);
+    printVisitor->visit(codeFragment);
+    outputFile.close();
 	return 0;
+
 }

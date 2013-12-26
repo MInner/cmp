@@ -1938,4 +1938,6 @@ void yyfree (void * ptr )
 
 
 
-
+void yyerror(const char* descr){
+	printf("%s on line #%d at column %d\n", descr, yylloc.first_line, yylloc.last_column);
+}

@@ -173,7 +173,7 @@ public:
 		t = NULLTYPE;
 
 		if(n->type) { n->type->Accept(this); }
-		
+
 		if (curmethod)
 			curmethod->addLocalVar(n->id, t);
 		else
@@ -233,7 +233,15 @@ public:
 	}
 	int visit(const MainClassImpl* n)
 	{
+	    curclass = curclasstable->addClass(n->id, NULL);
+
+	    t = NULLTYPE;
+        curmethod = curclass->addMethod(Symbol::getSymbol("main"), t);
+
 		if(n->stm) { n->stm->Accept(this); }
+
+		curmethod = NULL;
+		curclass = NULL;
 		return 0;
 	}
 };

@@ -8,7 +8,7 @@ namespace Wrapper {
 
 class IRTreeWrapper 
 {
-public://vitrual and destructor
+public:
     virtual ~IRTreeWrapper() {};
     
     virtual const IRTree::IExp* ToExp() const = 0;
@@ -68,7 +68,7 @@ public:
     }
 	
     const IRTree::IStm* ToStm() const { 
-        //ToConditional(t,f); 
+        return ExpWrapper(ToExp()).ToStm();
     }
 	
     virtual const IRTree::IStm* ToConditional(const Temp::Label* t, const Temp::Label* f) const = 0; 
@@ -127,31 +127,4 @@ public:
     int op;
     const IRTree::IExp* left;
 	const IRTree::IExp* right;
-};
-
-/*class Translator{
-
-    void Visit(const AssingStm* assign)
-    {
-        // доп записи на доске
-        // move - leftVal
-        //     |- rightVal
-        // id=exp; -> IAccess / exp
-
-        assign->Accept(this);
-        const IRTree::IIExp* rightValue = lastReturnValue->ToExp();
-        const IRTree::IIExp* rightValue = 0;
-        if (locals.Has(Id))
-        { //локальная переменная
-            leftValue = locals[id]->ToExp();
-        }
-        else
-        { //переменная класса
-            //currentClass.Lookup(id, ...)
-            // ...
-        }
-    }
-};*/
-
-
-}
+};}
