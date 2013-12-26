@@ -54,7 +54,16 @@ public:
 		const IRTree::IExp* l = wrapper->ToExp();
 		if(n->right) { n->right->Accept(this); }
 		const IRTree::IExp* r = wrapper->ToExp();
-		wrapper = new Wrapper::ExpWrapper( new IRTree::BINOP(n->op, l, r) );
+		
+		int oper;
+		if (n->op == Logic::L_LT) {
+		    oper = IRTree::OPERATOR::CONDOP::LT1;
+		} else if (n->op == Logic::L_AND) {
+		    oper = IRTree::OPERATOR::AND1;
+		} 
+		
+
+		wrapper = new Wrapper::RelativeConditionWrapper(oper, l, r);		
 
 		return 0;
 	}

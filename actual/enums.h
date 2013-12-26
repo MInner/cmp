@@ -57,7 +57,7 @@ namespace IRTree
 	    MINUS, 
 	    MUL,
 	    DIV,
-	    AND,
+	    AND1,
 	    OR, 
 	    LSHIFT,
 	    RSHIFT,
@@ -68,7 +68,7 @@ namespace IRTree
     enum CONDOP { 
         EQ,
         NE, 
-        LT, 
+        LT1, 
         GT, 
         LE,
         GE, 

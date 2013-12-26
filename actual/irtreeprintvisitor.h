@@ -117,7 +117,7 @@ public:
 	{
 		static const char* names[] = { "==", "!=", "<", ">", "<=", ">=", "ULT", "ULE", "UGT", "UGE" };
 		long myNodeNumber = node++;
-		out << "n" << myNodeNumber << " [shape=\"box\",color=\"red\",label=\"JUMP(" << names[n->relop] << ")\"]" << std::endl;
+		out << "n" << myNodeNumber << " [shape=\"box\",color=\"red\",label=\"CJUMP(" << names[n->relop] << ")\"]" << std::endl;
 		out << "n" << myNodeNumber << " -- n" << node << std::endl;
 		n->left->Accept(this);
 		out << "n" << myNodeNumber << " -- n" << node << std::endl;
