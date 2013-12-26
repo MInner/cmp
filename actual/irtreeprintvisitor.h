@@ -151,10 +151,6 @@ public:
 		}
 	}
 	
-	int visit(const StmList* stmList) 
-	{
-	}
-
 	int visit(const StmList* stm)
 	{
 		return 0;
