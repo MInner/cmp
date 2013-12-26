@@ -80,90 +80,90 @@ bool boolval;
 
 %%
 
-program: mainClass classDeclarations  /*ok*/ 	{ $$ = new ProgramImpl($1, $2);}
+program: mainClass classDeclarations  /*ok*/ 	{ $$ = new ProgramImpl($1, $2, @$.first_line, @$.first_column);}
 
 
 mainClass: CLASS ID '{' PUBLIC STATIC VOID MAIN '('STRING_TYPE '['']' ID ')' '{' statement '}' '}' /*ok*/
-	{ $$ = new MainClassImpl(Symbol::getSymbol($2), Symbol::getSymbol($12), $15); 	}
+	{ $$ = new MainClassImpl(Symbol::getSymbol($2), Symbol::getSymbol($12), $15, @$.first_line, @$.first_column); 	}
 
 
 classDeclarations: /*ok*/
 											{ $$ = NULL;}
-	| classDeclaration classDeclarations 	{ $$ = new ClassDeclarationsImpl($1, $2);}
+	| classDeclaration classDeclarations 	{ $$ = new ClassDeclarationsImpl($1, $2, @$.first_line, @$.first_column);}
 
 classDeclaration: /*ok*/
-	CLASS ID '{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl(Symbol::getSymbol($2), $4, $5);}
-	| CLASS ID EXTENDS ID'{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl(Symbol::getSymbol($2), Symbol::getSymbol($4), $6, $7);}
+	CLASS ID '{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl(Symbol::getSymbol($2), $4, $5, @$.first_line, @$.first_column);}
+	| CLASS ID EXTENDS ID'{' varDeclarations methodDeclarations '}' { $$ = new ClassDeclarationImpl(Symbol::getSymbol($2), Symbol::getSymbol($4), $6, $7, @$.first_line, @$.first_column);}
 
 varDeclarations: /*ok*/
 	/*{$$ = NULL ;}*/					{ $$ = NULL;}
-	| varDeclarations varDeclaration 	{ $$ = new VarDeclarationsImpl($2, $1);}
+	| varDeclarations varDeclaration 	{ $$ = new VarDeclarationsImpl($2, $1, @$.first_line, @$.first_column);}
 
 
 varDeclaration: /*ok*/
-	type ID ';' { $$ = new VarDeclarationImpl($1, Symbol::getSymbol($2));}
+	type ID ';' { $$ = new VarDeclarationImpl($1, Symbol::getSymbol($2), @$.first_line, @$.first_column);}
 
 methodDeclarations: /*ok*/
 	/*{$$ = NULL ;}*/							{ $$ = NULL;}
-	| methodDeclaration methodDeclarations 		{ $$ = new MethodDeclarationsImpl($1, $2);}
+	| methodDeclaration methodDeclarations 		{ $$ = new MethodDeclarationsImpl($1, $2, @$.first_line, @$.first_column);}
 
 methodDeclaration: /*ok*/
 	PUBLIC type ID '(' arguements ')' '{' varDeclarations statements RETURN expression ';' '}'
-	{$$ = new MethodDeclarationImpl($2, Symbol::getSymbol($3), $5, $8, $9, $11);}
+	{$$ = new MethodDeclarationImpl($2, Symbol::getSymbol($3), $5, $8, $9, $11, @$.first_line, @$.first_column);}
 
 statements: /*ok*/
 	/*{$$ = NULL ;}*/ 		{$$ = NULL;}
-	| statement statements	{$$ = new StatementsImpl($1, $2);}
+	| statement statements	{$$ = new StatementsImpl($1, $2, @$.first_line, @$.first_column);}
 
 statement: /*ok*/
-	'{' statements '}'   								{ $$ = new BlockStm($2);}
-	| assignment ';'    			 					{ $$ = new AssignStm($1);}
-	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStm($3, $5, $7);}
-	| WHILE '(' expression ')' statement				{ $$ = new WhileStm($3, $5);}
-	| SYSPRINT '(' expression ')' ';'					{ $$ = new PrintStmPrintStm($3);}
-	| ID '['expression']' ASSIGN expression ';'			{ $$ = new AssignArrStm(Symbol::getSymbol($1), $3, $6);}  // TODO третий аргумент должен быть экспрешеном
+	'{' statements '}'   								{ $$ = new BlockStm($2, @$.first_line, @$.first_column);}
+	| assignment ';'    			 					{ $$ = new AssignStm($1, @$.first_line, @$.first_column);}
+	| IF '(' expression ')' statement ELSE statement	{ $$ = new IfElseStm($3, $5, $7, @$.first_line, @$.first_column);}
+	| WHILE '(' expression ')' statement				{ $$ = new WhileStm($3, $5, @$.first_line, @$.first_column);}
+	| SYSPRINT '(' expression ')' ';'					{ $$ = new PrintStmPrintStm($3, @$.first_line, @$.first_column);}
+	| ID '['expression']' ASSIGN expression ';'			{ $$ = new AssignArrStm(Symbol::getSymbol($1), $3, $6, @$.first_line, @$.first_column);}  // TODO третий аргумент должен быть экспрешеном
 
 type: /*ok*/
-	 INT_TYPE '['']'	{ $$ = new InternalType(Type::INT_ARR);}
-	| BOOLEAN_TYPE		{ $$ = new InternalType(Type::BOOL);}
-	| STRING_TYPE		{ $$ = new InternalType(Type::STRING);}	
-	| INT_TYPE			{ $$ = new InternalType(Type::INT);}
-	| ID 				{ $$ = new CustomType(Symbol::getSymbol($1));}
+	 INT_TYPE '['']'	{ $$ = new InternalType(Type::INT_ARR, @$.first_line, @$.first_column);}
+	| BOOLEAN_TYPE		{ $$ = new InternalType(Type::BOOL, @$.first_line, @$.first_column);}
+	| STRING_TYPE		{ $$ = new InternalType(Type::STRING, @$.first_line, @$.first_column);}	
+	| INT_TYPE			{ $$ = new InternalType(Type::INT, @$.first_line, @$.first_column);}
+	| ID 				{ $$ = new CustomType(Symbol::getSymbol($1), @$.first_line, @$.first_column);}
 
 arguements: /*ok*/
 	/*{$$ = NULL ;}*/			{$$ = NULL;}
-	| arguement ',' arguements	{$$ = new ArguementsImpl($1, $3);}
-	| arguement					{ArguementsImpl* a = NULL; $$ = new ArguementsImpl($1, a);}
+	| arguement ',' arguements	{$$ = new ArguementsImpl($1, $3, @$.first_line, @$.first_column);}
+	| arguement					{ArguementsImpl* a = NULL; $$ = new ArguementsImpl($1, a, @$.first_line, @$.first_column);}
 
 arguement: /*ok*/
-	type ID		{$$ = new ArguementImpl($1, Symbol::getSymbol($2));}
+	type ID		{$$ = new ArguementImpl($1, Symbol::getSymbol($2), @$.first_line, @$.first_column);}
 
 assignment:
-	ID ASSIGN expression {$$ = new AssignmentImpl( Symbol::getSymbol($1), $3);}
+	ID ASSIGN expression {$$ = new AssignmentImpl( Symbol::getSymbol($1), $3, @$.first_line, @$.first_column);}
 
 expression: /*ok*/
-	expression '+' expression  	{ $$ = new ArithmExp(Arithm::PLUS, $1, $3);} 
-	| expression '-' expression	{ $$ = new ArithmExp(Arithm::MINUS, $1, $3);}	
-	| expression '*' expression	{ $$ = new ArithmExp(Arithm::MUL, $1, $3);}
-	| expression '/' expression	{ $$ = new ArithmExp(Arithm::DIV, $1, $3);}
-	| expression AND expression	{ $$ = new LogicExp(Logic::L_AND, $1, $3);}	
-	| expression LT expression  { $$ = new LogicExp(Logic::L_LT, $1, $3);}
-	| expression '[' expression ']'  	{ $$ = new ArrValExp($1, $3);}
-	| expression '.' LENGTH  			{ $$ = new LenExp($1);}
-	| expression '.' ID '('expressionList')'	{ $$ = new CallMethodExp($1, Symbol::getSymbol($3), $5);}
-	| INTEGER 									{$$ = new IntVal($1);}
-	| TRUE			{ $$ = new BoolVal(true);}
-	| FALSE			{ $$ = new BoolVal(false);}
-	| ID			{ $$ = new IdExp(Symbol::getSymbol($1));}
-	| THIS			{ $$ = new ThisExp(); } 
-	| NEW INT_TYPE '[' expression ']' { $$ = new NewIntArrExp($4);}
-	| NEW ID '(' ')'		{ $$ = new NewExp(Symbol::getSymbol($2));}
-	| '!' expression 		{ $$ = new LogicExp(Logic::L_NOT, $2);}
+	expression '+' expression  	{ $$ = new ArithmExp(Arithm::PLUS, $1, $3, @$.first_line, @$.first_column);} 
+	| expression '-' expression	{ $$ = new ArithmExp(Arithm::MINUS, $1, $3, @$.first_line, @$.first_column);}	
+	| expression '*' expression	{ $$ = new ArithmExp(Arithm::MUL, $1, $3, @$.first_line, @$.first_column);}
+	| expression '/' expression	{ $$ = new ArithmExp(Arithm::DIV, $1, $3, @$.first_line, @$.first_column);}
+	| expression AND expression	{ $$ = new LogicExp(Logic::L_AND, $1, $3, @$.first_line, @$.first_column);}	
+	| expression LT expression  { $$ = new LogicExp(Logic::L_LT, $1, $3, @$.first_line, @$.first_column);}
+	| expression '[' expression ']'  	{ $$ = new ArrValExp($1, $3, @$.first_line, @$.first_column);}
+	| expression '.' LENGTH  			{ $$ = new LenExp($1, @$.first_line, @$.first_column);}
+	| expression '.' ID '('expressionList')'	{ $$ = new CallMethodExp($1, Symbol::getSymbol($3), $5, @$.first_line, @$.first_column);}
+	| INTEGER 									{$$ = new IntVal($1, @$.first_line, @$.first_column);}
+	| TRUE			{ $$ = new BoolVal(true, @$.first_line, @$.first_column);}
+	| FALSE			{ $$ = new BoolVal(false, @$.first_line, @$.first_column);}
+	| ID			{ $$ = new IdExp(Symbol::getSymbol($1), @$.first_line, @$.first_column);}
+	| THIS			{ $$ = new ThisExp(@$.first_line, @$.first_column); } 
+	| NEW INT_TYPE '[' expression ']' { $$ = new NewIntArrExp($4, @$.first_line, @$.first_column);}
+	| NEW ID '(' ')'		{ $$ = new NewExp(Symbol::getSymbol($2), @$.first_line, @$.first_column);}
+	| '!' expression 		{ $$ = new LogicExp(Logic::L_NOT, $2, @$.first_line, @$.first_column);}
 	| '(' expression ')' 	{ $$ = $2;}
 
 expressionList: /*ok*/
 	/*{$$ = NULL ;}*/					{$$ = NULL;}
-	| expression ',' expressionList		{$$ = new ExpressionListImpl($1, $3);}
-	| expression						{$$ = new ExpressionListImpl($1);}
+	| expression ',' expressionList		{$$ = new ExpressionListImpl($1, $3, @$.first_line, @$.first_column);}
+	| expression						{$$ = new ExpressionListImpl($1, @$.first_line, @$.first_column);}
 
 %%

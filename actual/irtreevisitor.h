@@ -380,7 +380,7 @@ public:
 	
 	int visit(const AssignmentImpl* n)
 	{
-		(new IdExp(n->id))->Accept(this);
+		(new IdExp(n->id, 0, 0))->Accept(this); // it's interesting what to write as line and column here
 		const IRTree::IExp* var = wrapper->ToExp();
 		if(n->exp) { n->exp->Accept(this); }
 		wrapper = new Wrapper::StmWrapper( new IRTree::MOVE(var, wrapper->ToExp()));
