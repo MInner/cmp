@@ -99,7 +99,7 @@ public:
 				n->left->Accept(this);
 
 				if (!type.isInternal || type.internalType != Type::INT )
-					std::cout << "WARNING: line " << n->line <<" Logic Operation: LEFT is not bools" << std::endl;
+					std::cout << "WARNING: line " << n->line <<" Logic Operation < : LEFT is not INT" << std::endl;
 
 				type = NULLTYPE;
 			}
@@ -108,7 +108,7 @@ public:
 				n->right->Accept(this);
 
 				if (!type.isInternal || type.internalType != Type::INT )
-					std::cout << "WARNING: line " << n->line <<" Logic Operation: RIGHT is not bools"  << std::endl;
+					std::cout << "WARNING: line " << n->line <<" Logic Operation <: RIGHT is not INT"  << std::endl;
 
 				type = NULLTYPE;
 			}
@@ -195,6 +195,8 @@ public:
 		{
 			std::cout << "WARNING: line " << n->line <<" THIS in static method" << std::endl;
 		}
+
+		type.isInternal = false;
 		type.customType = curclass->name;
 		return 0;
 	}
@@ -213,12 +215,12 @@ public:
 	}
 	int visit(const CallMethodExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
+		type = NULLTYPE;
 		if (n->exp) { n->exp->Accept(this); }
+
 		if (type.isInternal == true)
 		{
-			std::cout << "WARNING: line " << n->line <<" Trying to call method of internal method" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" Trying to call method of _internal_ (int / bool) type var" << std::endl;
 		}
 
 		ClassInfo* ci = ct->getClass(type.customType);
@@ -248,7 +250,7 @@ public:
 	int visit(const ArrValExp* n)
 	{
 		TypeCheckerVisitor::line = n->line;
-
+		
 		if(n->exp) { n->exp->Accept(this); }
 
 		if (type.internalType != Type::INT_ARR) //check exp type is INT_ARR
@@ -257,7 +259,7 @@ public:
 		if(n->idExp) { n->idExp->Accept(this); }
 
 		if (type.internalType != Type::INT)
-			std::cout << "WARNING: line " << n->line <<" Inside [] must be INT" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" index of ARR[..] must be INT" << std::endl;
 
 		type.isInternal = true;
 		type.internalType = Type::INT;

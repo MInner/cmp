@@ -1,25 +1,49 @@
 class Bubble {
-    public int bubbleSort(int[] arr) {
-      boolean swapped = true;
-      int j = 0;
+  public static void main(String[] a) {
+      System.out.println(new BubbleSort().runSort());
+  }
+}
+
+class BubbleSort
+{
+  public int runSort(int[] arr) {
+      int[] b;
       int tmp;
+      b = new int[3]; 
+      b[0] = 3;
+      b[1] = 1;
+      b[2] = 2;
+      return this.bubbleSort(b);
+  }
+  public int bubbleSort(int[] arr) {
+      bool swapped;
+      bool var;
+      int j;
+      int i;
+      int tmp;
+
+      swapped = true;
+      j = 1;
       while (swapped) {
             swapped = false;
-            j++;
-            for (int i = 0; i < arr.length - j; i++) {                                       
-                  if (arr[i] > arr[i + 1]) {                          
-                        tmp = arr[i];
-                        arr[i] = arr[i + 1];
-                        arr[i + 1] = tmp;
-                        swapped = true;
-                  }
+            j = j + 1;
+            i = 0;
+            while (i < (arr.length - j) ) {
+                if ( arr[i+1] < arr[i] ) {                          
+                      tmp = arr[i];
+                      arr[i] = arr[i + 1];
+                      arr[i + 1] = tmp;
+                      swapped = true;
+                }
+                else
+                {}
+
+                i = i + 1;
             }                
       }
-    }
+      return 0;
+  }
 
-    public static void main(String[] a) {
-	int[] a = new int[10];	
-	System.out.println(bubbleSort(a));
-    }
+    
 }
 

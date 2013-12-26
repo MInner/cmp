@@ -60,8 +60,8 @@ public:
 			: IFrame(_name, _nargs, _nlocvar) {}
 
 	virtual int wordSize() const { return 4; }	
-	virtual const IAccess* argByShift( int shift ) const { return new AccessX86( this, -1 - shift ); }
-	virtual const IAccess* localVarByShift( int shift ) const { return new AccessX86( this, shift ); }
+	virtual const IAccess* argByShift( int shift ) const { return new AccessX86( this, shift ); }
+	virtual const IAccess* localVarByShift( int shift ) const { return new AccessX86( this, -1 - shift ); }
 	virtual const Temp::Temp* framePointer() const { return new Temp::Temp( "##FP" ); }
 	virtual const IRTree::IExp* externalCall( const std::string& name, const IRTree::ExpList* args ) const { return new IRTree::CALL( new Temp::Label( name ), args ); }
 

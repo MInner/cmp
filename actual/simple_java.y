@@ -64,8 +64,7 @@ bool boolval;
 %token CLASS EXTENDS PUBLIC STATIC MAIN IF WHILE TRUE FALSE NEW THIS VOID RETURN SYSPRINT LENGTH ELSE
 %token INT_TYPE BOOLEAN_TYPE STRING_TYPE
 
-%nonassoc ASSIGN '.' '[' ']'/* = */
-
+%nonassoc ASSIGN 
 
 %left AND  	/* && */
 %left LT    /* < */
@@ -73,6 +72,8 @@ bool boolval;
 %left '+' '-'	/* + - */
 %left '*' 	/* * / */
 %left '/'
+
+%nonassoc '.' '[' ']'
 
 %start program
 

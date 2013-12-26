@@ -13,7 +13,7 @@ class IRTreePrintVisitor : public ITreeVisitor
 public:
 	IRTreePrintVisitor(std::ostream& out_): out(out_),
 		clust(0), node(0) {}
-		
+
 	virtual ~IRTreePrintVisitor() {}
 
 	int visit(const CodeFragment* codeFragment)
@@ -107,10 +107,10 @@ public:
 		out << "n" << myNodeNumber << " [shape=\"box\",color=\"red\",label=\"JUMP\"]" << std::endl;
 		out << "n" << myNodeNumber << " -- n" << node << std::endl;
 		n->exp->Accept( this );
-		for( auto labels = n->targets; labels != nullptr && labels->label != nullptr; labels = labels->rest ) {
+		/*for( auto labels = n->targets; labels != nullptr && labels->label != nullptr; labels = labels->rest ) {
 			out << "n" << myNodeNumber << " -- n" << node << std::endl;
 			out << "n" << node++ << " [shape=\"box\",color=\"red\",label=\"" << labels->label->name << "\"]" << std::endl;
-		}
+		}*/
 	}
 	
 	int visit(const CJUMP* n)
@@ -123,9 +123,9 @@ public:
 		out << "n" << myNodeNumber << " -- n" << node << std::endl;
 		n->right->Accept(this);
 		out << "n" << myNodeNumber << " -- n" << node << std::endl;
-		out << "n" << node++ << " [shape=\"hexagon\",color=\"blue\",label=\"" << n->iftrue->name << "\"]" << std::endl;
+		out << "n" << node++ << " [shape=\"hexagon\",color=\"blue\",label=\"True: " << n->iftrue->name << "\"]" << std::endl;
 		out << "n" << myNodeNumber << " -- n" << node << std::endl;
-		out << "n" << node++ << " [shape=\"hexagon\",color=\"blue\",label=\"" << n->iffalse->name << "\"]" << std::endl;
+		out << "n" << node++ << " [shape=\"hexagon\",color=\"blue\",label=\"False: " << n->iffalse->name << "\"]" << std::endl;
 	}
 	
 	int visit(const SEQ* n)
@@ -140,7 +140,7 @@ public:
 	
 	int visit(const LABEL* n)
 	{
-		out << "n" << node++ << " [shape=\"box\",color=\"red\",label=\"LABEL(" << n->label->name << ")\"]" << std::endl;
+		out << "n" << node++ << " [shape=\"house\",color=\"darkorchid\",label=\"" << n->label->name << "\"]" << std::endl;
 	}
 
 	int visit(const ExpList* ExpList)

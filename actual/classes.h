@@ -306,7 +306,7 @@ class AssignArrStm : public IStatement
 public:
 	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IExpression*  newexp_, 
 		int line_, int column_):
-		exp(exp_), newexp(newexp_), line(line_), column(column_) {}
+		id(id_), exp(exp_), newexp(newexp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{

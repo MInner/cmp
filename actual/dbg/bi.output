@@ -675,8 +675,8 @@ expressionList (58)
    25 type: ID .
    30 assignment: ID . ASSIGN expression
 
-    '['     сдвиг, и переход в состояние 68
-    ASSIGN  сдвиг, и переход в состояние 69
+    ASSIGN  сдвиг, и переход в состояние 68
+    '['     сдвиг, и переход в состояние 69
 
     $default  вывод с использованием правила 25 (type)
 
@@ -755,8 +755,8 @@ expressionList (58)
    20 statement: ID . '[' expression ']' ASSIGN expression ';'
    30 assignment: ID . ASSIGN expression
 
-    '['     сдвиг, и переход в состояние 68
-    ASSIGN  сдвиг, и переход в состояние 69
+    ASSIGN  сдвиг, и переход в состояние 68
+    '['     сдвиг, и переход в состояние 69
 
 
 состояние 67
@@ -768,7 +768,7 @@ expressionList (58)
 
 состояние 68
 
-   20 statement: ID '[' . expression ']' ASSIGN expression ';'
+   30 assignment: ID ASSIGN . expression
 
     INTEGER  сдвиг, и переход в состояние 78
     ID       сдвиг, и переход в состояние 79
@@ -784,7 +784,7 @@ expressionList (58)
 
 состояние 69
 
-   30 assignment: ID ASSIGN . expression
+   20 statement: ID '[' . expression ']' ASSIGN expression ';'
 
     INTEGER  сдвиг, и переход в состояние 78
     ID       сдвиг, и переход в состояние 79
@@ -968,30 +968,6 @@ expressionList (58)
 
 состояние 86
 
-   20 statement: ID '[' expression . ']' ASSIGN expression ';'
-   31 expression: expression . '+' expression
-   32           | expression . '-' expression
-   33           | expression . '*' expression
-   34           | expression . '/' expression
-   35           | expression . AND expression
-   36           | expression . LT expression
-   37           | expression . '[' expression ']'
-   38           | expression . '.' LENGTH
-   39           | expression . '.' ID '(' expressionList ')'
-
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    ']'  сдвиг, и переход в состояние 100
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
-
-
-состояние 87
-
    30 assignment: ID ASSIGN expression .
    31 expression: expression . '+' expression
    32           | expression . '-' expression
@@ -1003,16 +979,40 @@ expressionList (58)
    38           | expression . '.' LENGTH
    39           | expression . '.' ID '(' expressionList ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 30 (assignment)
+
+
+состояние 87
+
+   20 statement: ID '[' expression . ']' ASSIGN expression ';'
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
+    ']'  сдвиг, и переход в состояние 106
 
 
 состояние 88
@@ -1028,14 +1028,14 @@ expressionList (58)
    38           | expression . '.' LENGTH
    39           | expression . '.' ID '(' expressionList ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ')'  сдвиг, и переход в состояние 107
 
 
@@ -1052,14 +1052,14 @@ expressionList (58)
    38           | expression . '.' LENGTH
    39           | expression . '.' ID '(' expressionList ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ')'  сдвиг, и переход в состояние 108
 
 
@@ -1076,14 +1076,14 @@ expressionList (58)
    38           | expression . '.' LENGTH
    39           | expression . '.' ID '(' expressionList ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ')'  сдвиг, и переход в состояние 109
 
 
@@ -1107,14 +1107,14 @@ expressionList (58)
    38           | expression . '.' LENGTH
    39           | expression . '.' ID '(' expressionList ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ';'  сдвиг, и переход в состояние 110
 
 
@@ -1152,10 +1152,12 @@ expressionList (58)
    39           | expression . '.' ID '(' expressionList ')'
    47           | '!' expression .
 
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
 
     $default  вывод с использованием правила 47 (expression)
 
@@ -1173,29 +1175,52 @@ expressionList (58)
    39           | expression . '.' ID '(' expressionList ')'
    48           | '(' expression . ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ')'  сдвиг, и переход в состояние 113
 
 
 состояние 98
 
-   38 expression: expression '.' . LENGTH
-   39           | expression '.' . ID '(' expressionList ')'
+   35 expression: expression AND . expression
 
-    ID      сдвиг, и переход в состояние 114
-    LENGTH  сдвиг, и переход в состояние 115
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 114
 
 
 состояние 99
 
-   37 expression: expression '[' . expression ']'
+   36 expression: expression LT . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 115
+
+
+состояние 100
+
+   31 expression: expression '+' . expression
 
     INTEGER  сдвиг, и переход в состояние 78
     ID       сдвиг, и переход в состояние 79
@@ -1209,16 +1234,25 @@ expressionList (58)
     expression  переход в состояние 116
 
 
-состояние 100
-
-   20 statement: ID '[' expression ']' . ASSIGN expression ';'
-
-    ASSIGN  сдвиг, и переход в состояние 117
-
-
 состояние 101
 
-   35 expression: expression AND . expression
+   32 expression: expression '-' . expression
+
+    INTEGER  сдвиг, и переход в состояние 78
+    ID       сдвиг, и переход в состояние 79
+    TRUE     сдвиг, и переход в состояние 80
+    FALSE    сдвиг, и переход в состояние 81
+    NEW      сдвиг, и переход в состояние 82
+    THIS     сдвиг, и переход в состояние 83
+    '!'      сдвиг, и переход в состояние 84
+    '('      сдвиг, и переход в состояние 85
+
+    expression  переход в состояние 117
+
+
+состояние 102
+
+   33 expression: expression '*' . expression
 
     INTEGER  сдвиг, и переход в состояние 78
     ID       сдвиг, и переход в состояние 79
@@ -1232,9 +1266,9 @@ expressionList (58)
     expression  переход в состояние 118
 
 
-состояние 102
+состояние 103
 
-   36 expression: expression LT . expression
+   34 expression: expression '/' . expression
 
     INTEGER  сдвиг, и переход в состояние 78
     ID       сдвиг, и переход в состояние 79
@@ -1248,41 +1282,18 @@ expressionList (58)
     expression  переход в состояние 119
 
 
-состояние 103
-
-   31 expression: expression '+' . expression
-
-    INTEGER  сдвиг, и переход в состояние 78
-    ID       сдвиг, и переход в состояние 79
-    TRUE     сдвиг, и переход в состояние 80
-    FALSE    сдвиг, и переход в состояние 81
-    NEW      сдвиг, и переход в состояние 82
-    THIS     сдвиг, и переход в состояние 83
-    '!'      сдвиг, и переход в состояние 84
-    '('      сдвиг, и переход в состояние 85
-
-    expression  переход в состояние 120
-
-
 состояние 104
 
-   32 expression: expression '-' . expression
+   38 expression: expression '.' . LENGTH
+   39           | expression '.' . ID '(' expressionList ')'
 
-    INTEGER  сдвиг, и переход в состояние 78
-    ID       сдвиг, и переход в состояние 79
-    TRUE     сдвиг, и переход в состояние 80
-    FALSE    сдвиг, и переход в состояние 81
-    NEW      сдвиг, и переход в состояние 82
-    THIS     сдвиг, и переход в состояние 83
-    '!'      сдвиг, и переход в состояние 84
-    '('      сдвиг, и переход в состояние 85
-
-    expression  переход в состояние 121
+    ID      сдвиг, и переход в состояние 120
+    LENGTH  сдвиг, и переход в состояние 121
 
 
 состояние 105
 
-   33 expression: expression '*' . expression
+   37 expression: expression '[' . expression ']'
 
     INTEGER  сдвиг, и переход в состояние 78
     ID       сдвиг, и переход в состояние 79
@@ -1298,18 +1309,9 @@ expressionList (58)
 
 состояние 106
 
-   34 expression: expression '/' . expression
+   20 statement: ID '[' expression ']' . ASSIGN expression ';'
 
-    INTEGER  сдвиг, и переход в состояние 78
-    ID       сдвиг, и переход в состояние 79
-    TRUE     сдвиг, и переход в состояние 80
-    FALSE    сдвиг, и переход в состояние 81
-    NEW      сдвиг, и переход в состояние 82
-    THIS     сдвиг, и переход в состояние 83
-    '!'      сдвиг, и переход в состояние 84
-    '('      сдвиг, и переход в состояние 85
-
-    expression  переход в состояние 123
+    ASSIGN  сдвиг, и переход в состояние 123
 
 
 состояние 107
@@ -1386,19 +1388,147 @@ expressionList (58)
 
 состояние 114
 
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   35           | expression AND expression .
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 35 (expression)
+
+
+состояние 115
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   36           | expression LT expression .
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 36 (expression)
+
+
+состояние 116
+
+   31 expression: expression . '+' expression
+   31           | expression '+' expression .
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 31 (expression)
+
+
+состояние 117
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   32           | expression '-' expression .
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 32 (expression)
+
+
+состояние 118
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   33           | expression '*' expression .
+   34           | expression . '/' expression
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 33 (expression)
+
+
+состояние 119
+
+   31 expression: expression . '+' expression
+   32           | expression . '-' expression
+   33           | expression . '*' expression
+   34           | expression . '/' expression
+   34           | expression '/' expression .
+   35           | expression . AND expression
+   36           | expression . LT expression
+   37           | expression . '[' expression ']'
+   38           | expression . '.' LENGTH
+   39           | expression . '.' ID '(' expressionList ')'
+
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
+
+    $default  вывод с использованием правила 34 (expression)
+
+
+состояние 120
+
    39 expression: expression '.' ID . '(' expressionList ')'
 
     '('  сдвиг, и переход в состояние 130
 
 
-состояние 115
+состояние 121
 
    38 expression: expression '.' LENGTH .
 
     $default  вывод с использованием правила 38 (expression)
 
 
-состояние 116
+состояние 122
 
    31 expression: expression . '+' expression
    32           | expression . '-' expression
@@ -1411,18 +1541,18 @@ expressionList (58)
    38           | expression . '.' LENGTH
    39           | expression . '.' ID '(' expressionList ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ']'  сдвиг, и переход в состояние 131
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
 
 
-состояние 117
+состояние 123
 
    20 statement: ID '[' expression ']' ASSIGN . expression ';'
 
@@ -1436,121 +1566,6 @@ expressionList (58)
     '('      сдвиг, и переход в состояние 85
 
     expression  переход в состояние 132
-
-
-состояние 118
-
-   31 expression: expression . '+' expression
-   32           | expression . '-' expression
-   33           | expression . '*' expression
-   34           | expression . '/' expression
-   35           | expression . AND expression
-   35           | expression AND expression .
-   36           | expression . LT expression
-   37           | expression . '[' expression ']'
-   38           | expression . '.' LENGTH
-   39           | expression . '.' ID '(' expressionList ')'
-
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
-
-    $default  вывод с использованием правила 35 (expression)
-
-
-состояние 119
-
-   31 expression: expression . '+' expression
-   32           | expression . '-' expression
-   33           | expression . '*' expression
-   34           | expression . '/' expression
-   35           | expression . AND expression
-   36           | expression . LT expression
-   36           | expression LT expression .
-   37           | expression . '[' expression ']'
-   38           | expression . '.' LENGTH
-   39           | expression . '.' ID '(' expressionList ')'
-
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
-
-    $default  вывод с использованием правила 36 (expression)
-
-
-состояние 120
-
-   31 expression: expression . '+' expression
-   31           | expression '+' expression .
-   32           | expression . '-' expression
-   33           | expression . '*' expression
-   34           | expression . '/' expression
-   35           | expression . AND expression
-   36           | expression . LT expression
-   37           | expression . '[' expression ']'
-   38           | expression . '.' LENGTH
-   39           | expression . '.' ID '(' expressionList ')'
-
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
-
-    $default  вывод с использованием правила 31 (expression)
-
-
-состояние 121
-
-   31 expression: expression . '+' expression
-   32           | expression . '-' expression
-   32           | expression '-' expression .
-   33           | expression . '*' expression
-   34           | expression . '/' expression
-   35           | expression . AND expression
-   36           | expression . LT expression
-   37           | expression . '[' expression ']'
-   38           | expression . '.' LENGTH
-   39           | expression . '.' ID '(' expressionList ')'
-
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
-
-    $default  вывод с использованием правила 32 (expression)
-
-
-состояние 122
-
-   31 expression: expression . '+' expression
-   32           | expression . '-' expression
-   33           | expression . '*' expression
-   33           | expression '*' expression .
-   34           | expression . '/' expression
-   35           | expression . AND expression
-   36           | expression . LT expression
-   37           | expression . '[' expression ']'
-   38           | expression . '.' LENGTH
-   39           | expression . '.' ID '(' expressionList ')'
-
-    '/'  сдвиг, и переход в состояние 106
-
-    $default  вывод с использованием правила 33 (expression)
-
-
-состояние 123
-
-   31 expression: expression . '+' expression
-   32           | expression . '-' expression
-   33           | expression . '*' expression
-   34           | expression . '/' expression
-   34           | expression '/' expression .
-   35           | expression . AND expression
-   36           | expression . LT expression
-   37           | expression . '[' expression ']'
-   38           | expression . '.' LENGTH
-   39           | expression . '.' ID '(' expressionList ')'
-
-    $default  вывод с использованием правила 34 (expression)
 
 
 состояние 124
@@ -1601,15 +1616,15 @@ expressionList (58)
    39           | expression . '.' ID '(' expressionList ')'
    45           | NEW INT_TYPE '[' expression . ']'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ']'  сдвиг, и переход в состояние 134
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
 
 
 состояние 130
@@ -1651,14 +1666,14 @@ expressionList (58)
    38           | expression . '.' LENGTH
    39           | expression . '.' ID '(' expressionList ')'
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ';'  сдвиг, и переход в состояние 137
 
 
@@ -1697,14 +1712,14 @@ expressionList (58)
    50 expressionList: expression . ',' expressionList
    51               | expression .
 
-    '.'  сдвиг, и переход в состояние 98
-    '['  сдвиг, и переход в состояние 99
-    AND  сдвиг, и переход в состояние 101
-    LT   сдвиг, и переход в состояние 102
-    '+'  сдвиг, и переход в состояние 103
-    '-'  сдвиг, и переход в состояние 104
-    '*'  сдвиг, и переход в состояние 105
-    '/'  сдвиг, и переход в состояние 106
+    AND  сдвиг, и переход в состояние 98
+    LT   сдвиг, и переход в состояние 99
+    '+'  сдвиг, и переход в состояние 100
+    '-'  сдвиг, и переход в состояние 101
+    '*'  сдвиг, и переход в состояние 102
+    '/'  сдвиг, и переход в состояние 103
+    '.'  сдвиг, и переход в состояние 104
+    '['  сдвиг, и переход в состояние 105
     ','  сдвиг, и переход в состояние 139
 
     $default  вывод с использованием правила 51 (expressionList)

@@ -37,7 +37,7 @@ int main(void){
 
 	std::cout << "--- Building intermediate representation tree --- " << std::endl;
 	yyparse();
-    //PrintVisitor* pv = new PrintVisitor();
+	PrintVisitor* pv = new PrintVisitor();
 	// ProgramImpl::me->Accept(pv);
 
 	std::cout << "--- Building table --- " << std::endl;
@@ -60,8 +60,8 @@ int main(void){
 
 	IRTree::CodeFragment* codeFragment = NULL;
 	codeFragment = irvisitor->getMainFragment();
-
-	std::ofstream outputFile("testgraph.txt");
+	
+	std::ofstream outputFile("graph.txt");
 	IRTree::IRTreePrintVisitor* printVisitor = new IRTree::IRTreePrintVisitor(outputFile);
     printVisitor->visit(codeFragment);
     outputFile.close();
