@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 
 #include "enums.h"
 #include "bi.hpp"
@@ -54,6 +55,13 @@ int main(void){
 	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
 	std::cout << "--- Everything visited ---" << std::endl;
+	
+	IRTree::CodeFragment* codeFragment = irvisitor->getMainFragment();
+	
+	std::ofstream outputFile("testgraph.txt");
+	IRTree::IRTreePrintVisitor* printVisitor = new IRTree::IRTreePrintVisitor(outputFile);
+    printVisitor->visit(codeFragment);
+    outputFile.close();
 	return 0;
 
 }
