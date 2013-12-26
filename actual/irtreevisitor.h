@@ -61,7 +61,7 @@ public:
 
 	int visit(const IntVal* n)
 	{
-
+        wrapper = new Wrapper::ExpWrapper( new IRTree::CONST(n->val) );
 		return 0;
 	}
 
@@ -161,6 +161,7 @@ public:
 		const IRTree::IExp* object = wrapper->ToExp();
 
 		if(n->list) { n->list->Accept(this); }
+
 		wrapper = new Wrapper::ExpWrapper(
 			new IRTree::CALL(
 				new Temp::Label( NameGenerator::gen(type, n->id) ),
