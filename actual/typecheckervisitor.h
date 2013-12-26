@@ -46,6 +46,19 @@ public:
 		ct = ct_;
 	}
 
+	static const Symbol* getExpressionType( 
+		ClassTable* classTable,
+		ClassInfo* currentClass, 
+		MethodInfo* currentMethod,
+		const IExpression* expression )
+	{
+		TypeCheckerVisitor tempVisitor( classTable );
+		tempVisitor.curclass = currentClass;
+		tempVisitor.curmethod = currentMethod;
+		expression->Accept( &tempVisitor );
+		return tempVisitor.type.customType;
+	}
+
 	int visit(const ArithmExp* n)
 	{
 		if(n->left) 

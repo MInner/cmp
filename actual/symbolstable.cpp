@@ -24,7 +24,7 @@ ClassInfo* ClassTable::getClass(const Symbol* name){
 			return classes.at(i);
 		}
 	}
-	std::cout << "WARNING: there is no such class" << std::endl; 
+	std::cout << "WARNING: there is no such class " << name << std::endl; 
 	return NULL;
 }
 
