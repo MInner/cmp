@@ -20,7 +20,7 @@ ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
 
 ClassInfo* ClassTable::getClass(const Symbol* name){
 	for(unsigned int i = 0; i < classes.size(); i++){
-		if(classes.at(i)->name == name){ // strange
+		if(classes.at(i)->name == name){
 			return classes.at(i);
 		}
 	}
