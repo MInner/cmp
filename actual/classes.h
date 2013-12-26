@@ -16,27 +16,31 @@ using std::cout;
 class ArithmExp : public IExpression
 {
 public:
-	ArithmExp(const Arithm::Arithm op_, const IExpression* left_, const IExpression* right_):
-		op(op_), left(left_), right(right_) {}
+	
+	ArithmExp(const Arithm::Arithm op_, const IExpression* left_, const IExpression* right_, int line_, int column_):
+		op(op_), left(left_), right(right_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-
 	const Arithm::Arithm op;
 	const IExpression* left;
 	const IExpression* right;
+	const int line;
+	const int column;
+
 };
 
 class LogicExp : public IExpression
 {
 public:
-	LogicExp(const Logic::Logic op_, const IExpression* left_, const IExpression* right_):
-		left(left_), op(op_), right(right_) {}
-	LogicExp(const Logic::Logic op_, const IExpression* left_):
-		left(left_), op(op_), right(nullptr) {}
+	
+	LogicExp(const Logic::Logic op_, const IExpression* left_, const IExpression* right_, int line_, int column_):
+		left(left_), op(op_), right(right_), line(line_), column(column_) {}
+	LogicExp(const Logic::Logic op_, const IExpression* left_, int line_, int column_):
+		left(left_), op(op_), right(nullptr), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -46,28 +50,32 @@ public:
 	const IExpression* left;
 	const Logic::Logic op;
 	const IExpression* right;
+	const int line;
+	const int column;
+
 };
 
 class IntVal : public IExpression
 {
 public:
-	IntVal(const int val_):
-		val(val_) {}
+	IntVal(const int val_, int line_, int column_):
+		val(val_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-
 	const int val;
+	const int line;
+	const int column;
 };
 
 class BoolVal : public IExpression
 {
 public:
-	BoolVal(const bool val_):
-		val(val_) {}
+	BoolVal(const bool val_, int line_, int column_):
+		val(val_), line(line_), column(column_)  {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -76,13 +84,15 @@ public:
 
 
 	const bool val;
+	const int line;
+	const int column;
 };
 
 class IdExp : public IExpression
 {
 public:
-	IdExp(const Symbol* id_):
-		id(id_) {}
+	IdExp(const Symbol* id_, int line_, int column_):
+		id(id_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -91,13 +101,15 @@ public:
 
 
 	const Symbol* id;
+	const int line;
+	const int column;
 };
 
 class NewExp : public IExpression
 {
 public:
-	NewExp(const Symbol* id_):
-		id(id_) {}
+	NewExp(const Symbol* id_, int line_, int column_):
+		id(id_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -105,6 +117,8 @@ public:
 	}
 
 	const Symbol* id;
+	const int line;
+	const int column;
 };
 
 
@@ -112,27 +126,31 @@ public:
 class ThisExp : public IExpression
 {
 public:
-	ThisExp() {}
+	ThisExp(int line_, int column_):
+	line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
+	const int line;
+	const int column;
 };
 
 class LenExp : public IExpression
 {
 public:
-	LenExp(const IExpression* exp_):
-		exp(exp_) {}
+	LenExp(const IExpression* exp_, int line_, int column_):
+		exp(exp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-
+	const int line;
+	const int column;
 	const IExpression*  exp;
 };
 
@@ -140,8 +158,8 @@ class CallMethodExp : public IExpression
 {
 public:
 	CallMethodExp(const IExpression* exp_, const Symbol* id_,
-		const IExpressionList* list_):
-		exp(exp_), id(id_), list(list_) {}
+		const IExpressionList* list_, int line_, int column_):
+		exp(exp_), id(id_), list(list_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -151,28 +169,31 @@ public:
 	const IExpression* exp;
 	const Symbol* id;
 	const IExpressionList* list;
+	const int line;
+	const int column;
 };
 
 class NewIntArrExp : public IExpression
 {
 public:
-	NewIntArrExp(const IExpression* exp_):
-		exp(exp_) {}
+	NewIntArrExp(const IExpression* exp_, int line_, int column_):
+		exp(exp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-
 	const IExpression*  exp;
+	const int line;
+	const int column;
 };
 
 class ArrValExp : public IExpression
 {
 public:
-	ArrValExp(const IExpression* exp_, const IExpression*  idExp_):
-		exp(exp_), idExp(idExp_) {}
+	ArrValExp(const IExpression* exp_, const IExpression*  idExp_, int line_, int column_):
+		exp(exp_), idExp(idExp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -182,6 +203,8 @@ public:
 
 	const IExpression*  exp;
 	const IExpression*  idExp;
+	const int line;
+	const int column;
 };
 
 // Statement
@@ -189,23 +212,27 @@ public:
 class BlockStm : public IStatement
 {
 public:
-	BlockStm(const IStatements* stms_):
-		stms(stms_) {}
+	BlockStm(const IStatements* stms_, int line_, int column_):
+		stms(stms_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-
+	const int line;
+	const int column;
 	const IStatements*  stms;
 };
 
 class AssignStm : public IStatement
 {
 public:
-	AssignStm(const IAssignment* assign_):
-		assign(assign_) {}
+	const int line;
+	const int column;
+	
+	AssignStm(const IAssignment* assign_, int line_, int column_):
+		assign(assign_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -219,8 +246,11 @@ public:
 class PrintStmPrintStm : public IStatement
 {
 public:
-	PrintStmPrintStm(const IExpression* exp_):
-		exp(exp_) {}
+	const int line;
+	const int column;
+	
+	PrintStmPrintStm(const IExpression* exp_, int line_, int column_):
+		exp(exp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -234,8 +264,11 @@ public:
 class WhileStm : public IStatement
 {
 public:
-	WhileStm(const IExpression* exp_, const IStatement*  stm_):
-		exp(exp_), stm(stm_) {}
+	const int line;
+	const int column;
+	
+	WhileStm(const IExpression* exp_, const IStatement*  stm_, int line_, int column_):
+		exp(exp_), stm(stm_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -250,9 +283,12 @@ public:
 class IfElseStm : public IStatement
 {
 public:
+	const int line;
+	const int column;
+	
 	IfElseStm(const IExpression* exp_, const IStatement*  stm_,
-		const IStatement*  elseStm_):
-		exp(exp_), stm(stm_), elseStm(elseStm_) {}
+		const IStatement*  elseStm_, int line_, int column_):
+		exp(exp_), stm(stm_), elseStm(elseStm_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -268,8 +304,9 @@ public:
 class AssignArrStm : public IStatement
 {
 public:
-	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IExpression*  newexp_):
-		exp(exp_), newexp(newexp_) {}
+	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IExpression*  newexp_, 
+		int line_, int column_):
+		exp(exp_), newexp(newexp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -279,6 +316,8 @@ public:
 	const Symbol* id;
 	const IExpression*  exp;
 	const IExpression* newexp;
+	const int line;
+	const int column;
 };
 
 // StatementsImpl  AssignmentImpl expressionListImpl
@@ -286,12 +325,12 @@ public:
 class ExpressionListImpl : public IExpressionList
 {
 public:
-	ExpressionListImpl(const IExpression* exp_, const IExpressionList*  list_):
-		exp(exp_), list(list_) {}
-	ExpressionListImpl(const IExpression* exp_):
-		exp(exp_), list(nullptr) {}
-	ExpressionListImpl():
-		exp(NULL), list(nullptr) {}
+	ExpressionListImpl(const IExpression* exp_, const IExpressionList*  list_, int line_, int column_):
+		exp(exp_), list(list_), line(line_), column(column_) {}
+	ExpressionListImpl(const IExpression* exp_, int line_, int column_):
+		exp(exp_), list(nullptr), line(line_), column(column_) {}
+	ExpressionListImpl(int line_, int column_):
+		exp(NULL), list(nullptr), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -301,15 +340,20 @@ public:
 
 	const IExpression*  exp;
 	const IExpressionList*  list;
+	const int line;
+	const int column;
 };
 
 class StatementsImpl : public IStatements
 {
 public:
-	StatementsImpl(const IStatement* stm_, const IStatements*  list_):
-		stm(stm_), list(list_) {}
-	StatementsImpl():
-		stm(NULL), list(nullptr) {}
+	const int line;
+	const int column;
+	
+	StatementsImpl(const IStatement* stm_, const IStatements*  list_, int line_, int column_):
+		stm(stm_), list(list_), line(line_), column(column_) {}
+	StatementsImpl(int line_, int column_):
+		stm(NULL), list(nullptr), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -324,8 +368,11 @@ public:
 class AssignmentImpl : public IAssignment
 {
 public:
-	AssignmentImpl(const Symbol* id_, const IExpression* exp_):
-		id(id_), exp(exp_) {}
+	const int line;
+	const int column;
+	
+	AssignmentImpl(const Symbol* id_, const IExpression* exp_, int line_, int column_):
+		id(id_), exp(exp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -342,8 +389,11 @@ public:
 class ArguementImpl : public IArguement
 {
 public:
-	ArguementImpl(const IType* type_, const Symbol* id_):
-		type(type_), id(id_) {}
+	const int line;
+	const int column;
+
+	ArguementImpl(const IType* type_, const Symbol* id_, int line_, int column_):
+		type(type_), id(id_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -358,10 +408,13 @@ public:
 class ArguementsImpl : public IArguements
 {
 public:
-	ArguementsImpl(const IArguement* arg_, const IArguements*  list_):
-		arg(arg_), list(list_) {}
-	ArguementsImpl():
-		arg(NULL), list(nullptr) {}
+	const int line;
+	const int column;
+
+	ArguementsImpl(const IArguement* arg_, const IArguements*  list_, int line_, int column_):
+		arg(arg_), list(list_), line(line_), column(column_) {}
+	ArguementsImpl(int line_, int column_):
+		arg(NULL), list(nullptr), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -376,8 +429,11 @@ public:
 class InternalType : public IType
 {
 public:
-	InternalType(const Type::Type type_):
-		type(type_) {}
+	const int line;
+	const int column;
+
+	InternalType(const Type::Type type_, int line_, int column_):
+		type(type_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -395,8 +451,11 @@ public:
 class CustomType : public IType
 {
 public:
-	CustomType(const Symbol* type_):
-		type(type_) {}
+	const int line;
+	const int column;
+
+	CustomType(const Symbol* type_, int line_, int column_):
+		type(type_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -417,8 +476,11 @@ public:
 class VarDeclarationImpl : public IVarDeclaration
 {
 public:
-	VarDeclarationImpl(const IType* type_, const Symbol* id_):
-		type(type_), id(id_) {}
+	const int line;
+	const int column;
+	
+	VarDeclarationImpl(const IType* type_, const Symbol* id_, int line_, int column_):
+		type(type_), id(id_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -433,10 +495,14 @@ public:
 class VarDeclarationsImpl : public IVarDeclarations
 {
 public:
-	VarDeclarationsImpl(const IVarDeclaration* dec_, const IVarDeclarations*  list_):
-		dec(dec_), list(list_) {}
-	VarDeclarationsImpl():
-		dec(NULL), list(nullptr) {}
+	const int line;
+	const int column;
+	
+	VarDeclarationsImpl(const IVarDeclaration* dec_, const IVarDeclarations*  list_,
+		int line_, int column_):
+		dec(dec_), list(list_), line(line_), column(column_) {}
+	VarDeclarationsImpl(int line_, int column_):
+		dec(NULL), list(nullptr), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -451,10 +517,13 @@ public:
 class MethodDeclarationsImpl : public IMethodDeclarations
 {
 public:
-	MethodDeclarationsImpl(const IMethodDeclaration* dec_, const IMethodDeclarations*  list_):
-		dec(dec_), list(list_) {}
-	MethodDeclarationsImpl():
-		dec(NULL), list(nullptr) {}
+	const int line;
+	const int column;
+	
+	MethodDeclarationsImpl(const IMethodDeclaration* dec_, const IMethodDeclarations*  list_, int line_, int column_):
+		dec(dec_), list(list_), line(line_), column(column_) {}
+	MethodDeclarationsImpl(int line_, int column_):
+		dec(NULL), list(nullptr), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -468,11 +537,15 @@ public:
 class MethodDeclarationImpl : public IMethodDeclaration
 {
 public:
+	const int line;
+	const int column;
+	
 	MethodDeclarationImpl(const IType*  type_, const Symbol* id_,
 		const IArguements*  args_, const IVarDeclarations*  vars_,
-		const IStatements*  statements_,	const IExpression*  exp_):
+		const IStatements*  statements_,	const IExpression*  exp_, 
+		int line_, int column_):
 		type(type_), id(id_), args(args_), vars(vars_),
-		statements(statements_), exp(exp_){}
+		statements(statements_), exp(exp_), line(line_), column(column_){}
 
 	int Accept(IVisitor* v) const
 	{
@@ -492,10 +565,13 @@ public:
 class ClassDeclarationsImpl : public IClassDeclarations
 {
 public:
-	ClassDeclarationsImpl(const IClassDeclaration* dec_, const IClassDeclarations*  list_):
-		dec(dec_), list(list_) {}
-	ClassDeclarationsImpl():
-		dec(NULL), list(nullptr) {}
+	const int line;
+	const int column;
+	
+	ClassDeclarationsImpl(const IClassDeclaration* dec_, const IClassDeclarations*  list_, int line_, int column_):
+		dec(dec_), list(list_), line(line_), column(column_) {}
+	ClassDeclarationsImpl(int line_, int column_):
+		dec(NULL), list(nullptr), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -510,12 +586,16 @@ public:
 class ClassDeclarationImpl : public IClassDeclaration
 {
 public:
+	const int line;
+	const int column;
+	
 	ClassDeclarationImpl(const Symbol* id_, const Symbol* extId_,
-		const IVarDeclarations*  vars_, const IMethodDeclarations*  methods_):
-		id(id_), extId(extId_), vars(vars_), methods(methods_) {}
+		const IVarDeclarations*  vars_, const IMethodDeclarations*  methods_,
+		int line_, int column_):
+		id(id_), extId(extId_), vars(vars_), methods(methods_), line(line_), column(column_) {}
 	ClassDeclarationImpl(const Symbol* id_, const IVarDeclarations*
-		vars_, const IMethodDeclarations*  methods_):
-		id(id_), extId(NULL), vars(vars_), methods(methods_) {}
+		vars_, const IMethodDeclarations*  methods_, int line_, int column_):
+		id(id_), extId(NULL), vars(vars_), methods(methods_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -552,9 +632,12 @@ public:
 class MainClassImpl : public IMainClass
 {
 public:
+	const int line;
+	const int column;
+	
 	MainClassImpl(const Symbol* id_, const Symbol* argId_,
-		const IStatement*  stm_):
-		id(id_), argId(argId_), stm(stm_) {}
+		const IStatement*  stm_, int line_, int column_):
+		id(id_), argId(argId_), stm(stm_), line(line_), column(column_)  {}
 
 	int Accept(IVisitor* v) const
 	{
