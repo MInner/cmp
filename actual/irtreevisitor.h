@@ -11,7 +11,6 @@
 #include "treeInterfaces.h"
 #include "symbolstable.h"
 
-
 class IRTreeVisitor : public IVisitor
 {
 public:
@@ -146,41 +145,28 @@ public:
 	}
 	int visit(const CallMethodExp* n)
 	{
-		// auto expressionType = CTypeChecker::GetExpressionType( 
-		// 	symbolsTable, 
-		// 	symbolStorage, 
-		// 	symbolsTable->GetClass( currentClassName ),
-		// 	symbolsTable->GetClass( currentClassName )->LookupMethod( currentMethodName, currentMethodArgumentTypes, true ), 
-		// 	callExpressionNode->GetExpression() 
-		// );
-
-		// callExpressionNode->GetExpression()->Accept( this );
-		// const Tree::IExp* object = wrapper->ToExp();
-
-		// std::vector<const Symbol::CSymbol*> callMethodArgumentTypes;
-		// for( auto argument = callExpressionNode->GetArguments(); argument != nullptr; argument = argument->GetRestExpressions() ) {
-		// 	if( argument->GetExpression() != nullptr ) {
-		// 		callMethodArgumentTypes.push_back( CTypeChecker::GetExpressionType( symbolsTable, symbolStorage, symbolsTable->GetClass( currentClassName ),
-		// 			symbolsTable->GetClass( currentClassName )->LookupMethod( currentMethodName, currentMethodArgumentTypes, true ), argument->GetExpression() ) );
-		// 	}
-		// }
-		// if( callExpressionNode->GetArguments() != nullptr ) {
-		// 	callExpressionNode->GetArguments()->Accept( this );
-		// }
-
-		// SymbolsTable::CMethodInfo* callMethodInfo = symbolsTable->GetClass( expressionType )->LookupMethod( callExpressionNode->GetMethodName(),
-		// 	callMethodArgumentTypes );
-
-		// wrapper = new Wrapper::ExpWrapper( 
-		// 	new IRTree::CALL( 
-		// 		new Temp::Label( nameDecorator.GenerateName( callMethodInfo ) ),
-		// 	new Tree::CExpList( object, currentExpList ) ) );
-		// currentExpList = nullptr;
-
-		wrapper = new Wrapper::ExpWrapper(  new IRTree::CONST (1) );
+		const Symbol* type = TypeCheckerVisitor::getExpressionType( 
+			classTable,
+			classTable->getClass( curClassName ),
+			classTable->getClass( curClassName )->getMethod( curMethodName ), 
+			n->exp 
+		);
 
 		if(n->exp) { n->exp->Accept(this); }
+		const IRTree::IExp* object = wrapper->ToExp();
+
 		if(n->list) { n->list->Accept(this); }
+
+		wrapper = new Wrapper::ExpWrapper( 
+			new IRTree::CALL( 
+				new Temp::Label( NameGenerator::gen(type, n->id) ),
+				new IRTree::ExpList( object, curExpList ) 
+			) 
+		);
+
+		curExpList = NULL;
+		
+		
 		return 0;
 	}
 	int visit(const NewIntArrExp* n)
