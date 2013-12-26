@@ -5,7 +5,7 @@ n0 [shape="oval",label="ESEQ"]
 n0 -- n1
 n1 [shape="box",label="EXP"]
 n1 -- n2
-n2 [shape="component",label="CALL(print)"]
+n2 [shape="box",label="CALL(print)"]
 n0 -- n3
 n3 [shape="oval",label="CONST(0)"]
 }
@@ -93,7 +93,7 @@ n43 [shape="box",label="JUMP"]
 n43 -- n44
 n44 [shape="oval",label="NAME(LABEL#1)"]
 n43 -- n45
-n45 [shape="cds",label="LABEL#1"]
+n45 [shape="box",label="LABEL#1"]
 n30 -- n46
 n46 [shape="box",label="SEQ"]
 n46 -- n47
@@ -151,7 +151,7 @@ n72 [shape="oval",label="TEMP(##FP)"]
 n71 -- n73
 n73 [shape="oval",label="CONST(-8)"]
 n69 -- n74
-n74 [shape="component",label="CALL(@@Fac__ComputeFac)"]
+n74 [shape="box",label="CALL(@@Fac__ComputeFac)"]
 n74 -- n75
 n75 [shape="oval",label="MEM"]
 n75 -- n76
@@ -183,7 +183,7 @@ n88 [shape="box",label="JUMP"]
 n88 -- n89
 n89 [shape="oval",label="NAME(LABEL#1)"]
 n88 -- n90
-n90 [shape="cds",label="LABEL#1"]
+n90 [shape="box",label="LABEL#1"]
 n29 -- n91
 n91 [shape="box",label="LABEL(LABEL#1)"]
 n4 -- n92
@@ -227,7 +227,7 @@ n108 [shape="oval",label="TEMP(##FP)"]
 n107 -- n109
 n109 [shape="oval",label="CONST(8)"]
 n105 -- n110
-n110 [shape="component",label="CALL(malloc)"]
+n110 [shape="box",label="CALL(malloc)"]
 n110 -- n111
 n111 [shape="oval",label="CONST(4)"]
 n104 -- n112
@@ -243,7 +243,7 @@ n116 [shape="oval",label="TEMP(##FP)"]
 n115 -- n117
 n117 [shape="oval",label="CONST(0)"]
 n113 -- n118
-n118 [shape="component",label="CALL(@@Fac__ComputeFac)"]
+n118 [shape="box",label="CALL(@@Fac__ComputeFac)"]
 n118 -- n119
 n119 [shape="oval",label="MEM"]
 n119 -- n120

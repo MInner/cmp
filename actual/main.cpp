@@ -49,15 +49,16 @@ int main(void){
 	TypeCheckerVisitor* tch = new TypeCheckerVisitor(ctable);
 	ProgramImpl::me->Accept(tch);
 
-	std::cout << "--- Building Intermediate tree ---" << std::endl;
+	std::cout << "--- Building IR tree ---" << std::endl;
 
 	IFrameFactory* fac = new FrameFactory_x86();
 
 	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
 
-	IRTree::CodeFragment* codeFragment = NULL;
+	std::cout << "--- Building graphviz tree ---" << std::endl;
 
+	IRTree::CodeFragment* codeFragment = NULL;
 	codeFragment = irvisitor->getMainFragment();
 	
 	std::ofstream outputFile("testgraph.txt");
