@@ -50,8 +50,10 @@ int main(void){
 
 	IFrameFactory* fac = new FrameFactory_x86();
 
+	std::cout << "--- | Frames produced ---" << std::endl;
 	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
+	std::cout << "--- Everything visited ---" << std::endl;
 	return 0;
 
 }

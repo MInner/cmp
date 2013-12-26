@@ -20,7 +20,7 @@ ClassInfo* ClassTable::addClass(const Symbol* name, const Symbol* parentName){
 
 ClassInfo* ClassTable::getClass(const Symbol* name){
 	for(unsigned int i = 0; i < classes.size(); i++){
-		if(classes.at(i)->name == name){
+		if(classes.at(i)->name == name){ // strange
 			return classes.at(i);
 		}
 	}
@@ -67,6 +67,8 @@ MethodInfo* ClassInfo::addMethod(const Symbol* mname,TypeData returnType){
 }
 
 MethodInfo* ClassInfo::getMethod(const Symbol* name){
+	if (name == NULL)
+		return NULL;
 	for(unsigned int i = 0; i < methods.size(); i++){
 		if(methods.at(i)->name == name){
 			return methods.at(i);

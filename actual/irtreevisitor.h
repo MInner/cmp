@@ -11,6 +11,8 @@
 #include "treeInterfaces.h"
 #include "symbolstable.h"
 
+#include <typeinfo>
+
 class IRTreeVisitor : public IVisitor
 {
 public:
@@ -145,18 +147,18 @@ public:
 	}
 	int visit(const CallMethodExp* n)
 	{
+		ClassInfo* curClassInfo = classTable->getClass( curClassName );
+		MethodInfo* curMethodInfo = curClassInfo->getMethod( curMethodName );
 		const Symbol* type = TypeCheckerVisitor::getExpressionType( 
 			classTable,
-			classTable->getClass( curClassName ),
-			classTable->getClass( curClassName )->getMethod( curMethodName ), 
+			curClassInfo,
+			curMethodInfo, 
 			n->exp 
-		);
-
+		); 
 		if(n->exp) { n->exp->Accept(this); }
 		const IRTree::IExp* object = wrapper->ToExp();
 
 		if(n->list) { n->list->Accept(this); }
-
 		wrapper = new Wrapper::ExpWrapper( 
 			new IRTree::CALL( 
 				new Temp::Label( NameGenerator::gen(type, n->id) ),
@@ -507,6 +509,9 @@ public:
 
 	int visit(const MainClassImpl* n)
 	{
+		curClassName = Symbol::getSymbol("main");
+		classTable->addClass(curClassName, NULL);
+
 		curFragment = new IRTree::CodeFragment( frameFactory->create( NameGenerator::gen( n->id->getStr(), std::string("MAIN") ), 0, 0 ) );
 		if(n->stm) { n->stm->Accept(this); }
 		curFragment->body = wrapper->ToStm();
