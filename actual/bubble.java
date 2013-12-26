@@ -15,6 +15,7 @@ class BubbleSort
       b[2] = 2;
       return this.bubbleSort(b);
   }
+  
   public int bubbleSort(int[] arr) {
       bool swapped;
       bool var;

@@ -40,6 +40,9 @@ public:
 	bool isCurMethodStatic;
 
 	static int line;
+	
+	int curArgNum;
+	MethodInfo* checkmethod;
 //	std::vector<VarInfo*> currentMethodParams;
 
 	TypeCheckerVisitor(ClassTable* ct_)
@@ -91,8 +94,6 @@ public:
 
 	int visit(const LogicExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if (n->op == Logic::L_LT)
 		{
 			if(n->left) {
@@ -142,8 +143,6 @@ public:
 	}
 	int visit(const IntVal* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		type.isInternal = true;
 		type.internalType = Type::INT;
 		return 0;
@@ -151,8 +150,6 @@ public:
 
 	int visit(const BoolVal* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		type.isInternal = true;
 		type.internalType = Type::BOOL;
 		return 0;
@@ -160,8 +157,6 @@ public:
 
 	int visit(const IdExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		VarInfo* var;
 
 		if ( var = curmethod->getLocalVar(n->id) )
@@ -180,8 +175,6 @@ public:
 
 	int visit(const NewExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		type.isInternal = false;
 		type.customType = n->id;
 		return 0;
@@ -189,8 +182,6 @@ public:
 
 	int visit(const ThisExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if (isCurMethodStatic)
 		{
 			std::cout << "WARNING: line " << n->line <<" THIS in static method" << std::endl;
@@ -203,8 +194,6 @@ public:
 
 	int visit(const LenExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->exp)
 		{	n->exp->Accept(this);
 			type.isInternal = true;
@@ -230,6 +219,16 @@ public:
 		if (!mi)
 			std::cout << "WARNING: line " << n->line <<" No such method at class" << std::endl;
 
+		checkmethod = mi;
+		curArgNum = 0;
+
+		// "edge" cases
+		if ((mi->params.size() == 0) && (n->list != NULL))
+			std::cout << "WARNING: line " << n->line <<" method takes no params but some provided" << std::endl;
+
+		if ((mi->params.size() != 0) && (n->list == NULL))
+			std::cout << "WARNING: line " << n->line <<" method takes params but no provided" << std::endl;
+
 		if(n->list) { n->list->Accept(this); }
 
 		type = mi->returnType;
@@ -237,8 +236,6 @@ public:
 	}
 	int visit(const NewIntArrExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->exp)
 		{
 			n->exp->Accept(this);
@@ -249,8 +246,6 @@ public:
 	}
 	int visit(const ArrValExp* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-		
 		if(n->exp) { n->exp->Accept(this); }
 
 		if (type.internalType != Type::INT_ARR) //check exp type is INT_ARR
@@ -267,22 +262,16 @@ public:
 	}
 	int visit(const BlockStm* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->stms) { n->stms->Accept(this); }
 		return 0;
 	}
 	int visit(const AssignStm* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->assign) { n->assign->Accept(this); }
 		return 0;
 	}
 	int visit(const PrintStmPrintStm* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->exp) { n->exp->Accept(this); }
 
 		if(type.internalType != Type::INT) // check exp type is INT_Type
@@ -292,8 +281,6 @@ public:
 
 	int visit(const WhileStm* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::BOOL)
 			std::cout << "Line " << n->line << "Not Bool in WHILE" << std::endl;
@@ -303,8 +290,6 @@ public:
 	}
 	int visit(const IfElseStm* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::BOOL) // check exp type is type::bool_type
 		{
@@ -316,8 +301,6 @@ public:
 	}
 	int visit(const AssignArrStm* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		// check in SymbolTable existence of such array serge^ how?
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::INT) // check exp type is INT_Type
@@ -332,24 +315,35 @@ public:
 	}
 	int visit(const ExpressionListImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
+		// more params (some remained)
+		if (curArgNum == (checkmethod->params.size() - 1) && (n->list != NULL) )
+		{
+			std::cout << "WARNING: line " << n->line <<" too many params for " << checkmethod->name << "()" << std::endl;
+			curArgNum -= 1; // hack to git rid of segfault - it continues worlking and looks into vector[n+k], n = vector.size
+		}
+
+		// more in method.params then provided (in check->param remained more)
+		if (curArgNum != (checkmethod->params.size() - 1) && (n->list == NULL) )
+			std::cout << "WARNING: line " << n->line <<" too little params for " << checkmethod->name << "()" << std::endl;
 
 		if(n->exp) { n->exp->Accept(this); }
+
+		if ( !(type == checkmethod->params[curArgNum]->type) )
+			std::cout << "WARNING: line " << n->line <<" type mismatch on param #" << curArgNum + 1 << std::endl;
+
+		curArgNum += 1;
+
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
 	int visit(const StatementsImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->stm) { n->stm->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
 	int visit(const AssignmentImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		VarInfo* var;
 		TypeData lefttype;
 
@@ -377,16 +371,12 @@ public:
 
 	int visit(const ArguementImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
 
 	int visit(const ArguementsImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->arg) { n->arg->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -394,8 +384,6 @@ public:
 
 	int visit(const CustomType* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		type.isInternal = false;
 		type.customType = n->type;
 
@@ -404,8 +392,6 @@ public:
 
 	int visit(const InternalType* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		type.isInternal = true;
 		type.internalType = n->type;
 
@@ -414,16 +400,12 @@ public:
 
 	int visit(const VarDeclarationImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->type) { n->type->Accept(this); }
 		return 0;
 	}
 
 	int visit(const VarDeclarationsImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->dec) { n->dec->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -431,8 +413,6 @@ public:
 
 	int visit(const MethodDeclarationsImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->dec) { n->dec->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -440,8 +420,6 @@ public:
 
 	int visit(const MethodDeclarationImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		curmethod = curclass->getMethod(n->id);
 
 		// TODO returnvalcheck !
@@ -463,8 +441,6 @@ public:
 
 	int visit(const ClassDeclarationsImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->dec) { n->dec->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -472,8 +448,6 @@ public:
 
 	int visit(const ClassDeclarationImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		curclass = ct->getClass(n->id);
 
 		if(n->vars) { n->vars->Accept(this); }
@@ -486,16 +460,12 @@ public:
 
 	int visit(const ProgramImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		if(n->cl) { n->cl->Accept(this); }
 		if(n->decs) { n->decs->Accept(this); }
 		return 0;
 	}
 	int visit(const MainClassImpl* n)
 	{
-		TypeCheckerVisitor::line = n->line;
-
 		curclass = ct->getClass(n->id);
 		curmethod = curclass->getMethod(Symbol::getSymbol("main"));
 

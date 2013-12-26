@@ -5,19 +5,19 @@
 		<Cursor position="3984" topLine="145" />
 	</File>
 	<File name="classes.h" open="1" top="0" tabpos="2">
-		<Cursor position="2698" topLine="198" />
+		<Cursor position="5621" topLine="283" />
 	</File>
 	<File name="frame.h" open="1" top="0" tabpos="4">
-		<Cursor position="116" topLine="3" />
+		<Cursor position="116" topLine="0" />
 	</File>
 	<File name="irtreeprintvisitor.h" open="1" top="0" tabpos="7">
-		<Cursor position="2470" topLine="72" />
+		<Cursor position="4724" topLine="109" />
 	</File>
 	<File name="irtreevisitor.h" open="1" top="0" tabpos="6">
-		<Cursor position="11086" topLine="468" />
+		<Cursor position="7288" topLine="289" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="802" topLine="27" />
+		<Cursor position="802" topLine="14" />
 	</File>
 	<File name="printvisitor.h" open="0" top="0" tabpos="4">
 		<Cursor position="8900" topLine="219" />
@@ -32,10 +32,10 @@
 		<Cursor position="987" topLine="30" />
 	</File>
 	<File name="temp.h" open="1" top="0" tabpos="5">
-		<Cursor position="244" topLine="3" />
+		<Cursor position="666" topLine="22" />
 	</File>
 	<File name="typecheckervisitor.h" open="1" top="1" tabpos="9">
-		<Cursor position="3500" topLine="158" />
+		<Cursor position="3255" topLine="151" />
 	</File>
 	<File name="visitor.h" open="1" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />

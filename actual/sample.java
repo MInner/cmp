@@ -1,11 +1,11 @@
 class Factorial {
 	public static void main(String[] a) {
-		System.out.println(new Fac().ComputeFac(10));
+		System.out.println(new Fac().ComputeFac(10, 15, new Fac() ));
 	}
 }
 
 class Fac {
-	public int ComputeFac(int num) {
+	public int ComputeFac(int num, int l, Fac r) {
 		int num_aux;
 		bool b;
 		b = true;
@@ -15,7 +15,7 @@ class Fac {
 		else
 		{
 			b = 3 < 2;
-			num_aux = num * (this.ComputeFac(num - 1));
+			num_aux = num * (this.ComputeFac(num - 1, num, 10));
 		}
 		return num_aux;
 	}
@@ -29,6 +29,9 @@ class B
 		int a;
 		f = new Fac();
 		a = f.ComputeFac(5);
+		a = f.ComputeFac(5, new Fac(), 10, 43);
+		a = f.ComputeFac(5, 10, new Fac());
+		a = f.ComputeFac(5, new Fac(), 10, 43);
 		f = d;
 		return a; 
 	}

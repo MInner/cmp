@@ -16,7 +16,7 @@ using std::cout;
 class ArithmExp : public IExpression
 {
 public:
-
+	
 	ArithmExp(const Arithm::Arithm op_, const IExpression* left_, const IExpression* right_, int line_, int column_):
 		op(op_), left(left_), right(right_), line(line_), column(column_) {}
 
@@ -36,7 +36,7 @@ public:
 class LogicExp : public IExpression
 {
 public:
-
+	
 	LogicExp(const Logic::Logic op_, const IExpression* left_, const IExpression* right_, int line_, int column_):
 		left(left_), op(op_), right(right_), line(line_), column(column_) {}
 	LogicExp(const Logic::Logic op_, const IExpression* left_, int line_, int column_):
@@ -230,7 +230,7 @@ class AssignStm : public IStatement
 public:
 	const int line;
 	const int column;
-
+	
 	AssignStm(const IAssignment* assign_, int line_, int column_):
 		assign(assign_), line(line_), column(column_) {}
 
@@ -248,7 +248,7 @@ class PrintStmPrintStm : public IStatement
 public:
 	const int line;
 	const int column;
-
+	
 	PrintStmPrintStm(const IExpression* exp_, int line_, int column_):
 		exp(exp_), line(line_), column(column_) {}
 
@@ -266,7 +266,7 @@ class WhileStm : public IStatement
 public:
 	const int line;
 	const int column;
-
+	
 	WhileStm(const IExpression* exp_, const IStatement*  stm_, int line_, int column_):
 		exp(exp_), stm(stm_), line(line_), column(column_) {}
 
@@ -285,7 +285,7 @@ class IfElseStm : public IStatement
 public:
 	const int line;
 	const int column;
-
+	
 	IfElseStm(const IExpression* exp_, const IStatement*  stm_,
 		const IStatement*  elseStm_, int line_, int column_):
 		exp(exp_), stm(stm_), elseStm(elseStm_), line(line_), column(column_) {}
@@ -304,10 +304,9 @@ public:
 class AssignArrStm : public IStatement
 {
 public:
-	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IExpression*  newexp_,
+	AssignArrStm(const Symbol* id_, const IExpression* exp_, const IExpression*  newexp_, 
 		int line_, int column_):
-		id(id_),
-		exp(exp_), newexp(newexp_), line(line_), column(column_) {}
+		id(id_), exp(exp_), newexp(newexp_), line(line_), column(column_) {}
 
 	int Accept(IVisitor* v) const
 	{
@@ -350,7 +349,7 @@ class StatementsImpl : public IStatements
 public:
 	const int line;
 	const int column;
-
+	
 	StatementsImpl(const IStatement* stm_, const IStatements*  list_, int line_, int column_):
 		stm(stm_), list(list_), line(line_), column(column_) {}
 	StatementsImpl(int line_, int column_):
@@ -371,7 +370,7 @@ class AssignmentImpl : public IAssignment
 public:
 	const int line;
 	const int column;
-
+	
 	AssignmentImpl(const Symbol* id_, const IExpression* exp_, int line_, int column_):
 		id(id_), exp(exp_), line(line_), column(column_) {}
 
@@ -479,7 +478,7 @@ class VarDeclarationImpl : public IVarDeclaration
 public:
 	const int line;
 	const int column;
-
+	
 	VarDeclarationImpl(const IType* type_, const Symbol* id_, int line_, int column_):
 		type(type_), id(id_), line(line_), column(column_) {}
 
@@ -498,7 +497,7 @@ class VarDeclarationsImpl : public IVarDeclarations
 public:
 	const int line;
 	const int column;
-
+	
 	VarDeclarationsImpl(const IVarDeclaration* dec_, const IVarDeclarations*  list_,
 		int line_, int column_):
 		dec(dec_), list(list_), line(line_), column(column_) {}
@@ -520,7 +519,7 @@ class MethodDeclarationsImpl : public IMethodDeclarations
 public:
 	const int line;
 	const int column;
-
+	
 	MethodDeclarationsImpl(const IMethodDeclaration* dec_, const IMethodDeclarations*  list_, int line_, int column_):
 		dec(dec_), list(list_), line(line_), column(column_) {}
 	MethodDeclarationsImpl(int line_, int column_):
@@ -540,10 +539,10 @@ class MethodDeclarationImpl : public IMethodDeclaration
 public:
 	const int line;
 	const int column;
-
+	
 	MethodDeclarationImpl(const IType*  type_, const Symbol* id_,
 		const IArguements*  args_, const IVarDeclarations*  vars_,
-		const IStatements*  statements_,	const IExpression*  exp_,
+		const IStatements*  statements_,	const IExpression*  exp_, 
 		int line_, int column_):
 		type(type_), id(id_), args(args_), vars(vars_),
 		statements(statements_), exp(exp_), line(line_), column(column_){}
@@ -568,7 +567,7 @@ class ClassDeclarationsImpl : public IClassDeclarations
 public:
 	const int line;
 	const int column;
-
+	
 	ClassDeclarationsImpl(const IClassDeclaration* dec_, const IClassDeclarations*  list_, int line_, int column_):
 		dec(dec_), list(list_), line(line_), column(column_) {}
 	ClassDeclarationsImpl(int line_, int column_):
@@ -589,7 +588,7 @@ class ClassDeclarationImpl : public IClassDeclaration
 public:
 	const int line;
 	const int column;
-
+	
 	ClassDeclarationImpl(const Symbol* id_, const Symbol* extId_,
 		const IVarDeclarations*  vars_, const IMethodDeclarations*  methods_,
 		int line_, int column_):
@@ -617,7 +616,7 @@ public:
 	const int line;
 	const int column;
 	ProgramImpl(const IMainClass* cl_, const IClassDeclarations*  decs_, int line_, int column_):
-		cl(cl_), decs(decs_), line(line_), column(column_)
+		cl(cl_), decs(decs_), line(line_), column(column_) 
 		{ me = this;}
 
 	int Accept(IVisitor* v) const
@@ -635,7 +634,7 @@ class MainClassImpl : public IMainClass
 public:
 	const int line;
 	const int column;
-
+	
 	MainClassImpl(const Symbol* id_, const Symbol* argId_,
 		const IStatement*  stm_, int line_, int column_):
 		id(id_), argId(argId_), stm(stm_), line(line_), column(column_)  {}
