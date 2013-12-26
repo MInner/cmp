@@ -60,7 +60,7 @@ namespace Temp{
         const Label* label;
         const LabelList* rest;
 
-        LabelList(const Label* lb, const LabelList* rest) : label(lb), rest(rest) {}
+        LabelList(const Label* lb, const LabelList* rest = NULL) : label(lb), rest(rest) {}
 
     };
     

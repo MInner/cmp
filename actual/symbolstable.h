@@ -31,6 +31,8 @@ class ClassInfo {
 		VarInfo* getField(const Symbol* name);
 		MethodInfo* addMethod(const Symbol* name, TypeData returnType);
 		MethodInfo* getMethod(const Symbol* name);
+		int getSize();
+		int getFiledShift(const Symbol* name);
 };
 
 class MethodInfo {

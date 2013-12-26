@@ -9,6 +9,7 @@
 #include "namegenerator.h"
 #include "wrapper.h"
 #include "treeInterfaces.h"
+#include "symbolstable.h"
 
 
 class IRTreeVisitor : public IVisitor
@@ -18,15 +19,22 @@ public:
 	const IFrameFactory* frameFactory;
 	Wrapper::IRTreeWrapper* wrapper;
 	IRTree::CodeFragment* curFragment;
+	IRTree::CodeFragment* mainFragment;
 	const Symbol* curClassName;
 	const Symbol* curMethodName;
+	ClassTable* classTable;
 
 	std::map<const Symbol*, int> curMethodArgumentsShifts;
 	std::map<const Symbol*, int> curMethodLocalVariablesShifts;
 
 	IRTree::ExpList* curExpList;
 
-	IRTreeVisitor(IFrameFactory* _fac) : frameFactory(_fac) {}
+	IRTreeVisitor(IFrameFactory* _fac, ClassTable* table) : frameFactory(_fac), classTable(table) {}
+
+	IRTree::CodeFragment* getMainFragment()
+	{
+		return mainFragment;
+	}
 
 	int visit(const ArithmExp* n)
 	{
@@ -35,13 +43,18 @@ public:
 		if(n->right) { n->right->Accept(this); }
 		const IRTree::IExp* r = wrapper->ToExp();
 		wrapper = new Wrapper::ExpWrapper( new IRTree::BINOP(n->op, l, r) );
+
 		return 0;
 	}
 
 	int visit(const LogicExp* n)
 	{
 		if(n->left) { n->left->Accept(this); }
+		const IRTree::IExp* l = wrapper->ToExp();
 		if(n->right) { n->right->Accept(this); }
+		const IRTree::IExp* r = wrapper->ToExp();
+		wrapper = new Wrapper::ExpWrapper( new IRTree::BINOP(n->op, l, r) );
+
 		return 0;
 	}
 	
@@ -59,26 +72,113 @@ public:
 	
 	int visit(const IdExp* n)
 	{
+		const Symbol* name = n->id;
+		if( curMethodLocalVariablesShifts.count( name ) ) 
+		{
+			wrapper = new Wrapper::ExpWrapper( 
+				curFragment
+					->frame->localVarByShift(curMethodLocalVariablesShifts[name])
+					->Exp(curFragment->frame->framePointer() ) 
+			);
+		} else if( curMethodArgumentsShifts.count(name) ) 
+		{
+			wrapper = new Wrapper::ExpWrapper( 
+				curFragment
+					->frame->argByShift(curMethodArgumentsShifts[name])
+					->Exp(curFragment->frame->framePointer() ) 
+			);
+		} else {
+			const IRTree::IExp* thisExp = 
+				curFragment->frame->argByShift( 0 )->Exp(curFragment->frame->framePointer() );
+
+			wrapper = new Wrapper::ExpWrapper( 
+				new IRTree::MEM( 
+					new IRTree::BINOP( 
+						IRTree::OPERATOR::PLUS, 
+						thisExp,
+						new IRTree::CONST( 
+							curFragment->frame->wordSize() 
+							* ( 1 + classTable->getClass( curClassName )->getFiledShift( name ) ) 
+						) 
+					)
+				)
+			);
+		}
 
 		return 0;
 	}
 	int visit(const NewExp* n)
 	{
+		wrapper = new Wrapper::ExpWrapper( 
+			curFragment->frame->externalCall( 
+				"malloc",
+				new IRTree::ExpList( 
+					new IRTree::CONST( 
+						curFragment->frame->wordSize() * ( 1 + classTable->getClass( n->id )->getSize() ) 
+					)
+				) 
+			)
+		);
 
 		return 0;
 	}
 	int visit(const ThisExp* n)
 	{
-
+		wrapper = new Wrapper::ExpWrapper( 
+			curFragment->frame->argByShift(0)->Exp(curFragment->frame->framePointer() ) 
+		);
 		return 0;
 	}
 	int visit(const LenExp* n)
 	{
+
 		if(n->exp) { n->exp->Accept(this); }
+		wrapper = new Wrapper::ExpWrapper( 
+			new IRTree::MEM ( 
+				new IRTree::BINOP(
+					IRTree::OPERATOR::MINUS,
+					wrapper->ToExp(),
+					new IRTree::CONST( curFragment->frame->wordSize() )
+				)
+			)
+		);
 		return 0;
 	}
 	int visit(const CallMethodExp* n)
 	{
+		// auto expressionType = CTypeChecker::GetExpressionType( 
+		// 	symbolsTable, 
+		// 	symbolStorage, 
+		// 	symbolsTable->GetClass( currentClassName ),
+		// 	symbolsTable->GetClass( currentClassName )->LookupMethod( currentMethodName, currentMethodArgumentTypes, true ), 
+		// 	callExpressionNode->GetExpression() 
+		// );
+
+		// callExpressionNode->GetExpression()->Accept( this );
+		// const Tree::IExp* object = wrapper->ToExp();
+
+		// std::vector<const Symbol::CSymbol*> callMethodArgumentTypes;
+		// for( auto argument = callExpressionNode->GetArguments(); argument != nullptr; argument = argument->GetRestExpressions() ) {
+		// 	if( argument->GetExpression() != nullptr ) {
+		// 		callMethodArgumentTypes.push_back( CTypeChecker::GetExpressionType( symbolsTable, symbolStorage, symbolsTable->GetClass( currentClassName ),
+		// 			symbolsTable->GetClass( currentClassName )->LookupMethod( currentMethodName, currentMethodArgumentTypes, true ), argument->GetExpression() ) );
+		// 	}
+		// }
+		// if( callExpressionNode->GetArguments() != nullptr ) {
+		// 	callExpressionNode->GetArguments()->Accept( this );
+		// }
+
+		// SymbolsTable::CMethodInfo* callMethodInfo = symbolsTable->GetClass( expressionType )->LookupMethod( callExpressionNode->GetMethodName(),
+		// 	callMethodArgumentTypes );
+
+		// wrapper = new Wrapper::ExpWrapper( 
+		// 	new IRTree::CALL( 
+		// 		new Temp::Label( nameDecorator.GenerateName( callMethodInfo ) ),
+		// 	new Tree::CExpList( object, currentExpList ) ) );
+		// currentExpList = nullptr;
+
+		wrapper = new Wrapper::ExpWrapper(  new IRTree::CONST (1) );
+
 		if(n->exp) { n->exp->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
@@ -86,42 +186,141 @@ public:
 	int visit(const NewIntArrExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		wrapper = new Wrapper::ExpWrapper(
+			new IRTree::BINOP( 
+				IRTree::OPERATOR::PLUS, 
+				curFragment->frame->externalCall(
+					"malloc",
+					new IRTree::ExpList( 
+						new IRTree::BINOP(
+							IRTree::OPERATOR::MUL,
+							new IRTree::CONST( curFragment->frame->wordSize() ),
+							new IRTree::BINOP(
+								IRTree::OPERATOR::PLUS,
+								new IRTree::CONST(1),
+								wrapper->ToExp()
+							) 
+						)
+					) 
+				),
+				new IRTree::CONST( curFragment->frame->wordSize () )
+			)
+		);
 		return 0;
 	}
 	int visit(const ArrValExp* n)
 	{
-		if(n->exp) { n->exp->Accept(this); }
 		if(n->idExp) { n->idExp->Accept(this); }
+		const IRTree::IExp* id = wrapper->ToExp();
+		if(n->exp) { n->exp->Accept(this); }
+		wrapper = new Wrapper::ExpWrapper( 
+			new IRTree::MEM( 
+				new IRTree::BINOP(
+					IRTree::OPERATOR::PLUS, 
+					wrapper->ToExp(),
+					new IRTree::BINOP(
+						IRTree::OPERATOR::MUL,
+						id,
+						new IRTree::CONST ( curFragment->frame->wordSize() )
+					)
+				) 
+			)
+		);
 		return 0;
 	}
 	int visit(const BlockStm* n)
 	{
+		// NOP 
 		if(n->stms) { n->stms->Accept(this); }
 		return 0;
 	}
 	int visit(const AssignStm* n)
 	{
+		// NOP
 		if(n->assign) { n->assign->Accept(this); }
 		return 0;
 	}
 	int visit(const PrintStmPrintStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		wrapper = new Wrapper::ExpWrapper( curFragment->frame->externalCall("print", curExpList) );
+		curExpList = NULL;
 		return 0;
 	}
+	
 	int visit(const WhileStm* n)
 	{
-		if(n->exp) { n->exp->Accept(this); }
+		const Temp::Label* exitLabel = new Temp::Label();
+		const Temp::Label* enterLabel = new Temp::Label();
+		const Temp::Label* nextLabel = new Temp::Label();
+		const Temp::LabelList* nextLabelList = new Temp::LabelList( nextLabel );
+
 		if(n->stm) { n->stm->Accept(this); }
+		const IRTree::IStm* body = wrapper->ToStm();
+
+		if(n->exp) { n->exp->Accept(this); }
+
+		wrapper = new Wrapper::StmWrapper( 
+			new IRTree::SEQ (
+				new IRTree::SEQ (
+					new IRTree::LABEL(nextLabel), 
+					wrapper->ToConditional(enterLabel, exitLabel) ), 
+				new IRTree::SEQ (
+					new IRTree::SEQ (
+						new IRTree::SEQ (
+							new IRTree::LABEL(enterLabel), 
+							body),
+						new IRTree::JUMP (
+							new IRTree::NAME(nextLabel), 
+							nextLabelList) ),
+					new IRTree::LABEL(exitLabel)
+				)
+			)
+		);
+
 		return 0;
 	}
+	
 	int visit(const IfElseStm* n)
 	{
-		if(n->exp) { n->exp->Accept(this); }
+
+		const Temp::Label* endl = new Temp::Label();
+		const Temp::Label* truel = new Temp::Label();
+		const Temp::Label* flasel = new Temp::Label();
+		const Temp::LabelList* endllist = new Temp::LabelList( endl );
+
 		if(n->stm) { n->stm->Accept(this); }
+		const IRTree::IStm* trueStm = new IRTree::SEQ(
+			new IRTree::LABEL(truel),
+			new IRTree::SEQ( 
+				wrapper->ToStm(), 
+				new IRTree::JUMP( new IRTree::NAME(endl),  endllist) 
+			)
+		);
+
 		if(n->elseStm) { n->elseStm->Accept(this); }
+		const IRTree::IStm* falseStm = new IRTree::SEQ(
+			new IRTree::LABEL(flasel),
+			new IRTree::SEQ( 
+				wrapper->ToStm(), 
+				new IRTree::JUMP( new IRTree::NAME(endl),  endllist) 
+			)
+		);
+
+		if(n->exp) { n->exp->Accept(this); }
+		wrapper = new Wrapper::StmWrapper( 
+			new IRTree::SEQ(
+				wrapper->ToConditional(truel, flasel),
+				new IRTree::SEQ(
+					new IRTree::SEQ(trueStm, falseStm),
+					new IRTree::LABEL(endl)
+				)
+			)
+		);
+
 		return 0;
 	}
+
 	int visit(const AssignArrStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
@@ -326,6 +525,7 @@ public:
 		if(n->stm) { n->stm->Accept(this); }
 		curFragment->body = wrapper->ToStm();
 		curFragment->retval = new IRTree::ESEQ(curFragment->body, new IRTree::CONST (0) );
+		mainFragment = curFragment;
 		return 0;
 	}
 };

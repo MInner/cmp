@@ -217,7 +217,7 @@ public:
 class ExpList
 {
 public:
-	ExpList(const IExp* head_, const ExpList* tail_):
+	ExpList(const IExp* head_, const ExpList* tail_ = NULL):
 		head(head_), tail(tail_) {}
 
 	int Accept(ITreeVisitor* v) const
