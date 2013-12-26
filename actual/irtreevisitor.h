@@ -58,49 +58,49 @@ public:
 
 		return 0;
 	}
-	
+
 	int visit(const IntVal* n)
 	{
 
 		return 0;
 	}
-	
+
 	int visit(const BoolVal* n)
 	{
 
 		return 0;
 	}
-	
+
 	int visit(const IdExp* n)
 	{
 		const Symbol* name = n->id;
-		if( curMethodLocalVariablesShifts.count( name ) ) 
+		if( curMethodLocalVariablesShifts.count( name ) )
 		{
-			wrapper = new Wrapper::ExpWrapper( 
+			wrapper = new Wrapper::ExpWrapper(
 				curFragment
 					->frame->localVarByShift(curMethodLocalVariablesShifts[name])
-					->Exp(curFragment->frame->framePointer() ) 
+					->Exp(curFragment->frame->framePointer() )
 			);
-		} else if( curMethodArgumentsShifts.count(name) ) 
+		} else if( curMethodArgumentsShifts.count(name) )
 		{
-			wrapper = new Wrapper::ExpWrapper( 
+			wrapper = new Wrapper::ExpWrapper(
 				curFragment
 					->frame->argByShift(curMethodArgumentsShifts[name])
-					->Exp(curFragment->frame->framePointer() ) 
+					->Exp(curFragment->frame->framePointer() )
 			);
 		} else {
-			const IRTree::IExp* thisExp = 
+			const IRTree::IExp* thisExp =
 				curFragment->frame->argByShift( 0 )->Exp(curFragment->frame->framePointer() );
 
-			wrapper = new Wrapper::ExpWrapper( 
-				new IRTree::MEM( 
-					new IRTree::BINOP( 
-						IRTree::OPERATOR::PLUS, 
+			wrapper = new Wrapper::ExpWrapper(
+				new IRTree::MEM(
+					new IRTree::BINOP(
+						IRTree::OPERATOR::PLUS,
 						thisExp,
-						new IRTree::CONST( 
-							curFragment->frame->wordSize() 
-							* ( 1 + classTable->getClass( curClassName )->getFiledShift( name ) ) 
-						) 
+						new IRTree::CONST(
+							curFragment->frame->wordSize()
+							* ( 1 + classTable->getClass( curClassName )->getFiledShift( name ) )
+						)
 					)
 				)
 			);
@@ -110,14 +110,14 @@ public:
 	}
 	int visit(const NewExp* n)
 	{
-		wrapper = new Wrapper::ExpWrapper( 
-			curFragment->frame->externalCall( 
+		wrapper = new Wrapper::ExpWrapper(
+			curFragment->frame->externalCall(
 				"malloc",
-				new IRTree::ExpList( 
-					new IRTree::CONST( 
-						curFragment->frame->wordSize() * ( 1 + classTable->getClass( n->id )->getSize() ) 
+				new IRTree::ExpList(
+					new IRTree::CONST(
+						curFragment->frame->wordSize() * ( 1 + classTable->getClass( n->id )->getSize() )
 					)
-				) 
+				)
 			)
 		);
 
@@ -125,8 +125,8 @@ public:
 	}
 	int visit(const ThisExp* n)
 	{
-		wrapper = new Wrapper::ExpWrapper( 
-			curFragment->frame->argByShift(0)->Exp(curFragment->frame->framePointer() ) 
+		wrapper = new Wrapper::ExpWrapper(
+			curFragment->frame->argByShift(0)->Exp(curFragment->frame->framePointer() )
 		);
 		return 0;
 	}
@@ -134,8 +134,8 @@ public:
 	{
 
 		if(n->exp) { n->exp->Accept(this); }
-		wrapper = new Wrapper::ExpWrapper( 
-			new IRTree::MEM ( 
+		wrapper = new Wrapper::ExpWrapper(
+			new IRTree::MEM (
 				new IRTree::BINOP(
 					IRTree::OPERATOR::MINUS,
 					wrapper->ToExp(),
@@ -149,37 +149,37 @@ public:
 	{
 		ClassInfo* curClassInfo = classTable->getClass( curClassName );
 		MethodInfo* curMethodInfo = curClassInfo->getMethod( curMethodName );
-		const Symbol* type = TypeCheckerVisitor::getExpressionType( 
+		const Symbol* type = TypeCheckerVisitor::getExpressionType(
 			classTable,
 			curClassInfo,
-			curMethodInfo, 
-			n->exp 
-		); 
+			curMethodInfo,
+			n->exp
+		);
 		if(n->exp) { n->exp->Accept(this); }
 		const IRTree::IExp* object = wrapper->ToExp();
 
 		if(n->list) { n->list->Accept(this); }
-		wrapper = new Wrapper::ExpWrapper( 
-			new IRTree::CALL( 
+		wrapper = new Wrapper::ExpWrapper(
+			new IRTree::CALL(
 				new Temp::Label( NameGenerator::gen(type, n->id) ),
-				new IRTree::ExpList( object, curExpList ) 
-			) 
+				new IRTree::ExpList( object, curExpList )
+			)
 		);
 
 		curExpList = NULL;
-		
-		
+
+
 		return 0;
 	}
 	int visit(const NewIntArrExp* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
 		wrapper = new Wrapper::ExpWrapper(
-			new IRTree::BINOP( 
-				IRTree::OPERATOR::PLUS, 
+			new IRTree::BINOP(
+				IRTree::OPERATOR::PLUS,
 				curFragment->frame->externalCall(
 					"malloc",
-					new IRTree::ExpList( 
+					new IRTree::ExpList(
 						new IRTree::BINOP(
 							IRTree::OPERATOR::MUL,
 							new IRTree::CONST( curFragment->frame->wordSize() ),
@@ -187,9 +187,9 @@ public:
 								IRTree::OPERATOR::PLUS,
 								new IRTree::CONST(1),
 								wrapper->ToExp()
-							) 
+							)
 						)
-					) 
+					)
 				),
 				new IRTree::CONST( curFragment->frame->wordSize () )
 			)
@@ -201,24 +201,24 @@ public:
 		if(n->idExp) { n->idExp->Accept(this); }
 		const IRTree::IExp* id = wrapper->ToExp();
 		if(n->exp) { n->exp->Accept(this); }
-		wrapper = new Wrapper::ExpWrapper( 
-			new IRTree::MEM( 
+		wrapper = new Wrapper::ExpWrapper(
+			new IRTree::MEM(
 				new IRTree::BINOP(
-					IRTree::OPERATOR::PLUS, 
+					IRTree::OPERATOR::PLUS,
 					wrapper->ToExp(),
 					new IRTree::BINOP(
 						IRTree::OPERATOR::MUL,
 						id,
 						new IRTree::CONST ( curFragment->frame->wordSize() )
 					)
-				) 
+				)
 			)
 		);
 		return 0;
 	}
 	int visit(const BlockStm* n)
 	{
-		// NOP 
+		// NOP
 		if(n->stms) { n->stms->Accept(this); }
 		return 0;
 	}
@@ -235,7 +235,7 @@ public:
 		curExpList = NULL;
 		return 0;
 	}
-	
+
 	int visit(const WhileStm* n)
 	{
 		const Temp::Label* exitLabel = new Temp::Label();
@@ -248,18 +248,18 @@ public:
 
 		if(n->exp) { n->exp->Accept(this); }
 
-		wrapper = new Wrapper::StmWrapper( 
+		wrapper = new Wrapper::StmWrapper(
 			new IRTree::SEQ (
 				new IRTree::SEQ (
-					new IRTree::LABEL(nextLabel), 
-					wrapper->ToConditional(enterLabel, exitLabel) ), 
+					new IRTree::LABEL(nextLabel),
+					wrapper->ToConditional(enterLabel, exitLabel) ),
 				new IRTree::SEQ (
 					new IRTree::SEQ (
 						new IRTree::SEQ (
-							new IRTree::LABEL(enterLabel), 
+							new IRTree::LABEL(enterLabel),
 							body),
 						new IRTree::JUMP (
-							new IRTree::NAME(nextLabel), 
+							new IRTree::NAME(nextLabel),
 							nextLabelList) ),
 					new IRTree::LABEL(exitLabel)
 				)
@@ -268,7 +268,7 @@ public:
 
 		return 0;
 	}
-	
+
 	int visit(const IfElseStm* n)
 	{
 
@@ -280,23 +280,23 @@ public:
 		if(n->stm) { n->stm->Accept(this); }
 		const IRTree::IStm* trueStm = new IRTree::SEQ(
 			new IRTree::LABEL(truel),
-			new IRTree::SEQ( 
-				wrapper->ToStm(), 
-				new IRTree::JUMP( new IRTree::NAME(endl),  endllist) 
+			new IRTree::SEQ(
+				wrapper->ToStm(),
+				new IRTree::JUMP( new IRTree::NAME(endl),  endllist)
 			)
 		);
 
 		if(n->elseStm) { n->elseStm->Accept(this); }
 		const IRTree::IStm* falseStm = new IRTree::SEQ(
 			new IRTree::LABEL(flasel),
-			new IRTree::SEQ( 
-				wrapper->ToStm(), 
-				new IRTree::JUMP( new IRTree::NAME(endl),  endllist) 
+			new IRTree::SEQ(
+				wrapper->ToStm(),
+				new IRTree::JUMP( new IRTree::NAME(endl),  endllist)
 			)
 		);
 
 		if(n->exp) { n->exp->Accept(this); }
-		wrapper = new Wrapper::StmWrapper( 
+		wrapper = new Wrapper::StmWrapper(
 			new IRTree::SEQ(
 				wrapper->ToConditional(truel, flasel),
 				new IRTree::SEQ(
@@ -316,14 +316,14 @@ public:
 		if(n->newexp) { n->newexp->Accept(this); }
 		wrapper = new Wrapper::StmWrapper(
 			new IRTree::MOVE(
-				new IRTree::MEM( 
+				new IRTree::MEM(
 					new IRTree::BINOP(
-						IRTree::OPERATOR::PLUS, 
+						IRTree::OPERATOR::PLUS,
 						new IRTree::NAME( new Temp::Label(n->id->getStr() ) ),
 						new IRTree::BINOP(
-							IRTree::OPERATOR::MUL, 
-							index, 
-							new IRTree::CONST( curFragment->frame->wordSize() ) 
+							IRTree::OPERATOR::MUL,
+							index,
+							new IRTree::CONST( curFragment->frame->wordSize() )
 						)
 					)
 				),
@@ -348,13 +348,13 @@ public:
 		const IRTree::IStm* left = NULL;
 		const IRTree::IStm* right = NULL;
 
-		if(n->stm) 
-		{ 
-			n->stm->Accept(this); 
+		if(n->stm)
+		{
+			n->stm->Accept(this);
 			left = wrapper->ToStm();
 		}
 
-		if(n->list) 
+		if(n->list)
 		{
 			n->list->Accept(this);
 			right = wrapper->ToStm();
@@ -379,7 +379,7 @@ public:
 
 		return 0;
 	}
-	
+
 	int visit(const AssignmentImpl* n)
 	{
 		(new IdExp(n->id, 0, 0))->Accept(this); // it's interesting what to write as line and column here
@@ -393,12 +393,12 @@ public:
 	{
 		int newshift = curMethodArgumentsShifts.size() + 1;
 		curMethodArgumentsShifts[n->id] = newshift;
-		wrapper = new Wrapper::StmWrapper( 
+		wrapper = new Wrapper::StmWrapper(
 			new IRTree::SEQ(
 				wrapper->ToStm(),
 				new IRTree::MOVE(
 					curFragment->frame->argByShift(newshift)->Exp( curFragment->frame->framePointer() ),
-					new IRTree::CONST(0) 
+					new IRTree::CONST(0)
 				)
 			)
 		);
@@ -428,13 +428,13 @@ public:
 		if(n->type) { n->type->Accept(this); }
 		int newshift = curMethodLocalVariablesShifts.size();
 		curMethodLocalVariablesShifts[n->id] = newshift;
-		wrapper = new Wrapper::StmWrapper( 
-			new IRTree::SEQ( 
-				wrapper->ToStm(), 
-				new IRTree::MOVE( 
+		wrapper = new Wrapper::StmWrapper(
+			new IRTree::SEQ(
+				wrapper->ToStm(),
+				new IRTree::MOVE(
 					curFragment->frame->localVarByShift(newshift)->Exp( curFragment->frame->framePointer() ),
-					new IRTree::CONST( 0 ) 
-				) 
+					new IRTree::CONST( 0 )
+				)
 			)
 		);
 		return 0;
@@ -461,16 +461,17 @@ public:
 		if(n->type) { n->type->Accept(this); }
 		if(n->args) { n->args->Accept(this); }
 		if(n->vars) { n->vars->Accept(this); }
-		
-		IRTree::CodeFragment* newCodeFragment = new IRTree::CodeFragment( 
-			frameFactory->create(NameGenerator::gen(curClassName, curMethodName), 
-				curMethodArgumentsShifts.size(), 
-				curMethodLocalVariablesShifts.size() 
-			) 
+
+		IRTree::CodeFragment* newCodeFragment = new IRTree::CodeFragment(
+			frameFactory->create(NameGenerator::gen(curClassName, curMethodName),
+				curMethodArgumentsShifts.size(),
+				curMethodLocalVariablesShifts.size()
+			)
 		);
 
 		curFragment->next = newCodeFragment;
 		curFragment = newCodeFragment;
+		curFragment->next = NULL;
 
 		wrapper = new Wrapper::StmWrapper( new IRTree::EXP( new IRTree::CONST(0) ));
 
@@ -482,24 +483,24 @@ public:
 
 		return 0;
 	}
-	
+
 	int visit(const ClassDeclarationsImpl* n)
 	{
 		if(n->dec) { n->dec->Accept(this); }
 		if(n->list) { n->list->Accept(this); }
 		return 0;
 	}
-	
+
 	int visit(const ClassDeclarationImpl* n)
 	{
 		curClassName = n->id;
 		// ignoring class vars ?
-		// if(n->vars) { n->vars->Accept(this); } 
+		// if(n->vars) { n->vars->Accept(this); }
 		if(n->methods) { n->methods->Accept(this); }
 		curClassName = NULL;
 		return 0;
 	}
-	
+
 	int visit(const ProgramImpl* n)
 	{
 		if(n->cl) { n->cl->Accept(this); }
@@ -509,13 +510,17 @@ public:
 
 	int visit(const MainClassImpl* n)
 	{
-		curClassName = Symbol::getSymbol("main");
-		classTable->addClass(curClassName, NULL);
+		curMethodName = Symbol::getSymbol("main");
+		curClassName = n->id;
+		// classTable->addClass(curClassName, NULL);
 
 		curFragment = new IRTree::CodeFragment( frameFactory->create( NameGenerator::gen( n->id->getStr(), std::string("MAIN") ), 0, 0 ) );
+		curFragment->next = NULL;
+
 		if(n->stm) { n->stm->Accept(this); }
 		curFragment->body = wrapper->ToStm();
 		curFragment->retval = new IRTree::ESEQ(curFragment->body, new IRTree::CONST (0) );
+
 		mainFragment = curFragment;
 		return 0;
 	}

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 
 #include "enums.h"
 #include "bi.hpp"
@@ -28,6 +29,8 @@ namespace Temp
 	int Label::curId = 1;
 }
 
+int TypeCheckerVisitor::line = 0;
+
 // !- static thigs
 
 int main(void){
@@ -50,10 +53,17 @@ int main(void){
 
 	IFrameFactory* fac = new FrameFactory_x86();
 
-	std::cout << "--- | Frames produced ---" << std::endl;
 	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
-	std::cout << "--- Done ---" << std::endl;
+
+	IRTree::CodeFragment* codeFragment = NULL;
+
+	codeFragment = irvisitor->getMainFragment();
+	
+	std::ofstream outputFile("testgraph.txt");
+	IRTree::IRTreePrintVisitor* printVisitor = new IRTree::IRTreePrintVisitor(outputFile);
+    printVisitor->visit(codeFragment);
+    outputFile.close();
 	return 0;
 
 }
