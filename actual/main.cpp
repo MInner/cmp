@@ -53,7 +53,7 @@ int main(void){
 	std::cout << "--- | Frames produced ---" << std::endl;
 	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
-	std::cout << "--- Everything visited ---" << std::endl;
+	std::cout << "--- Done ---" << std::endl;
 	return 0;
 
 }
