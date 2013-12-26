@@ -65,7 +65,7 @@ public:
 	
 	int visit(const CALL* n)
 	{
-		stream << "n" << currentNode++ << " [shape=\"component\",label=\"CALL(" << n->func->name << ")\"]" << std::endl;
+		stream << "n" << currentNode++ << " [shape=\"box\",label=\"CALL(" << n->func->name << ")\"]" << std::endl;
 		if( n->args != nullptr ) {
 			n->args->Accept( this );
 		}
