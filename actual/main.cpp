@@ -65,6 +65,8 @@ int main(void){
 	IRTree::IRTreePrintVisitor* printVisitor = new IRTree::IRTreePrintVisitor(outputFile);
     printVisitor->visit(codeFragment);
     outputFile.close();
+    
+	std::cout << "--- Drawing graphviz tree ---" << std::endl;
 	return 0;
 
 }
