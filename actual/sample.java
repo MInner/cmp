@@ -19,13 +19,6 @@ class Fac {
 		}
 		return num_aux;
 	}
-
-	public int test1() {
-		int locvar1;
-		int locvar2;
-		int locvar3;
-		return locvar1;
-	}
 }
 
 class B

@@ -14,6 +14,7 @@
 				<Compiler>
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
+					<Add option="-Wno-reorder" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -54,7 +55,9 @@
 		<Unit filename="gcc.log" />
 		<Unit filename="gen.py" />
 		<Unit filename="gen_visitors.py" />
+		<Unit filename="graph.png" />
 		<Unit filename="interfaces.h" />
+		<Unit filename="irtreeprintvisitor.h" />
 		<Unit filename="irtreevisitor.h" />
 		<Unit filename="itreevisitor.h" />
 		<Unit filename="main.cpp" />
@@ -72,6 +75,7 @@
 		<Unit filename="symbolstable.cpp" />
 		<Unit filename="symbolstable.h" />
 		<Unit filename="temp.h" />
+		<Unit filename="testgraph.txt" />
 		<Unit filename="todo.txt" />
 		<Unit filename="tree.txt" />
 		<Unit filename="treeClasses.h" />

@@ -147,6 +147,8 @@ public:
 	}
 	int visit(const CallMethodExp* n)
 	{
+	    IRTree::ExpList* oldExpList = curExpList;
+
 		ClassInfo* curClassInfo = classTable->getClass( curClassName );
 		MethodInfo* curMethodInfo = curClassInfo->getMethod( curMethodName );
 		const Symbol* type = TypeCheckerVisitor::getExpressionType(
@@ -166,8 +168,7 @@ public:
 			)
 		);
 
-		curExpList = NULL;
-
+		curExpList = oldExpList;
 
 		return 0;
 	}
@@ -231,6 +232,7 @@ public:
 	int visit(const PrintStmPrintStm* n)
 	{
 		if(n->exp) { n->exp->Accept(this); }
+		curExpList = new IRTree::ExpList( wrapper->ToExp() );
 		wrapper = new Wrapper::ExpWrapper( curFragment->frame->externalCall("print", curExpList) );
 		curExpList = NULL;
 		return 0;
