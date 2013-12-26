@@ -15,7 +15,7 @@ class Fac {
 		else
 		{
 			b = 3 < 2;
-			num_aux = num * (this.ComputeFac(num - 1));
+			num_aux = b * (this.ComputeFac(num - 1));
 		}
 		return num_aux;
 	}

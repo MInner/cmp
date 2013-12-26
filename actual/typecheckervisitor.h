@@ -53,7 +53,7 @@ public:
 			n->left->Accept(this); 
 
 			if (!type.isInternal || type.internalType != Type::INT )
-				std::cout << "WARNING: ArythmeticExp: LEFT is not of type INT" << std::endl; 
+				std::cout << "WARNING: line " << n->line <<" ArythmeticExp: LEFT is not of type INT " << std::endl; 
 
 			type = NULLTYPE;
 		}
@@ -62,7 +62,7 @@ public:
 			n->right->Accept(this);
 
 			if (!type.isInternal || type.internalType != Type::INT )
-				std::cout << "WARNING: ArythmeticExp: RIGHT is not of type INT" << std::endl; 
+				std::cout << "WARNING: line " << n->line <<" ArythmeticExp: RIGHT is not of type INT" << std::endl; 
 
 			type = NULLTYPE;
 		}
@@ -84,7 +84,7 @@ public:
 				n->left->Accept(this);
 
 				if (!type.isInternal || type.internalType != Type::INT )
-					std::cout << "WARNING: Logic Operation: LEFT is not bools" << std::endl; 
+					std::cout << "WARNING: line " << n->line <<" Logic Operation: LEFT is not bools" << std::endl; 
 
 				type = NULLTYPE;
 			}
@@ -93,7 +93,7 @@ public:
 				n->right->Accept(this); 
 
 				if (!type.isInternal || type.internalType != Type::INT )
-					std::cout << "WARNING: Logic Operation: RIGHT is not bools"  << std::endl; 
+					std::cout << "WARNING: line " << n->line <<" Logic Operation: RIGHT is not bools"  << std::endl; 
 
 				type = NULLTYPE;
 			}	
@@ -104,7 +104,7 @@ public:
 				n->left->Accept(this);
 
 				if (!type.isInternal || type.internalType != Type::BOOL )
-					std::cout << "WARNING: Logic Operation: LEFT is not bools" << std::endl; 
+					std::cout << "WARNING: line " << n->line <<" Logic Operation: LEFT is not bools" << std::endl; 
 
 				type = NULLTYPE;
 			}
@@ -113,7 +113,7 @@ public:
 				n->right->Accept(this); 
 
 				if (!type.isInternal || type.internalType != Type::BOOL )
-					std::cout << "WARNING: Logic Operation: RIGHT is not bools"  << std::endl; 
+					std::cout << "WARNING: line " << n->line <<" Logic Operation: RIGHT is not bools"  << std::endl; 
 
 				type = NULLTYPE;
 			}	
@@ -152,7 +152,7 @@ public:
 		else
 		{
 			const Symbol* s = n->id;
-			std::cout << "WARNING: variable " << s << " not found in this scope :(" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" variable " << s << " not found in this scope :(" << std::endl;
 		}
 		return 0;
 	}
@@ -168,7 +168,7 @@ public:
 	{
 		if (isCurMethodStatic) 
 		{
-			std::cout << "WARNING: THIS in static method" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" THIS in static method" << std::endl;
 		}
 		type.customType = curclass->name;
 		return 0;
@@ -189,7 +189,7 @@ public:
 		if (n->exp) { n->exp->Accept(this); }
 		if (type.isInternal == true)
 		{
-			std::cout << "WARNING: Trying to call method of internal method" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" Trying to call method of internal method" << std::endl;
 		}
 
 		ClassInfo* ci = ct->getClass(type.customType);
@@ -197,7 +197,7 @@ public:
 		MethodInfo* mi = ci->getMethod(n->id);
 
 		if (!mi)
-			std::cout << "WARNING: No such method at class" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" No such method at class" << std::endl;
 
 		if(n->list) { n->list->Accept(this); }
 
@@ -219,12 +219,12 @@ public:
 		if(n->exp) { n->exp->Accept(this); }
 		
 		if (type.internalType != Type::INT_ARR) //check exp type is INT_ARR
-			std::cout << "WARNING: Trying [] of not ARRAY type" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" Trying [] of not ARRAY type" << std::endl;
 
 		if(n->idExp) { n->idExp->Accept(this); }
 
 		if (type.internalType != Type::INT)
-			std::cout << "WARNING: Inside [] must be INT" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" Inside [] must be INT" << std::endl;
 		
 		type.isInternal = true;
 		type.internalType = Type::INT;
@@ -245,7 +245,7 @@ public:
 		if(n->exp) { n->exp->Accept(this); }
 
 		if(type.internalType != Type::INT) // check exp type is INT_Type
-			std::cout << "Can print only INTs" << std::endl;
+			std::cout << "Line " << n->line <<"Can print only INTs" << std::endl;
 		return 0;
 	}
 
@@ -253,7 +253,7 @@ public:
 	{
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::BOOL)
-			std::cout << "Not Bool in WHILE" << std::endl;
+			std::cout << "Line " << n->line << "Not Bool in WHILE" << std::endl;
 
 		if(n->stm) { n->stm->Accept(this); }
 		return 0;
@@ -263,7 +263,7 @@ public:
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::BOOL) // check exp type is type::bool_type
 		{
-			std::cout << "WARNING: Not bool val in IF" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" Not bool val in IF" << std::endl;
 		}
 		if(n->stm) { n->stm->Accept(this); }
 		if(n->elseStm) { n->elseStm->Accept(this); }
@@ -275,11 +275,11 @@ public:
 		if(n->exp) { n->exp->Accept(this); }
 		if(type.internalType != Type::INT) // check exp type is INT_Type
 		{
-			std::cout << "WARNING: array id is not of type INT" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" array id is not of type INT" << std::endl;
 		}
 		if(n->newexp) { n->newexp->Accept(this); }
 		if(type.internalType != Type::INT) 
-			std::cout << "WARNING: new value of an array element is not of type INT" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" new value of an array element is not of type INT" << std::endl;
 
 		return 0;
 	}
@@ -310,7 +310,7 @@ public:
 		else
 		{
 			const Symbol* s = n->id;
-			std::cout << "WARNING: assigment to the variable '" << s << "' before declaration" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" assigment to the variable '" << s << "' before declaration" << std::endl;
 		}
 		
 		if(n->exp) { n->exp->Accept(this); }
@@ -318,7 +318,7 @@ public:
 		if ( !( lefttype == type ) )
 		{
 			const Symbol* s = n->id;
-			std::cout << "WARNING: type mismatch when assigning to '" << s << "'" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" type mismatch when assigning to '" << s << "'" << std::endl;
 		}
 		return 0;
 	}
@@ -386,7 +386,7 @@ public:
 
 		if ( !(type == curmethod->returnType) )
 		{
-			std::cout << "WARNING: Return type of method " << curmethod->name << " is wrong" << std::endl;
+			std::cout << "WARNING: line " << n->line <<" Return type of method " << curmethod->name << " is wrong" << std::endl;
 		}
 		curmethod = NULL;
 
