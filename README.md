@@ -5,14 +5,21 @@ cmp
 * /actual - actual version of code
 
 ## run howto ##
-$ cd actual
-$ make
 
-noname test that has no sense
-$ ./run
+### Make ###
 
-factorial and bubble sort
-$ ./runtests
+`$ cd actual`
 
-graphs :) :
-$ find *.png
+`$ make`
+
+### Run noname test that has no sense ###
+
+`$ ./run`
+
+### Run factorial and bubble sort test ###
+
+`$ ./runtests`
+
+### Graphs : ###
+
+`$ find *.png`
