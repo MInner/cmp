@@ -9,6 +9,7 @@
 #include "classes.h"
 #include "symbol.h"
 #include "irtreevisitor.h"
+#include "irtreeprintvisitor.h"
 #include "codefragment.h"
 #include "temp.h"
 

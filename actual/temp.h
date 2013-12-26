@@ -23,14 +23,9 @@ namespace Temp{
         Temp(const std::string& s){
             name = s;
         }
-
-        std::string& getName() {
-            return name;
-        }
-
+        
         static int curId;
-
-    private:
+    
         std::string name;
     }; 
 
@@ -44,13 +39,9 @@ namespace Temp{
         Label(const std::string& s){
             name = s;
         }
-        
-        std::string& getName() {
-            return name;
-        }
-
-    private:
+    
         std::string name;
+    private:
         static int curId;
     };
 
