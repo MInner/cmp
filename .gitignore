@@ -8,3 +8,5 @@ flexprint/fl.cpp
 syntax_analyser/studioCompiller/
 actual/bi.output
 actual/mjv
+actual/graph.png
+actual/graph.txt
