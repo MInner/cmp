@@ -30,7 +30,7 @@ public:
 class IAccess {
 	public:
 		virtual ~IAccess() {}
-		virtual const IRTree::IExp* Exp( const Temp::Temp* framePtr ) const = 0;
+		virtual const IRTree::IExp* Exp( const Temp::Temp* framePtr ) const = 0; // for Arr
 };
 
 class AccessX86 : public IAccess {
@@ -39,12 +39,15 @@ class AccessX86 : public IAccess {
 
 		virtual const IRTree::IExp* Exp( const Temp::Temp* framePtr ) const 
 		{
+
 			return new IRTree::MEM( new IRTree::BINOP( 
 				IRTree::OPERATOR::PLUS, 
 				new IRTree::TEMP( framePtr ), 
 				new IRTree::CONST( offset * frame->wordSize() ) 
 				) 
 			); 
+			
+			
 		}
 
 	private:

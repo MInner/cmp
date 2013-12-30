@@ -6,16 +6,15 @@ class Bubble {
 
 class BubbleSort
 {
-  public int runSort(int[] arr) {
+  public int runSort() {
       int[] b;
-      int tmp;
       b = new int[3]; 
-      b[0] = 3;
-      b[1] = 1;
-      b[2] = 2;
+      b[0] = 22;
+      b[1] = 33;
+      b[2] = 44;
       return this.bubbleSort(b);
   }
-  
+
   public int bubbleSort(int[] arr) {
       bool swapped;
       bool var;
@@ -37,7 +36,7 @@ class BubbleSort
                       swapped = true;
                 }
                 else
-                {}
+                { }
 
                 i = i + 1;
             }                

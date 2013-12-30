@@ -38,7 +38,7 @@ int main(void){
 	std::cout << "--- Building intermediate representation tree --- " << std::endl;
 	yyparse();
 	PrintVisitor* pv = new PrintVisitor();
-	// ProgramImpl::me->Accept(pv);
+	ProgramImpl::me->Accept(pv);
 
 	std::cout << "--- Building table --- " << std::endl;
 	BuildTableVisitor* rv = new BuildTableVisitor();
