@@ -1,4 +1,7 @@
 mjv
 bi.output
-graph.png
+*.png
 /dbg
+*.py
+pv-comp*
+*.txt
