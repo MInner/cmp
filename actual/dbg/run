@@ -1,3 +1,0 @@
-echo "===RUN==="
-./mjv < sample.java
-dot -Tpng graph.txt > graph.png
