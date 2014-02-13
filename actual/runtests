@@ -1,9 +1,0 @@
-echo "===RUN=== (fac)"
-./mjv < fac.java
-dot -Tpng graph.txt > fac_graph.png
-rm -f graph.txt
-echo "===RUN=== (bubble)"
-./mjv < bubble.java   
-dot -Tpng graph.txt > bubble_graph.png
-rm -f graph.txt
-

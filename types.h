@@ -1,0 +1,16 @@
+%type <program> program
+%type <mainClass> mainClass
+%type <classDeclarations> classDeclarations
+%type <classDeclaration> classDeclaration
+%type <varDeclarations> varDeclarations
+%type <varDeclaration> varDeclaration
+%type <methodDeclarations> methodDeclarations
+%type <methodDeclaration> methodDeclaration
+%type <statements> statements
+%type <statement> statement
+%type <type> type
+%type <arguements> arguements
+%type <arguement> arguement
+%type <assignment> assignment
+%type <expression> expression
+%type <expressionList> expressionList

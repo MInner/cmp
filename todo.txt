@@ -1,0 +1,4 @@
+1. Сделать вывод символов в std::cout operator<<
+2. Заменить в classes.h (std::string, int) -> Symbol
+3. Разобраться (?) в том, куда надо подключить sybmol.h ( simple_java.y %requeire{} )
+4. Заменить в simple_java.y (string, int) new ____("_") -> new ____(Symbol::getSymbol("_") 
