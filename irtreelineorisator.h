@@ -110,42 +110,10 @@ public:
 	int visit(const MOVE* n)
 	{
 		log("MOVE");
-		n->dst->Accept( this );
+		n->dst->Accept(this);
 		const IExp* dst = exptmp;
-		n->src->Accept( this );
+		n->src->Accept(this);
 		const IExp* src = exptmp;
-
-		// MOVE(dist, ESEQ(s, e))
-		if (const ESEQ* esq = dynamic_cast<const ESEQ*>(src))
-		{
-			std::cout << "Found MOVE(dist, ESEQ(s, e))" << std::endl;
-			const IStm* s = esq->stm;
-			const IExp* e = esq->exp;
-			if (comutate(s, dst))
-			{
-				stmtmp = new SEQ(s, new MOVE(dst, e)); // SEQ(s, MOVE(dist, e))
-				return 0;
-			}
-			else
-			{
-				Temp::Temp* t1 = new Temp::Temp();
-				stmtmp = new SEQ(
-					new MOVE(
-						new TEMP(t1), 
-						dst),
-					new SEQ(
-						s,
-						new MOVE(
-							new TEMP(t1),
-							e
-						)
-					)
-				);
-				return 0;
-				// SEQ( MOVE (TEMP1, dist) , SEQ( s, MOVE (TEMP1, e) ) )
-			}
-		}
-
 		stmtmp = new MOVE(dst, src);
 		end();
 	}
@@ -183,22 +151,22 @@ public:
 		n->left->Accept(this);
 		const IStm* tmp_left = stmtmp;
 
-		n->right->Accept(this);
-		const IStm* tmp_right = stmtmp;
 
-		// SEQ( SEQ(a,b) , c ) => SEQ(a, SEQ(b, c) )
+		// SEQ( SEQ(a, b) , WHATEVER ) ? WHATEVER - NOT canonised 
 		if (const SEQ* s1 = dynamic_cast<const SEQ*>(tmp_left)) // SEQ(a,b) = s1
 		{
-			const SEQ* s2 = dynamic_cast<const SEQ*>(tmp_right);
-			if ( !s2 ) // c != SEQ
-			{
-				std::cout << "Found SEQ( SEQ(a,b) , c ) " << std::endl;
-				stmtmp = new SEQ(s1->left, new SEQ(s1->right, tmp_right) );
-				return 0;
-				// n = NULL;
-			}	
+			std::cout << "Found SEQ( SEQ(a,b) , c ) " << std::endl;
+			const SEQ* newNode = new SEQ(s1->left, new SEQ(s1->right, n->right) );
+			// new = SEQ( a, SEQ(b, WHATEVER ) )
+			newNode->right->Accept(this); // SEQ(b, WHATEVER ) -> canonise 
+			stmtmp = new SEQ(newNode->left, stmtmp);
 		}
-		stmtmp = new SEQ(tmp_left, tmp_right);
+		else
+		{
+			n->right->Accept(this);
+			const IStm* tmp_right = stmtmp;
+			stmtmp = new SEQ(tmp_left, tmp_right);
+		}		
 		end();
 	}
 	
@@ -225,7 +193,7 @@ public:
 					el->tail = newExpList;
 					el = newExpList;
 				}
-				else
+				else 
 				{
 					el->tail = NULL;
 				}
