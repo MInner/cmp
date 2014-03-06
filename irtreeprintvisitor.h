@@ -1,7 +1,7 @@
 #pragma once
 
 #include "irtreevisitor.h"
-#include "treeClasses.h"
+#include "irtreenodes.h"
 
 #include <iostream>
 

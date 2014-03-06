@@ -2,7 +2,7 @@
 
 #include "temp.h"
 #include "treeInterfaces.h"
-#include "treeClasses.h"
+#include "irtreenodes.h"
 
 class IAccess;
 

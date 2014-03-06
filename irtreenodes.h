@@ -125,8 +125,6 @@ public:
 		return v->visit(this);
 	}
 
-
-	// const int binop; ????
 	const IExp* dst;
 	const IExp* src;
 };
@@ -156,7 +154,6 @@ public:
 	{
 		return v->visit(this);
 	}
-
 
 	const IExp* exp;
 	const Temp::LabelList* targets;
@@ -233,7 +230,7 @@ public:
 class StmList
 {
 public:
-	StmList(const IStm* head_, const StmList* tail_):
+	StmList(const IStm* head_, const StmList* tail_ = NULL):
 		head(head_), tail(tail_) {}
 
 	int Accept(ITreeVisitor* v) const

@@ -2,7 +2,7 @@
 
 #include <assert.h>
 #include "temp.h"
-#include "treeClasses.h"
+#include "irtreenodes.h"
 
 namespace Wrapper {
 

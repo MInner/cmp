@@ -125,8 +125,6 @@ public:
 		return v->visit(this);
 	}
 
-
-	// const int binop; ????
 	const IExp* dst;
 	const IExp* src;
 };

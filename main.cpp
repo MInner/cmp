@@ -13,6 +13,9 @@
 #include "irtreeprintvisitor.h"
 #include "codefragment.h"
 #include "temp.h"
+#include "irtreeoptimizationvisitor.h"
+#include "irtreelineorisator.h"
+
 
 extern int yyparse();
 
@@ -32,6 +35,15 @@ namespace Temp
 int TypeCheckerVisitor::line = 0;
 
 // !- static thigs
+
+void printTree(std::string filename, const IRTree::CodeFragment* cf)
+{
+	std::ofstream outputFile(filename);
+	IRTree::IRTreePrintVisitor* printVisitor2 = new IRTree::IRTreePrintVisitor(outputFile);
+    printVisitor2->visit(cf);
+    outputFile.close();
+
+}
 
 int main(void){
 
@@ -55,17 +67,31 @@ int main(void){
 
 	IRTreeVisitor* irvisitor = new IRTreeVisitor(fac, ctable);
 	ProgramImpl::me->Accept(irvisitor);
+	const IRTree::CodeFragment* mainCodeFragment = NULL;
+	mainCodeFragment = irvisitor->getMainFragment();
 
 	std::cout << "--- Building graphviz tree ---" << std::endl;
-
-	IRTree::CodeFragment* codeFragment = NULL;
-	codeFragment = irvisitor->getMainFragment();
 	
-	std::ofstream outputFile("graph.txt");
-	IRTree::IRTreePrintVisitor* printVisitor = new IRTree::IRTreePrintVisitor(outputFile);
-    printVisitor->visit(codeFragment);
-    outputFile.close();
-    
+	printTree("graph.txt", mainCodeFragment);
+
+	std::cout << "--- Calonicial tree optimization ---" << std::endl;
+
+	IRTree::IRTreeOptimizationVisitor* optimizeVisitor = new IRTree::IRTreeOptimizationVisitor();
+	optimizeVisitor->visit(mainCodeFragment);
+	mainCodeFragment = optimizeVisitor->getOptimizedCodeFramgent();
+
+	printTree("optimized_tree.txt", mainCodeFragment);
+
+	std::cout << "--- Lineasisator tree  ---" << std::endl;
+
+	IRTree::IRTreeLineorisatorVisitor* lineorisatorVisitor = new IRTree::IRTreeLineorisatorVisitor();
+	lineorisatorVisitor->visit(mainCodeFragment);
+	mainCodeFragment = lineorisatorVisitor->getOptimizedCodeFramgent();
+
+	std::cout << "--- Building optimized graphviz tree ---" << std::endl;
+
+	printTree("linear_tree.txt", mainCodeFragment);
+	    
 	std::cout << "--- Drawing graphviz tree ---" << std::endl;
 	return 0;
 
