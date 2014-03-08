@@ -27,8 +27,13 @@ class B
 		Fac f;
 		Fac d;
 		int a;
+		a = this.ret();
 		f = new Fac();
-		a = f.ComputeFac(5, 3);
-		return a; 
+		a = f.ComputeFac(5, this.ret());
+		return a;
+	}
+
+	public int ret(){
+		return 7;
 	}
 }
