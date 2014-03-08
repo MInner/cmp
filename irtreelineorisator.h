@@ -32,8 +32,9 @@ public:
 		for(auto currentOldCodeFragment = codeFragment; 
 		        currentOldCodeFragment != nullptr; currentOldCodeFragment = currentOldCodeFragment->next ) 
 		{
-			currentOldCodeFragment->retval->Accept( this );
-			currentCodeFragment->retval = exptmp;
+			currentOldCodeFragment->body->Accept( this );
+			currentCodeFragment->body = stmtmp;
+			currentCodeFragment->retval = NULL;
 			if (currentOldCodeFragment->next)
 			{
 				CodeFragment* newFragment = new CodeFragment(currentOldCodeFragment->next->frame);

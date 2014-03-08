@@ -495,6 +495,7 @@ public:
 
 		if(n->exp) { n->exp->Accept(this); }
 		curFragment->retval = new IRTree::ESEQ( curFragment->body, wrapper->ToExp() );
+		curFragment->body = NULL;
 
 		return 0;
 	}
@@ -535,6 +536,7 @@ public:
 		if(n->stm) { n->stm->Accept(this); }
 		curFragment->body = wrapper->ToStm();
 		curFragment->retval = new IRTree::ESEQ(curFragment->body, new IRTree::CONST (0) );
+		curFragment->body = NULL;
 
 		mainFragment = curFragment;
 		return 0;

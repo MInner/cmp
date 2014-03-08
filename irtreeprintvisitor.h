@@ -26,7 +26,15 @@ public:
 		{
 			out << "subgraph cluster" << clust++ << " {" << std::endl;
 			out << "label=\"" << currentCodeFragment->frame->getName()->name << "\"" << std::endl;
-			currentCodeFragment->retval->Accept( this );
+			if (currentCodeFragment->retval)
+			{
+				currentCodeFragment->retval->Accept( this );
+			}
+			else
+			{
+				assert(currentCodeFragment->body);
+				currentCodeFragment->body->Accept( this );
+			}
 			out << "}" << std::endl;
 		}
 		out << "}" << std::endl;

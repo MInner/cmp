@@ -34,6 +34,17 @@ public:
 		{
 			currentOldCodeFragment->retval->Accept( this );
 			currentCodeFragment->retval = exptmp;
+			if (const ESEQ* esq = dynamic_cast<const ESEQ*>(currentCodeFragment->retval))
+			{
+				currentCodeFragment->body = new SEQ(
+					esq->stm, 
+					new MOVE(
+						new TEMP(new Temp::Temp("RV")),
+						esq->exp
+					)
+				);
+				currentCodeFragment->retval = NULL;
+			}
 			if (currentOldCodeFragment->next)
 			{
 				CodeFragment* newFragment = new CodeFragment(currentOldCodeFragment->next->frame);
@@ -182,22 +193,8 @@ public:
 		log("SEQ");
 		n->left->Accept(this);
 		const IStm* tmp_left = stmtmp;
-
 		n->right->Accept(this);
 		const IStm* tmp_right = stmtmp;
-
-		// SEQ( SEQ(a,b) , c ) => SEQ(a, SEQ(b, c) )
-		if (const SEQ* s1 = dynamic_cast<const SEQ*>(tmp_left)) // SEQ(a,b) = s1
-		{
-			const SEQ* s2 = dynamic_cast<const SEQ*>(tmp_right);
-			if ( !s2 ) // c != SEQ
-			{
-				std::cout << "Found SEQ( SEQ(a,b) , c ) " << std::endl;
-				stmtmp = new SEQ(s1->left, new SEQ(s1->right, tmp_right) );
-				return 0;
-				// n = NULL;
-			}	
-		}
 		stmtmp = new SEQ(tmp_left, tmp_right);
 		end();
 	}
