@@ -219,6 +219,9 @@ public:
 		if (!mi)
 			std::cout << "WARNING: line " << n->line <<" No such method at class" << std::endl;
 
+
+		MethodInfo* tmp_mi = checkmethod; // to set it back when it finishes
+
 		checkmethod = mi;
 		curArgNum = 0;
 
@@ -232,6 +235,8 @@ public:
 		if(n->list) { n->list->Accept(this); }
 
 		type = mi->returnType;
+		
+		checkmethod = tmp_mi; // setting back
 		return 0;
 	}
 	int visit(const NewIntArrExp* n)
