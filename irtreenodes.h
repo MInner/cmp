@@ -209,6 +209,22 @@ public:
 	const Temp::Label* label;
 };
 
+// fake nodes for canonisation(linearization and optimization)
+
+class MOVECALL : public IStm
+{
+public:
+	MOVECALL(const Temp::Temp* dst_, const CALL* src_): dst(dst_), src(src_) {}
+
+	int Accept(ITreeVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+	const Temp::Temp* dst;
+	const CALL* src;
+};
+
 
 //other classes:
 class ExpList

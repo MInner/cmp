@@ -51,4 +51,5 @@ namespace IRTree
 	class LABEL;
 	class ExpList;
 	class StmList;
+  class MOVECALL;
 }

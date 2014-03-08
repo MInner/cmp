@@ -151,6 +151,11 @@ public:
 		out << "n" << node++ << " [shape=\"house\",color=\"darkorchid\",label=\"" << n->label->name << "\"]" << std::endl;
 	}
 
+  int visit(const MOVECALL* n)
+	{
+		//----
+	}
+
 	int visit(const ExpList* ExpList)
 	{
 		long parentNode = node - 1;

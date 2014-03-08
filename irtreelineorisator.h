@@ -89,12 +89,10 @@ public:
 	int visit(const CALL* n)
 	{
 		log("CALL");
-		ExpList* arg_el = NULL;
-		if( n->args != nullptr ) {
-			n->args->Accept( this );
-			arg_el = explisttmp;
-		}
-		exptmp = new CALL(n->func, arg_el);
+    const Temp::Temp* t = new Temp::Temp();
+	  const IExp* eseq = new ESEQ(new MOVE(new TEMP(t), n), new TEMP(t));
+    eseq->Accept( this );
+    exptmp = eseq;
 		end();
 	}
 	
@@ -110,6 +108,25 @@ public:
 
 	int visit(const MOVE* n)
 	{
+    // TEMP - MOVE - CALL pattern
+    const TEMP* tmp = dynamic_cast<const TEMP*>(n->dst);
+    const CALL* call = dynamic_cast<const CALL*>(n->src);
+    if  (tmp && call)
+    {
+      log("MOVECALL");
+
+      ExpList* arg_el = NULL;
+		  if( call->args != nullptr ) {
+		  	call->args->Accept( this );
+			  arg_el = explisttmp;
+		  }
+		  stmtmp = new MOVE(tmp, new CALL(call->func, arg_el)); 
+
+      end();
+
+      return 0;
+    }
+
 		log("MOVE");
 		n->dst->Accept(this);
 		const IExp* dst = exptmp;
@@ -175,6 +192,13 @@ public:
 	{
 		log("LABEL");
 		stmtmp = n;
+		end();
+	}
+
+  int visit(const MOVECALL* n)
+	{
+		log("MOVECALL");
+		//stmtmp = n;
 		end();
 	}
 
