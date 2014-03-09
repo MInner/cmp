@@ -2,7 +2,5 @@ echo "===RUN==="
 ./mjv < sample.java
 dot -Tpng graph.txt > graph.png
 rm -f graph.txt
-dot -Tpng optimized_tree.txt > optimized_graph.png
-rm -f optimized_tree.txt
 dot -Tpng linear_tree.txt > linear_tree.png
 rm -f linear_tree.txt

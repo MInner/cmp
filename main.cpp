@@ -76,9 +76,9 @@ int main(void){
 	printTree("graph.txt", mainCodeFragment);
 
 	std::cout << "--- Calonicial tree ---" << std::endl;
-	
-  IRTree::Canon* canon = new IRTree::Canon();
-  IRTree::CodeFragment*	newCF = canon->linear(mainCodeFragment);   
+	 
+  IRTree::Canon* canon = new IRTree::Canon();  
+  IRTree::CodeFragment*	newCF = canon->linearCF(mainCodeFragment);   
 
 	std::cout << "--- Building optimized graphviz tree ---" << std::endl;
 
