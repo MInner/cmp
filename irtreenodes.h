@@ -4,6 +4,23 @@
 
 namespace IRTree {
 
+//other classes:
+class ExpList
+{
+public:
+	ExpList(const IExp* head_, const ExpList* tail_ = NULL):
+		head(head_), tail(tail_) {}
+
+	int Accept(ITreeVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+
+	const IExp* head;
+	const ExpList* tail;
+};
+
 class CONST : public IExp
 {
 public:
@@ -15,8 +32,16 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return nullptr;
+	}
 
-	const int value;	
+	CONST* build(const ExpList* kids) const{
+        return new CONST(value);
+	}
+
+
+	const int value;
 };
 
 class NAME : public IExp
@@ -30,11 +55,18 @@ public:
 		return v->visit(this);
 	}
 
+    ExpList* kids() const {
+	    return nullptr;
+	}
 
-	const Temp::Label* label;	
+	NAME* build(const ExpList* kids) const{
+        return new NAME(label);
+	}
+
+	const Temp::Label* label;
 };
 
-class TEMP : public IExp 
+class TEMP : public IExp
 {
 public:
 	TEMP(const Temp::Temp* temp_):
@@ -45,6 +77,13 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return nullptr;
+	}
+
+	TEMP* build(const ExpList* kids) const{
+        return new TEMP(temp);
+	}
 
 	const Temp::Temp* temp;
 };
@@ -60,6 +99,13 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return new ExpList(left, new ExpList(right, nullptr));
+	}
+
+	BINOP* build(const ExpList* kids) const{
+        return new BINOP(binop, kids->head, kids->tail->head);
+	}
 
 	const int binop;
 	const IExp* left;
@@ -77,6 +123,14 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return new ExpList(exp, nullptr);
+	}
+
+	MEM* build(const ExpList* kids) const{
+        return new MEM(kids->head);
+	}
+
 
 	const IExp* exp;
 };
@@ -92,6 +146,13 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return new ExpList(args->head, args->tail);
+	}
+
+	CALL* build(const ExpList* kids) const{
+        return new CALL(func, kids);
+	}
 
 	const Temp::Label* func;
 	const ExpList* args;
@@ -108,13 +169,22 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return new ExpList(exp, nullptr);
+	}
+
+	ESEQ* build(const ExpList* kids) const{
+	    return 0;
+        //return new ESEQ(stm , kids->head); //never used
+	}
+
 
 	const IStm* stm;
 	const IExp* exp;
 };
 
 //abstract class Stm (управляющие конструкции)
-//class MOVE(Exp dst, Exp src): MOVE(Temp(t), e) vs MOVE(MEM(e1), e2) 
+//class MOVE(Exp dst, Exp src): MOVE(Temp(t), e) vs MOVE(MEM(e1), e2)
 class MOVE : public IStm
 {
 public:
@@ -123,6 +193,14 @@ public:
 	int Accept(ITreeVisitor* v) const
 	{
 		return v->visit(this);
+	}
+
+	ExpList* kids() const {
+	    return new ExpList(dst, new ExpList(src, nullptr));
+	}
+
+	MOVE* build(const ExpList* kids) const{
+        return new MOVE(kids->head, kids->tail->head);
 	}
 
 	const IExp* dst;
@@ -140,6 +218,14 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return new ExpList(exp, nullptr);
+	}
+
+	EXP* build(const ExpList* kids) const{
+        return new EXP(kids->head);
+	}
+
 
 	const IExp* exp;
 };
@@ -155,6 +241,14 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return new ExpList(exp, nullptr);
+	}
+
+	JUMP* build(const ExpList* kids) const{
+        return new JUMP(kids->head, targets);
+	}
+
 	const IExp* exp;
 	const Temp::LabelList* targets;
 };
@@ -168,6 +262,14 @@ public:
 	int Accept(ITreeVisitor* v) const
 	{
 		return v->visit(this);
+	}
+
+	ExpList* kids() const {
+	    return new ExpList(left, new ExpList(right, nullptr));
+	}
+
+	CJUMP* build(const ExpList* kids) const{
+        return new CJUMP(relop, kids->head, kids->tail->head, iftrue, iffalse);
 	}
 
 
@@ -189,12 +291,19 @@ public:
 		return v->visit(this);
 	}
 
+	ExpList* kids() const {
+	    return 0;
+	}
+
+	SEQ* build(const ExpList* kids) const{
+        return new SEQ(left, right); //never used
+	}
 
 	const IStm* left;
 	const IStm* right;
 };
 
-class LABEL : public IStm 
+class LABEL : public IStm
 {
 public:
 	LABEL(const Temp::Label* label_):
@@ -203,6 +312,14 @@ public:
 	int Accept(ITreeVisitor* v) const
 	{
 		return v->visit(this);
+	}
+
+	ExpList* kids() const {
+	    return nullptr;
+	}
+
+	LABEL* build(const ExpList* kids) const{
+        return new LABEL(label);
 	}
 
 
@@ -214,33 +331,46 @@ public:
 class MOVECALL : public IStm
 {
 public:
-	MOVECALL(const Temp::Temp* dst_, const CALL* src_): dst(dst_), src(src_) {}
+	MOVECALL(const TEMP* dst_, const CALL* src_): dst(dst_), src(src_) {}
 
 	int Accept(ITreeVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
-	const Temp::Temp* dst;
+
+	ExpList* kids() const {return src->kids();}
+
+    MOVE* build(const ExpList* kids) const {
+        return new MOVE(dst, src->build(kids));
+    }
+
+	/*MOVECALL* build(const ExpList* kids) const{
+        return nullptr;
+	} */
+
+	const TEMP* dst;
 	const CALL* src;
 };
 
-
-//other classes:
-class ExpList
+class EXPCALL : public IStm
 {
 public:
-	ExpList(const IExp* head_, const ExpList* tail_ = NULL):
-		head(head_), tail(tail_) {}
+  EXPCALL(const CALL* c) {call=c;}
 
-	int Accept(ITreeVisitor* v) const
+  int Accept(ITreeVisitor* v) const
 	{
 		return v->visit(this);
 	}
 
 
-	const IExp* head;
-	const ExpList* tail;
+  ExpList* kids() const {return call->kids();}
+
+  EXP* build(const ExpList* kids) const{
+	return new EXP(call->build(kids));
+  }
+
+  const CALL* call;
 };
 
 class StmList
@@ -259,4 +389,4 @@ public:
 	const StmList* tail;
 };
 
-} 
+}

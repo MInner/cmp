@@ -13,8 +13,9 @@
 #include "irtreeprintvisitor.h"
 #include "codefragment.h"
 #include "temp.h"
-#include "irtreeoptimizationvisitor.h"
-#include "irtreelineorisator.h"
+//#include "irtreeoptimizationvisitor.h"
+//#include "irtreelineorisator.h"
+#include "canon.h"
 
 
 extern int yyparse();
@@ -74,23 +75,14 @@ int main(void){
 	
 	printTree("graph.txt", mainCodeFragment);
 
-	std::cout << "--- Calonicial tree optimization ---" << std::endl;
-
-	IRTree::IRTreeOptimizationVisitor* optimizeVisitor = new IRTree::IRTreeOptimizationVisitor();
-	optimizeVisitor->visit(mainCodeFragment);
-	mainCodeFragment = optimizeVisitor->getOptimizedCodeFramgent();
-
-	printTree("optimized_tree.txt", mainCodeFragment);
-
-	std::cout << "--- Lineasisator tree  ---" << std::endl;
-
-	IRTree::IRTreeLineorisatorVisitor* lineorisatorVisitor = new IRTree::IRTreeLineorisatorVisitor();
-	lineorisatorVisitor->visit(mainCodeFragment);
-	mainCodeFragment = lineorisatorVisitor->getOptimizedCodeFramgent();
+	std::cout << "--- Calonicial tree ---" << std::endl;
+	
+  IRTree::Canon* canon = new IRTree::Canon();
+  IRTree::CodeFragment*	newCF = canon->linear(mainCodeFragment);   
 
 	std::cout << "--- Building optimized graphviz tree ---" << std::endl;
 
-	printTree("linear_tree.txt", mainCodeFragment);
+	printTree("linear_tree.txt", newCF);
 	    
 	std::cout << "--- Drawing graphviz tree ---" << std::endl;
 	return 0;

@@ -34,7 +34,7 @@ class ProgramImpl;
 class MainClassImpl;
 
 
-namespace IRTree 
+namespace IRTree
 {
 	class CONST;
 	class NAME;
@@ -51,5 +51,6 @@ namespace IRTree
 	class LABEL;
 	class ExpList;
 	class StmList;
-  class MOVECALL;
+    class MOVECALL;
+    class EXPCALL;
 }
