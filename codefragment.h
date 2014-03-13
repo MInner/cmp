@@ -5,6 +5,8 @@
 
 namespace IRTree {
 
+	class StmList; // forward decl
+
 	class CodeFragment {
 	public:
 		CodeFragment( const IFrame* _frame ): frame(_frame) {}
@@ -17,6 +19,7 @@ namespace IRTree {
 		const IFrame* frame;
 		const IRTree::IStm* body;
 		const IRTree::IExp* retval;
+		const IRTree::StmList* stmlist;
 		const IRTree::CodeFragment* next;
 	};
 

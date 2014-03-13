@@ -16,6 +16,7 @@
 //#include "irtreeoptimizationvisitor.h"
 //#include "irtreelineorisator.h"
 #include "canon.h"
+#include "forestprintvisitor.h"
 
 
 extern int yyparse();
@@ -43,7 +44,6 @@ void printTree(std::string filename, const IRTree::CodeFragment* cf)
 	IRTree::IRTreePrintVisitor* printVisitor2 = new IRTree::IRTreePrintVisitor(outputFile);
     printVisitor2->visit(cf);
     outputFile.close();
-
 }
 
 int main(void){
@@ -77,14 +77,21 @@ int main(void){
 
 	std::cout << "--- Calonicial tree ---" << std::endl;
 	 
-  IRTree::Canon* canon = new IRTree::Canon();  
-  IRTree::CodeFragment*	newCF = canon->linearCF(mainCodeFragment);   
+	IRTree::Canon* canon = new IRTree::Canon();  
+	IRTree::CodeFragment* newCF = canon->linearCF(mainCodeFragment);
 
-	std::cout << "--- Building optimized graphviz tree ---" << std::endl;
+	std::cout << "--- Building canonical graphviz tree ---" << std::endl;
 
-	printTree("linear_tree.txt", newCF);
-	    
-	std::cout << "--- Drawing graphviz tree ---" << std::endl;
+	printTree("linear.txt", newCF);
+
+	std::cout << "--- Building canonical graphviz forest ---" << std::endl;
+
+	std::ofstream of("forest.txt");
+	IRTree::IRTreeForestPrintVisitor* forestPrintVisitor = new IRTree::IRTreeForestPrintVisitor(of);
+    forestPrintVisitor->visit(newCF);
+    of.close();
+	
+	std::cout << "--- Drawing graphviz trees ---" << std::endl;
 	return 0;
 
 }

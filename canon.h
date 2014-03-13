@@ -6,35 +6,6 @@
 namespace IRTree
 {
 
-/*
-class MoveCall : public IStm
-{
-public:
-  MoveCall(const TEMP* d,const CALL* s) {dst=d; src=s;}
-
-  ExpList* kids() const {return src->kids();}
-  MOVE* build(const ExpList* kids) const {
-	return new MOVE(dst, src->build(kids));
-  }
-
-  const TEMP* dst;
-  const CALL* src;
-};
-
-class ExpCall : public IStm
-{
-public:
-  ExpCall(const CALL* c) {call=c;}
-
-  ExpList* kids() const {return call->kids();}
-  EXP* build(const ExpList* kids) const{
-	return new EXP(call->build(kids));
-  }
-
-  const CALL* call;
-};
-*/
-
 class StmExpList
 {
 public:
@@ -250,6 +221,8 @@ public:
 				)
                 );
 			}
+
+        currentCodeFragment->stmlist = linearize(currentCodeFragment->body);
 
 		if (currentOldCodeFragment->next)
 		{
