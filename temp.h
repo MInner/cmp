@@ -29,6 +29,14 @@ namespace Temp{
         std::string name;
     }; 
 
+    class TempList {
+        const Temp* temp;
+        const TempList* next;
+
+        TempList(const Temp* tp, const TempList* next = NULL) : temp(tp), next(next) {}
+
+    };
+
     class Label 
     {
     public:

@@ -17,6 +17,7 @@
 //#include "irtreelineorisator.h"
 #include "canon.h"
 #include "forestprintvisitor.h"
+#include "asmgenaratorvisitor.h"
 
 
 extern int yyparse();
@@ -90,6 +91,10 @@ int main(void){
 	IRTree::IRTreeForestPrintVisitor* forestPrintVisitor = new IRTree::IRTreeForestPrintVisitor(of);
     forestPrintVisitor->visit(newCF);
     of.close();
+
+	std::cout << "--- Generating code ---" << std::endl;
+	Assemble::AsmGenaratorVisitor* cg = new Assemble::AsmGenaratorVisitor();
+	cg->visit(newCF);
 	
 	std::cout << "--- Drawing graphviz trees ---" << std::endl;
 	return 0;
