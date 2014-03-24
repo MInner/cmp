@@ -62,12 +62,22 @@ public:
 		log("BINOP");
 		n->left->Accept( this );
 		n->right->Accept( this );
+		// 
 		end();
 	}
 	
 	int visit(const IRTree::MEM* n)
 	{
 		log("MEM");
+		if (auto e = dynamic_cast<const IRTree::BINOP*>(n->exp))
+		{
+			if (auto r = dynamic_cast<const IRTree::CONST*>(e->right))
+			{
+				// MEM(BINOP(op, exp, CONST(c))) => MOV t0, [t1 op c] % (TEMP, exp) => t0
+			}
+		}
+
+		// MEM(a) => MOV t0, [t1] % (TEMP, exp) => to
 		n->exp->Accept( this );
 		end();
 	}
@@ -75,7 +85,8 @@ public:
 	int visit(const IRTree::CALL* n)
 	{
 		log("CALL");
-	    n->args->Accept( this );
+	    n->args->Accept( this ); // packed here
+	    // CALL funcname => RV
 		end();
 	}
 	
@@ -90,6 +101,43 @@ public:
 	int visit(const IRTree::MOVE* n)
 	{
 		log("MOVE");
+		if (auto l = dynamic_cast<const IRTree::MEM*>(n->dst))
+		{
+			if (auto r = dynamic_cast<const IRTree::MEM*>(n->src))
+			{
+				// MOVE(MEM(a), MEM(b)) => MOV t0, [t1]; MOV [t2], t0 % (TEMP, a, b) => NULL
+			}
+			else
+			{
+				// MOVE(MEM(a), b) => MOV [t0], t1 % (a, b) => NULL
+			}
+		}
+		else
+		{
+			if (auto r = dynamic_cast<const IRTree::MEM*>(n->src))
+			{
+				if (auto b = dynamic_cast<const IRTree::BINOP*>(r->exp))
+				{
+					if (auto br = dynamic_cast<const IRTree::CONST*>(b->right))
+					{
+						// MOVE(a, MEM(BINOP(op, exp, CONST(c)))) => MOV t0, [t1 op c] % (a, exp) => NULL
+					}
+				}
+				else
+				{
+					// MOVE(a, MEM(b)) => MOV t0, [t1] % (a, b) => NULL 
+				}
+			}
+			else
+			{
+				// MOVE (a, b) => MOV t0, t1 % (a, b) => NULL
+			}
+		}
+
+		if (auto r = dynamic_cast<const IRTree::CONST*>(n->src))
+		{
+			// MOVE ( a, CONST(c) ) => MOV t0, c % (a) => NULL
+		}
 		n->dst->Accept(this);
 		n->src->Accept(this);
 		end();
@@ -99,6 +147,7 @@ public:
 	{
 		log("EXP");
 		n->exp->Accept( this );
+		// => NOP => NULL
 		end();
 	}
 	
@@ -106,6 +155,7 @@ public:
 	{
 		log("JUMP");
 		n->exp->Accept( this );
+		// => JMP t0 % (exp) => NULL
 		end();
 	}
 	
@@ -114,12 +164,30 @@ public:
 		log("CJUMP");
 		n->left->Accept(this);
 		n->right->Accept(this);
+		// CMP t0, t1 % (left, right)
+		switch( n->relop )
+		{
+			case 0: // ==
+				// JE truelabela
+				break;
+			case 1: // !=
+				break;
+			case 2: // <
+				break;
+			case 3: // >
+				break;
+			case 4: // <=
+				break;
+			case 5: // >=
+				break;
+		}
 		end();
 	}
 		
 	int visit(const IRTree::LABEL* n)
 	{
 		log("LABEL");
+		// => label :
 		end();
 	}
 
@@ -130,6 +198,7 @@ public:
 		{
 			for( auto exp = expList; exp != nullptr && exp->head != nullptr; exp = exp->tail ) {
 				exp->head->Accept(this);
+				// => PUSH t0 % (exp) => NULL
 			}
 		}
 		end();
