@@ -196,6 +196,46 @@ public:
     return ret;
  }
 
+ const IStm* getLinearTree1(const IStm* s) { // лишний шаг только для визуализации
+    const StmList* list = linearize(s);
+
+    bool inBlock = true;
+    const IStm* ret = list->head;
+    const LABEL* label = dynamic_cast<const LABEL*>(ret);
+    if (!label) {
+        ret = new SEQ(new LABEL(new Temp::Label()), ret);
+    }
+
+    for(const StmList* currStm = list->tail; currStm != nullptr; currStm = currStm->tail) {
+        const LABEL* label = dynamic_cast<const LABEL*>(currStm->head);
+        const CJUMP* cjump = dynamic_cast<const CJUMP*>(currStm->head);
+        const JUMP*  jump  = dynamic_cast<const  JUMP*>(currStm->head);
+        if (label) {
+            if (inBlock) {
+                ret = new SEQ(ret, new SEQ(new JUMP(label), currStm->head));
+            } else {
+                inBlock = true;
+                ret = new SEQ(ret, currStm->head);
+            }
+        } else if (jump || cjump) {
+            if (inBlock) {
+                inBlock = false;
+                ret = new SEQ(ret, currStm->head);
+            } else {
+                assert(0); // no sense
+            }
+        } else {
+            ret = new SEQ(ret, currStm->head);
+        }
+        if (currStm->tail == NULL){
+            const LABEL* rl = new LABEL(new Temp::Label("return"));
+            ret = new SEQ(ret, new JUMP(rl));
+            //continue;
+        }
+    }
+    return ret;
+ }
+
  CodeFragment* linearCF(const CodeFragment* mainCodeFragment) {
     CodeFragment* currentCodeFragment = new CodeFragment(mainCodeFragment->frame);
 	CodeFragment* newCF = currentCodeFragment;
@@ -205,7 +245,7 @@ public:
 	    if (const IExp* ret = currentOldCodeFragment->retval)
 			{
 			    const ESEQ* eseq = dynamic_cast<const ESEQ*>(ret);
-				currentCodeFragment->body = getLinearTree(
+				currentCodeFragment->body = getLinearTree1(
                     new SEQ( new EXP(currentOldCodeFragment->retval),
                         new MOVE(new TEMP(new Temp::Temp("RV")), eseq->exp)
 				)
@@ -215,7 +255,7 @@ public:
 			else
 			{
 				assert(currentCodeFragment->body); // never used
-				currentCodeFragment->body = getLinearTree(
+				currentCodeFragment->body = getLinearTree1(
                     new SEQ(currentCodeFragment->body,
                         new MOVE(new TEMP(new Temp::Temp("RV")), new CONST(0))
 				)

@@ -230,11 +230,38 @@ public:
 	const IExp* exp;
 };
 
+class LABEL : public IStm
+{
+public:
+	LABEL(const Temp::Label* label_):
+		label(label_) {}
+
+	int Accept(ITreeVisitor* v) const
+	{
+		return v->visit(this);
+	}
+
+	ExpList* kids() const {
+	    return nullptr;
+	}
+
+	LABEL* build(const ExpList* kids) const{
+        return new LABEL(label);
+	}
+
+
+	const Temp::Label* label;
+};
+
 class JUMP : public IStm
 {
 public:
 	JUMP(const IExp* exp_, const Temp::LabelList* targets_):
 		exp(exp_), targets(targets_) {}
+    JUMP(const LABEL* label_) {
+        exp = new NAME(label_->label);
+        targets = new Temp::LabelList(label_->label, nullptr);
+    }
 
 	int Accept(ITreeVisitor* v) const
 	{
@@ -301,29 +328,6 @@ public:
 
 	const IStm* left;
 	const IStm* right;
-};
-
-class LABEL : public IStm
-{
-public:
-	LABEL(const Temp::Label* label_):
-		label(label_) {}
-
-	int Accept(ITreeVisitor* v) const
-	{
-		return v->visit(this);
-	}
-
-	ExpList* kids() const {
-	    return nullptr;
-	}
-
-	LABEL* build(const ExpList* kids) const{
-        return new LABEL(label);
-	}
-
-
-	const Temp::Label* label;
 };
 
 // fake nodes for canonisation(linearization and optimization)
