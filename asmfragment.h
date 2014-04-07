@@ -7,31 +7,42 @@ namespace Assemble {
 	class Instruction {
 	public:
 		const char* asmcode;
+		const Temp::TempList* usedVars;
+		const Temp::TempList* definedVars;
 		// const Temp::TempList* usedVars() const = 0;
 		// const Temp::TempList* definedVars() const = 0;
 		// const Temp::LabelList* jumpTargets() const = 0;
 		// std::string format()
 	};
 
-	class ASM : Instruction {
+	class ASM : public Instruction {
 	public:
-		const Temp::TempList* usedVars;
-		const Temp::TempList* definedVars;
-		ASM(const char* asmcode, const Temp::TempList* usedVars, const Temp::TempList* definedVars): 
-			usedVars(usedVars), definedVars(definedVars) {this->asmcode = asmcode;}
+		ASM(const char* _asmcode, const Temp::TempList* _usedVars = NULL, const Temp::TempList* _definedVars = NULL)
+		{
+			asmcode = _asmcode;
+			usedVars = _usedVars;
+			definedVars = _definedVars;
+		}
 	};
 
-	class LABEL : Instruction {
+	class LABEL : public Instruction {
 	public:
-		LABEL(const char* asmcode) {this->asmcode = asmcode;}
+		LABEL(const Temp::Label* l) 
+		{
+			asmcode = (l->name + ":").c_str();
+			usedVars = NULL;
+			definedVars = NULL;
+		}
 	};
 
-	class MOVE : Instruction {
+	class MOVE : public Instruction {
 	public:
-		const Temp::TempList* usedVars;
-		const Temp::TempList* definedVars;
-		MOVE(const char* asmcode, const Temp::TempList* usedVars, const Temp::TempList* definedVars): 
-			usedVars(usedVars), definedVars(definedVars){this->asmcode = asmcode;}
+		MOVE(const char* asmcode, const Temp::TempList* _usedVars = NULL, const Temp::TempList* _definedVars = NULL)
+		{
+			this->asmcode = asmcode;
+			usedVars = _usedVars;
+			definedVars = _definedVars;
+		}
 	};
 
 	class InstructionList {
@@ -49,7 +60,7 @@ namespace Assemble {
 		InstructionList* instructionList;
 		InstructionList* firstLinstruction;
 		AsmFragment* next;
-		AsmFragment(AsmFragment* next = NULL):next(next), instructionList(NULL) {}
+		AsmFragment(AsmFragment* next = NULL): next(next), instructionList(NULL) {}
 		void addInstruction(Instruction* i)
 		{
 			if(instructionList)
@@ -63,6 +74,30 @@ namespace Assemble {
 				instructionList = new InstructionList(i);
 				firstLinstruction = instructionList;
 			}
+
+			// log
+			std::cout << i->asmcode << " ( ";
+			if (i->usedVars)
+			{
+				for(auto curUsedVar = i->usedVars;
+			        curUsedVar != nullptr; curUsedVar = curUsedVar->next ) 
+				{
+					std::cout << curUsedVar->temp->name << ", ";
+				}
+			}
+
+			if (i->definedVars)
+			{
+				std::cout << " ; ";
+				for(auto curUsedVar = i->definedVars; 
+			        curUsedVar != nullptr; curUsedVar = curUsedVar->next ) 
+				{
+					std::cout << curUsedVar->temp->name;
+				}
+			}
+
+			std::cout << " )" << std::endl;
+
 		}
 	};
 

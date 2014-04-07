@@ -30,10 +30,21 @@ namespace Temp{
     }; 
 
     class TempList {
+    public:
         const Temp* temp;
         const TempList* next;
 
         TempList(const Temp* tp, const TempList* next = NULL) : temp(tp), next(next) {}
+        TempList(const Temp* t1, const Temp* t2)
+        {
+            temp = t1;
+            next = new TempList(t2);
+        }
+        TempList(const Temp* t1, const Temp* t2, const Temp* t3)
+        {
+            temp = t1;
+            next = new TempList(t2, t3);
+        }
 
     };
 
