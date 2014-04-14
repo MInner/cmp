@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 
+#define PRINTASM 0
+
 #include "enums.h"
 #include "bi.hpp"
 #include "printvisitor.h"
@@ -18,6 +20,8 @@
 #include "canon.h"
 #include "forestprintvisitor.h"
 #include "asmgenaratorvisitor.h"
+
+
 
 
 extern int yyparse();
@@ -92,9 +96,10 @@ int main(void){
     forestPrintVisitor->visit(newCF);
     of.close();
 
-	std::cout << "--- Generating code ---" << std::endl;
+	std::cout << "--- Generating pre-assembler ---" << std::endl;
 	Assemble::AsmGenaratorVisitor* cg = new Assemble::AsmGenaratorVisitor();
 	cg->visit(newCF);
+	auto root = cg->getRootAsmFragment();
 	
 	std::cout << "--- Drawing graphviz trees ---" << std::endl;
 	return 0;

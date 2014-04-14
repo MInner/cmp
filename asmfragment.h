@@ -76,6 +76,8 @@ namespace Assemble {
 			}
 
 			// log
+			#if PRINTPREASM
+			std::cout << "ASM: ";
 			std::cout << i->asmcode << " ( ";
 			if (i->usedVars)
 			{
@@ -97,6 +99,7 @@ namespace Assemble {
 			}
 
 			std::cout << " )" << std::endl;
+			#endif
 
 		}
 	};
