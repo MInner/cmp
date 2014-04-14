@@ -20,13 +20,13 @@ public:
 class Block
 {
 public:
-  //Block(): stms(NULL), next(nullptr), labelName(NULL), JumpName(NULL) {}
+  //Block(): stms(NULL), next(nullptr), labelName(NULL), jumpName(NULL) {}
 
-  std::vector<const IStm*> stms;
+  std::vector<const IStm*>* stms;
   Block* next;
   Block* prev;
   std::string labelName;
-  std::string JumpName;
+  std::string jumpName;
   bool isCJump;
 };
 
@@ -36,6 +36,7 @@ public:
 
  Block* generateBlocks(const StmList* list){
     Block* firstBlock = new Block();
+    firstBlock->stms =  new std::vector<const IStm*>();
     firstBlock->prev = nullptr;
     Block* currentBlock = firstBlock;
     Block* newBlock;
@@ -45,32 +46,33 @@ public:
         const JUMP*  jump  = dynamic_cast<const  JUMP*>(currStm->head);
         if (label) {
            newBlock = new Block();
+           newBlock->stms =  new std::vector<const IStm*>();
            currentBlock->next = newBlock;
            newBlock->prev = currentBlock;
            newBlock->next = nullptr;
 
-           newBlock->stms.push_back(label);
-           newBlock->labelName = label->label->name;
+           newBlock->stms->push_back(label);
+           newBlock->labelName = std::string(label->label->name);
 
            currentBlock = newBlock;
 
         } else if (jump) {
             currentBlock->isCJump = false;
-            currentBlock->stms.push_back(jump);
+            currentBlock->stms->push_back(jump);
 
             const NAME* jLabel = dynamic_cast<const NAME*>(jump->exp);
             if (jLabel){
-                currentBlock->JumpName = jLabel->label->name;
+                currentBlock->jumpName = jLabel->label->name;
             } else {
                 assert(0);
             }
         } else if (cjump) {
             currentBlock->isCJump = true;
-            currentBlock->stms.push_back(cjump);
+            currentBlock->stms->push_back(cjump);
 
-            currentBlock->JumpName = cjump->iffalse->name;
+            currentBlock->jumpName = cjump->iffalse->name;
         } else {
-            currentBlock->stms.push_back(currStm->head);
+            currentBlock->stms->push_back(currStm->head);
         }
 
         if (!currStm->tail) {
@@ -89,11 +91,65 @@ Block* getLastBlock(Block* firstBlock){
     }
 }
 
+
+Block* findBlockByJumpName(std::string name, Block* firstBlock){
+    for(Block* currBl = firstBlock; currBl != nullptr; currBl = currBl->next) {
+        if (currBl->jumpName == name) {
+            return currBl;
+        }
+    }
+}
+
+
+Block* findBlockByLabelName(std::string name, Block* firstBlock){
+    for(Block* currBl = firstBlock; currBl != nullptr; currBl = currBl->next) {
+        //std::cout << currBl->labelName << std::endl;
+        if (currBl->labelName == name) {
+            return currBl;
+        }
+    }
+}
+
+void swapBlocks(Block* f, Block* s){
+    Block* a = new Block();
+    std::cout << "1 " << f->labelName << " " << s->labelName << " I'm here \n";
+    a->stms = f->stms;
+    f->stms = s->stms;
+    s->stms = a->stms;
+
+    a->isCJump = f->isCJump;
+    f->isCJump = s->isCJump;
+    s->isCJump = a->isCJump;
+
+    a->labelName = f->labelName;
+    f->labelName = s->labelName;
+    s->labelName = a->labelName;
+
+    a->jumpName = f->jumpName;
+    f->jumpName = s->jumpName;
+    s->jumpName = a->jumpName;
+}
+
+void reorderBlocks(Block* firstBlock) {
+   //Block* a = findBlockByLabelName("start", firstBlock);
+   //Block* a = findBlockByJumpName("finish", firstBlock);
+   // swapBlocks(firstBlock, getLastBlock(firstBlock));
+   //int b;
+   //b = 7;
+   for(Block* currBl = firstBlock; currBl != nullptr; currBl = currBl->next) {
+        //std::cout << currBl->labelName << std::endl;
+        if (currBl->isCJump) {
+            Block* b = findBlockByLabelName(currBl->jumpName, firstBlock);
+            swapBlocks(currBl->next, b);
+        }
+    }
+}
+
 const StmList* combineBlocks(Block* lastBlock) {
     const StmList* list = nullptr;
     for(Block* currBl = lastBlock; currBl != nullptr; currBl = currBl->prev) {
-        for(int i = currBl->stms.size() - 1; i >=0 ; i--) {
-            list = new StmList(currBl->stms.at(i), list);
+        for(int i = currBl->stms->size() - 1; i >=0 ; i--) {
+            list = new StmList(currBl->stms->at(i), list);
         }
     }
     return list;
@@ -348,7 +404,9 @@ const StmList* combineBlocks(Block* lastBlock) {
 
         currentCodeFragment->stmlist = linearize(currentCodeFragment->body);
         Block* b = generateBlocks(currentCodeFragment->stmlist);
-        currentCodeFragment->stmlist = combineBlocks(getLastBlock(b));
+        reorderBlocks(b);
+        Block* lb = getLastBlock(b);
+        currentCodeFragment->stmlist = combineBlocks(lb);
 
 		if (currentOldCodeFragment->next)
 		{
