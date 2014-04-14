@@ -2,6 +2,7 @@
 
 #include "irtreevisitor.h"
 #include "irtreenodes.h"
+#include <vector>
 
 namespace IRTree
 {
@@ -16,9 +17,87 @@ public:
 
 };
 
+class Block
+{
+public:
+  //Block(): stms(NULL), next(nullptr), labelName(NULL), JumpName(NULL) {}
+
+  std::vector<const IStm*> stms;
+  Block* next;
+  Block* prev;
+  std::string labelName;
+  std::string JumpName;
+  bool isCJump;
+};
+
 class Canon
 {
 public:
+
+ Block* generateBlocks(const StmList* list){
+    Block* firstBlock = new Block();
+    firstBlock->prev = nullptr;
+    Block* currentBlock = firstBlock;
+    Block* newBlock;
+    for(const StmList* currStm = list; true; currStm = currStm->tail) {
+        const LABEL* label = dynamic_cast<const LABEL*>(currStm->head);
+        const CJUMP* cjump = dynamic_cast<const CJUMP*>(currStm->head);
+        const JUMP*  jump  = dynamic_cast<const  JUMP*>(currStm->head);
+        if (label) {
+           newBlock = new Block();
+           currentBlock->next = newBlock;
+           newBlock->prev = currentBlock;
+           newBlock->next = nullptr;
+
+           newBlock->stms.push_back(label);
+           newBlock->labelName = label->label->name;
+
+           currentBlock = newBlock;
+
+        } else if (jump) {
+            currentBlock->isCJump = false;
+            currentBlock->stms.push_back(jump);
+
+            const NAME* jLabel = dynamic_cast<const NAME*>(jump->exp);
+            if (jLabel){
+                currentBlock->JumpName = jLabel->label->name;
+            } else {
+                assert(0);
+            }
+        } else if (cjump) {
+            currentBlock->isCJump = true;
+            currentBlock->stms.push_back(cjump);
+
+            currentBlock->JumpName = cjump->iffalse->name;
+        } else {
+            currentBlock->stms.push_back(currStm->head);
+        }
+
+        if (!currStm->tail) {
+            break;
+        }
+    }
+
+    return firstBlock;
+ }
+
+Block* getLastBlock(Block* firstBlock){
+    for(Block* currBl = firstBlock; currBl != nullptr; currBl = currBl->next) {
+        if (!currBl->next) {
+            return currBl;
+        }
+    }
+}
+
+const StmList* combineBlocks(Block* lastBlock) {
+    const StmList* list = nullptr;
+    for(Block* currBl = lastBlock; currBl != nullptr; currBl = currBl->prev) {
+        for(int i = currBl->stms.size() - 1; i >=0 ; i--) {
+            list = new StmList(currBl->stms.at(i), list);
+        }
+    }
+    return list;
+}
 
  bool isNop(const IStm* a) {
    const EXP* exp = dynamic_cast<const EXP*>(a);
@@ -203,7 +282,7 @@ public:
     const IStm* ret = list->head;
     const LABEL* label = dynamic_cast<const LABEL*>(ret);
     if (!label) {
-        ret = new SEQ(new LABEL(new Temp::Label()), ret);
+        ret = new SEQ(new LABEL(new Temp::Label("start")), ret);
     }
 
     for(const StmList* currStm = list->tail; currStm != nullptr; currStm = currStm->tail) {
@@ -228,11 +307,16 @@ public:
             ret = new SEQ(ret, currStm->head);
         }
         if (currStm->tail == NULL){
-            const LABEL* rl = new LABEL(new Temp::Label("return"));
+            const LABEL* rl = new LABEL(new Temp::Label("finish"));
             ret = new SEQ(ret, new JUMP(rl));
-            //continue;
         }
     }
+
+    if (list->tail == nullptr) {
+        const LABEL* rl = new LABEL(new Temp::Label("finish"));
+        ret = new SEQ(ret, new JUMP(rl));
+    }
+
     return ret;
  }
 
@@ -263,6 +347,8 @@ public:
 			}
 
         currentCodeFragment->stmlist = linearize(currentCodeFragment->body);
+        Block* b = generateBlocks(currentCodeFragment->stmlist);
+        currentCodeFragment->stmlist = combineBlocks(getLastBlock(b));
 
 		if (currentOldCodeFragment->next)
 		{
