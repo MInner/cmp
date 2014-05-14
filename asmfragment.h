@@ -6,18 +6,19 @@ namespace Assemble {
 
 	class Instruction {
 	public:
-		const char* asmcode;
+		std::string asmcode;
 		const Temp::TempList* usedVars;
 		const Temp::TempList* definedVars;
 		// const Temp::TempList* usedVars() const = 0;
 		// const Temp::TempList* definedVars() const = 0;
 		// const Temp::LabelList* jumpTargets() const = 0;
 		// std::string format()
+		virtual ~Instruction() {}
 	};
 
 	class ASM : public Instruction {
 	public:
-		ASM(const char* _asmcode, const Temp::TempList* _usedVars = NULL, const Temp::TempList* _definedVars = NULL)
+		ASM(std::string _asmcode, const Temp::TempList* _usedVars = NULL, const Temp::TempList* _definedVars = NULL)
 		{
 			asmcode = _asmcode;
 			usedVars = _usedVars;
@@ -27,9 +28,25 @@ namespace Assemble {
 
 	class LABEL : public Instruction {
 	public:
+		std::string name;
 		LABEL(const Temp::Label* l) 
 		{
-			asmcode = (l->name + ":").c_str();
+			asmcode = l->name + ":";
+			name = l->name;
+			usedVars = NULL;
+			definedVars = NULL;
+		}
+	};
+
+	class JMP : public Instruction {
+	public:
+		std::string type;
+		std::string where;
+		JMP(const std::string _type, const Temp::Label* _where) 
+		{
+			asmcode = _type + " " + _where->name;
+			type = _type;
+			where = _where->name.c_str();
 			usedVars = NULL;
 			definedVars = NULL;
 		}
@@ -37,7 +54,7 @@ namespace Assemble {
 
 	class MOVE : public Instruction {
 	public:
-		MOVE(const char* asmcode, const Temp::TempList* _usedVars = NULL, const Temp::TempList* _definedVars = NULL)
+		MOVE(std::string asmcode, const Temp::TempList* _usedVars = NULL, const Temp::TempList* _definedVars = NULL)
 		{
 			this->asmcode = asmcode;
 			usedVars = _usedVars;
@@ -52,27 +69,28 @@ namespace Assemble {
 		InstructionList(Instruction* ins)
 		{
 			instr = ins;
+			next = NULL;
 		}
 	};
 
 	class AsmFragment {
 	public:
-		InstructionList* instructionList;
-		InstructionList* firstLinstruction;
+		InstructionList* currentInstructionList;
+		InstructionList* firstInstructionList;
 		AsmFragment* next;
-		AsmFragment(AsmFragment* next = NULL): next(next), instructionList(NULL) {}
+		AsmFragment(AsmFragment* next = NULL): next(next), currentInstructionList(NULL), firstInstructionList(NULL) {}
 		void addInstruction(Instruction* i)
 		{
-			if(instructionList)
+			if(firstInstructionList) // if list already exists
 			{
 				InstructionList* newil = new InstructionList(i);
-				instructionList->next = newil;
-				instructionList = newil;
+				currentInstructionList->next = newil;
+				currentInstructionList = newil;
 			}
 			else
 			{
-				instructionList = new InstructionList(i);
-				firstLinstruction = instructionList;
+				currentInstructionList = new InstructionList(i);
+				firstInstructionList = currentInstructionList;
 			}
 
 			// log
@@ -99,6 +117,7 @@ namespace Assemble {
 			}
 
 			std::cout << " )" << std::endl;
+
 			#endif
 
 		}

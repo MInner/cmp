@@ -6,3 +6,5 @@ rm -f graph.txt
 rm -f linear.txt
 # dot -Tpng forest.txt > forest.png
 # rm -f forest.txt
+dot -Tpng flowgraph.txt > flowgraph.png
+# rm -f flowgraph.txt

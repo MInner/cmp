@@ -6,13 +6,13 @@
 
 #include <iostream>
 
-//#define log(str) std::cout << padding << std::string(padding++, '-') << "|: " << str << std::endl;
-#define log(str)
+//#define logging(str) std::cout << padding << std::string(padding++, '-') << "|: " << str << std::endl;
+#define logging(str)
 
 // #define debug(str) std::cout << str << std::endl;
 #define debug(str) ; 
 
-#define end() padding--;
+#define debug_end() padding--;
 
 namespace Assemble
 {
@@ -49,40 +49,40 @@ public:
 
 	int visit(const IRTree::CONST* n)
 	{
-		log("CONST");
+		logging("CONST");
 		debug("// CONST(c) => MOVE d0, c => d0");
 		Temp::Temp* d0 = new Temp::Temp();
 		std::ostringstream ss;
 		ss << "MOV d0, " << n->value;
 		curasmf->addInstruction(
-			new Assemble::MOVE(ss.str().c_str(), 
+			new Assemble::MOVE(ss.str(), 
 								NULL, 
 								new Temp::TempList(d0)
 			)
 		);
 		tmp = d0;
-		end();
+		debug_end();
 	}
 
 	int visit(const IRTree::NAME* n)
 	{
 		// it souldn't be here
 		assert(false);
-		log("NAME");
-		end();
+		logging("NAME");
+		debug_end();
 	}
 	
 	int visit(const IRTree::TEMP* n)
 	{
 		debug("// TEMP(t) => // => t");
-		log("TEMP");
+		logging("TEMP");
 		tmp = n->temp;
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::BINOP* n)
 	{
-		log("BINOP");
+		logging("BINOP");
 		debug("// a BINOP b => MOVE d0, a; MOVE d1, b; BINOP d0, d1; MOVE d2, d0 => d2");
 		n->left->Accept( this );
 		auto a = tmp;
@@ -113,12 +113,12 @@ public:
 				// souldn't be here
 				assert(false);
 		}
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::MEM* n)
 	{
-		log("MEM");
+		logging("MEM");
 		if (auto b = dynamic_cast<const IRTree::BINOP*>(n->exp))
 		{
 			if (auto c = dynamic_cast<const IRTree::CONST*>(b->right))
@@ -131,7 +131,7 @@ public:
 					auto u0 = tmp;
 					std::ostringstream ss;
 					ss << "MOV d0, [t0 + " << c->value << ']';
-					curasmf->addInstruction(new Assemble::MOVE(ss.str().c_str(), 
+					curasmf->addInstruction(new Assemble::MOVE(ss.str(), 
 											new Temp::TempList(u0), 
 											new Temp::TempList(d0)));
 					tmp = d0;
@@ -148,37 +148,37 @@ public:
 								new Temp::TempList(u0), 
 								new Temp::TempList(d0)));
 		tmp = d0;
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::CALL* n)
 	{
-		log("CALL");
+		logging("CALL");
 	    n->args->Accept( this ); // packed here
 	    debug("// CALL funcname => RV")
 	    std::ostringstream ss;
 	    ss << "CALL " << n->func->name;
-	    curasmf->addInstruction(new Assemble::ASM(ss.str().c_str(), 
+	    curasmf->addInstruction(new Assemble::ASM(ss.str(), 
 	    											NULL, 
 	    											NULL));
 
 	    tmp = new Temp::Temp("RV");
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::ESEQ* n)
 	{
 		// it souldn't be here
 		assert(false);
-		log("ESEQ");
+		logging("ESEQ");
 		n->stm->Accept( this );
 		n->exp->Accept( this );
-		end();
+		debug_end();
 	}
 
 	int visit(const IRTree::MOVE* n)
 	{
-		log("MOVE");
+		logging("MOVE");
 		if (auto m1 = dynamic_cast<const IRTree::MEM*>(n->dst))
 		{
 			if (auto m2 = dynamic_cast<const IRTree::MEM*>(n->src))
@@ -210,7 +210,7 @@ public:
 								auto exp = tmp;
 								std::ostringstream ss;
 								ss << "MOV [u0 + " << br->value << "], " << c2->value; 
-								curasmf->addInstruction(new Assemble::MOVE(ss.str().c_str(), new Temp::TempList(exp), NULL));
+								curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(exp), NULL));
 								tmp = NULL;
 								return 0;
 							}
@@ -223,7 +223,7 @@ public:
 								auto exp = tmp;
 								std::ostringstream ss;
 								ss << "MOV [u0 + " << br->value << "], u1"; 
-								curasmf->addInstruction(new Assemble::MOVE(ss.str().c_str(), new Temp::TempList(exp, a), NULL));
+								curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(exp, a), NULL));
 								tmp = NULL;
 								return 0;
 							}
@@ -262,7 +262,7 @@ public:
 							auto exp = tmp;
 							std::ostringstream ss;
 							ss << "MOV u0, [u1 + " << br->value << "]"; 
-							curasmf->addInstruction(new Assemble::MOVE(ss.str().c_str(), new Temp::TempList(a, exp), NULL));
+							curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(a, exp), NULL));
 							tmp = NULL;
 							return 0;
 						}
@@ -290,7 +290,7 @@ public:
 			std::ostringstream ss;
 			ss << "MOVE t0, " << c->value;
 			n->dst->Accept(this);
-			curasmf->addInstruction(new Assemble::MOVE(ss.str().c_str(), new Temp::TempList(tmp), NULL));
+			curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(tmp), NULL));
 			tmp = NULL;
 			return 0;
 		}
@@ -303,39 +303,40 @@ public:
 		curasmf->addInstruction(new Assemble::MOVE("MOVE t0, t1", new Temp::TempList(a, b), NULL));
 		tmp = NULL;
 
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::EXP* n)
 	{
-		log("EXP");
+		logging("EXP");
 		n->exp->Accept( this );
 		// => NOP => NULL
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::JUMP* n)
 	{
-		log("JUMP");
+		logging("JUMP");
 		if (auto nm = dynamic_cast<const IRTree::NAME*>(n->exp))
 		{
 			debug("// JUMP (NAME (n)) => JMP n => NULL")
 			std::ostringstream ss;
 			ss << "JMP " << nm->label->name;
-			curasmf->addInstruction(new Assemble::ASM(ss.str().c_str(), NULL, NULL));
+			curasmf->addInstruction(new Assemble::JMP("JMP", nm->label));
 			tmp = NULL;
 			return 0;
 		}
 		n->exp->Accept( this );
-		debug("// JUMP(exp) => JMP t0 | (exp) => NULL")
-		curasmf->addInstruction(new Assemble::ASM("JMP u0", new Temp::TempList(tmp), NULL));
+		// debug("// JUMP(exp) => JMP t0 | (exp) => NULL")
+		// curasmf->addInstruction(new Assemble::ASM("JMP u0", new Temp::TempList(tmp), NULL));
+		assert(false); // that's bad, I don't like it, it shouldn't happened :(
 		tmp = NULL;
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::CJUMP* n)
 	{
-		log("CJUMP");
+		logging("CJUMP");
 		n->left->Accept(this);
 		auto a = tmp;
 		n->right->Accept(this);
@@ -343,42 +344,45 @@ public:
 		debug("// CMP t0, t1 | (left, right); J(E, NE, L ..) truelabel ")
 		
 		curasmf->addInstruction(new Assemble::ASM("CMP u0, u1", new Temp::TempList(a, b), NULL));
-		std::ostringstream ss;
+		std::string cjumptype;
 		switch( n->relop )
 		{
 			case 0: // ==
-				ss << "JE " << n->iftrue->name;
+				cjumptype = "JE";
 				break;
 			case 1: // !=
-				ss << "JNE " << n->iftrue->name;
+				cjumptype = "JNE";
 				break;
 			case 2: // <
-				ss << "JL " << n->iftrue->name;
+				cjumptype = "JL";
 				break;
 			case 3: // >
-				ss << "JG " << n->iftrue->name;
+				cjumptype = "JG";
 				break;
 			case 4: // <=
-				ss << "JLE " << n->iftrue->name;
+				cjumptype = "JLE";
 				break;
 			case 5: // >=
-				ss << "JGE " << n->iftrue->name;
+				cjumptype = "JGE";
+				break;
+			default:
+				assert(false); // that souldn't have accured
 				break;
 		}
-		curasmf->addInstruction(new Assemble::ASM(ss.str().c_str()));
-		end();
+		curasmf->addInstruction(new Assemble::JMP(cjumptype, n->iftrue));
+		debug_end();
 	}
 		
 	int visit(const IRTree::LABEL* n)
 	{
-		log("LABEL");
+		logging("LABEL");
 		curasmf->addInstruction(new Assemble::LABEL(n->label));
-		end();
+		debug_end();
 	}
 
 	int visit(const IRTree::ExpList* expList)
 	{
-		log("ExpList");
+		logging("ExpList");
 		if (expList != NULL)
 		{
 			for( auto exp = expList; exp != nullptr && exp->head != nullptr; exp = exp->tail ) {
@@ -387,7 +391,7 @@ public:
 					debug("// func ( .. CONST c .. ) => PUSH c => NULL")
 					std::ostringstream ss;
 					ss << "PUSH " << c->value;
-					curasmf->addInstruction(new Assemble::ASM(ss.str().c_str(), NULL, NULL));
+					curasmf->addInstruction(new Assemble::ASM(ss.str(), NULL, NULL));
 					tmp = NULL;
 					continue;
 				}
@@ -398,16 +402,16 @@ public:
 				tmp = NULL;
 			}
 		}
-		end();
+		debug_end();
 	}
 	
 	int visit(const IRTree::StmList* stmList)
 	{
-		log("StmList");
+		logging("StmList");
 		for( auto stm = stmList; stm != nullptr && stm->head != nullptr; stm = stm->tail ) {
 			stm->head->Accept(this);
 		}
-		end();
+		debug_end();
 	}
 
 	int visit(const IRTree::SEQ* s) {}

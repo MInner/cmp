@@ -7,16 +7,17 @@ class Factorial {
 class Fac {
 	public int ComputeFac(int num, int l) {
 		int num_aux;
-		bool b;
+		int b;
 		b = true;
 		if (num < 1){
-	  		num_aux = 1;
+	  		num_aux = 3;
 		}
 		else
 		{
-			b = 3 < 2;
+			b = 3 + 2;
 			num_aux = num * (this.ComputeFac(num - 1, num));
 		}
+		num_aux = 30;
 		return num_aux;
 	}
 }

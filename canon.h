@@ -112,7 +112,7 @@ Block* findBlockByLabelName(std::string name, Block* firstBlock){
 
 void swapBlocks(Block* f, Block* s){
     Block* a = new Block();
-    std::cout << "1 " << f->labelName << " " << s->labelName << " I'm here \n";
+    // std::cout << "1 " << f->labelName << " " << s->labelName << " I'm here \n";
     a->stms = f->stms;
     f->stms = s->stms;
     s->stms = a->stms;
@@ -149,6 +149,20 @@ const StmList* combineBlocks(Block* lastBlock) {
     const StmList* list = nullptr;
     for(Block* currBl = lastBlock; currBl != nullptr; currBl = currBl->prev) {
         for(int i = currBl->stms->size() - 1; i >=0 ; i--) {
+            const IStm* stm = currBl->stms->at(i);
+            const LABEL* label = dynamic_cast<const LABEL*>(stm);
+            const JUMP* jump = dynamic_cast<const JUMP*>(stm);
+            if (label) {
+                if (label->label->name == "start") {
+                    continue;
+                }
+            }
+            if (jump) {
+                const NAME* jLabel = dynamic_cast<const NAME*>(jump->exp);
+                if (jLabel->label->name == "finish") {
+                    continue;
+                }
+            }
             list = new StmList(currBl->stms->at(i), list);
         }
     }
@@ -176,7 +190,7 @@ const StmList* combineBlocks(Block* lastBlock) {
  }
 
  const IStm* do_stm(const SEQ* s) {  // частный слуйчай пропускаем реордер
-	return seq(do_stm(s->left), do_stm(s->right)); // сразу идем в дочерние узлы
+  return seq(do_stm(s->left), do_stm(s->right)); // сразу идем в дочерние узлы
  }
 
  const IStm* do_stm(const MOVE* s) {
@@ -200,14 +214,14 @@ const StmList* combineBlocks(Block* lastBlock) {
 
  const IStm* do_stm(const EXP* s) {
      const CALL* call = dynamic_cast<const CALL*>(s->exp);
-	if (call)
-	{
+  if (call)
+  {
         return reorder_stm(new EXPCALL(call));
-	}
-	else
-	{
-	    return reorder_stm(s);
-	}
+  }
+  else
+  {
+      return reorder_stm(s);
+  }
  }
 
  const IStm* do_stm(const IStm* s) {
@@ -376,47 +390,46 @@ const StmList* combineBlocks(Block* lastBlock) {
     return ret;
  }
 
- CodeFragment* linearCF(const CodeFragment* mainCodeFragment) {
-    CodeFragment* currentCodeFragment = new CodeFragment(mainCodeFragment->frame);
-	CodeFragment* newCF = currentCodeFragment;
-	for(auto currentOldCodeFragment = mainCodeFragment;
-	        currentOldCodeFragment != nullptr; currentOldCodeFragment = currentOldCodeFragment->next )
-	{
-	    if (const IExp* ret = currentOldCodeFragment->retval)
-			{
-			    const ESEQ* eseq = dynamic_cast<const ESEQ*>(ret);
-				currentCodeFragment->body = getLinearTree1(
+CodeFragment* linearCF(const CodeFragment* mainCodeFragment) {
+  CodeFragment* currentCodeFragment = new CodeFragment(mainCodeFragment->frame);
+  CodeFragment* newCF = currentCodeFragment;
+  for(auto currentOldCodeFragment = mainCodeFragment;
+          currentOldCodeFragment != nullptr; currentOldCodeFragment = currentOldCodeFragment->next )
+  {
+      if (const IExp* ret = currentOldCodeFragment->retval)
+      {
+        const ESEQ* eseq = dynamic_cast<const ESEQ*>(ret);
+        currentCodeFragment->body = getLinearTree1(
                     new SEQ( new EXP(currentOldCodeFragment->retval),
-                        new MOVE(new TEMP(new Temp::Temp("RV")), eseq->exp)
-				)
-                );
-                currentCodeFragment->retval = NULL;
-			}
-			else
-			{
-				assert(currentCodeFragment->body); // never used
-				currentCodeFragment->body = getLinearTree1(
+                    new MOVE(new TEMP(new Temp::Temp("RV")), eseq->exp)
+        ));
+        currentCodeFragment->retval = NULL;
+      }
+      else
+      {
+        assert(currentCodeFragment->body); // never used
+        currentCodeFragment->body = getLinearTree1(
                     new SEQ(currentCodeFragment->body,
-                        new MOVE(new TEMP(new Temp::Temp("RV")), new CONST(0))
-				)
-                );
-			}
+                    new MOVE(new TEMP(new Temp::Temp("RV")), new CONST(0))
+        ));
+      }
 
-        currentCodeFragment->stmlist = linearize(currentCodeFragment->body);
-        Block* b = generateBlocks(currentCodeFragment->stmlist);
-        reorderBlocks(b);
-        Block* lb = getLastBlock(b);
-        currentCodeFragment->stmlist = combineBlocks(lb);
+      currentCodeFragment->stmlist = linearize(currentCodeFragment->body);
+      Block* b = generateBlocks(currentCodeFragment->stmlist);
+      reorderBlocks(b);
+      Block* lb = getLastBlock(b);
+      currentCodeFragment->stmlist = combineBlocks(lb);
 
-		if (currentOldCodeFragment->next)
-		{
-			CodeFragment* newFragment = new CodeFragment(currentOldCodeFragment->next->frame);
-			currentCodeFragment->next = newFragment;
-			currentCodeFragment = newFragment;
-		}
+      if (currentOldCodeFragment->next)
+      {
+        CodeFragment* newFragment = new CodeFragment(currentOldCodeFragment->next->frame);
+        currentCodeFragment->next = newFragment;
+        currentCodeFragment = newFragment;
+      }
 
-	}
-	return newCF;
+  }
+  
+  return newCF;
  }
 
 };

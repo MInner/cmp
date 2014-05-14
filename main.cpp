@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <list>
 
-#define PRINTASM 0
+#define PRINTPREASM 1
+#define PRINTFGCON 1
 
 #include "enums.h"
 #include "bi.hpp"
@@ -20,6 +22,8 @@
 #include "canon.h"
 #include "forestprintvisitor.h"
 #include "asmgenaratorvisitor.h"
+#include <set>
+#include "flowgraph.h"
 
 
 
@@ -99,7 +103,16 @@ int main(void){
 	std::cout << "--- Generating pre-assembler ---" << std::endl;
 	Assemble::AsmGenaratorVisitor* cg = new Assemble::AsmGenaratorVisitor();
 	cg->visit(newCF);
-	auto root = cg->getRootAsmFragment();
+	auto rootAsmFragment = cg->getRootAsmFragment();
+
+	std::cout << "--- Building flow-graph --- " << std::endl;
+
+	std::ofstream fgfile("flowgraph.txt");
+
+	auto fgBuilder = new Assemble::FlowGraphBuilder();
+	fgBuilder->build(rootAsmFragment);
+	fgBuilder->draw(fgfile);
+	fgBuilder->process();
 	
 	std::cout << "--- Drawing graphviz trees ---" << std::endl;
 	return 0;
