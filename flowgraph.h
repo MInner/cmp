@@ -225,20 +225,20 @@ public:
 
 	void process()
 	{
-		for (FlowGraph* fg : flowgraph_list)
-		{
-			for (FlowGraphNode* node : fg->allnodes)
-			{
-				auto nodesToThis = fg->getNodesTo(node);
-				for (auto to_node : nodesToThis)
-				{
-					for (const Temp::Temp* i : to_node->in)
-					{
-						node->out.insert(i);
-					}
-				}
-			}
-		}
+		// for (FlowGraph* fg : flowgraph_list)
+		// {
+		// 	for (FlowGraphNode* node : fg->allnodes)
+		// 	{
+		// 		auto nodesToThis = fg->getNodesTo(node);
+		// 		for (auto to_node : nodesToThis)
+		// 		{
+		// 			for (const Temp::Temp* i : to_node->in)
+		// 			{
+		// 				node->out.insert(i);
+		// 			}
+		// 		}
+		// 	}
+		// }
 
 	}
 };
