@@ -4,14 +4,18 @@
 #include <map>
 #include <algorithm>
 #include <vector>
+#include <string>
 
 using std::list;
 using std::map;
 using std::set;
-
+using std::string;
 
 #define PRINTFGCON_debug(str) std::cout << str << std::endl;
 
+string colors[] = {	"#10b5ad", "#cfff4a", "#4bcfff", "#fe4973", "#47fe79", "#ff0000", 
+					"#ceff00", "#2500ff", "#00fff4", "#2500ff", "#7e4141", "#00ff8d", 
+					"#00864a", "#00ff8d", "#dbc6cb", "#fa9e5f"};
 
 std::set<const Temp::Temp*> TempListToSet (const Temp::TempList* start)
 {
@@ -153,8 +157,33 @@ public:
         }
         return num;
 	}
+
 	void draw(std::ofstream& out){
-		
+		out << "digraph VarGraph {" << std::endl;
+		int node_count = 0;
+		std::map<const VarGraphNode*, int> node_count_map;
+		//int colorNum = getColorNum();
+		for (VarGraphNode* node: this->allnodes){
+			node_count_map[node] = node_count;
+			string color;
+			if (node->color > 0){
+				color = colors[node->color - 1];
+			}
+			else if(node->color == 0){ // stack
+				color = "#888888";
+			}
+			else if(node->color == 0){ // stack candidate
+				color = "#cccccc";
+			}
+
+			out << "n" << node_count << " [shape=\"box\",style=\"filled\",fillcolor=\"" << color << "\", label=\"" << node->name->name << "  ["<< node_count << "]\"];" << std::endl;
+			node_count++;
+		}
+		for (auto edge : this->alledges)
+		{
+			out << "n" << node_count_map[edge->to] << " -> n" <<  node_count_map[edge->from] << ';' << std::endl;
+		}
+		out << "}" << std::endl;
 	}
 };
 

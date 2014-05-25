@@ -134,12 +134,14 @@ int main(void){
 	varGr->addEdge(node2, node3);
 	//varGr->removeNode(node1);
 	auto regAllocator = new RegisterAllocation::RegAllocator();
+	varGr->draw(vargfile);
 	regAllocator->colorGraph(varGr, 2);
 
 	// Serge TODO:
-	// varGr->draw(vargfile); // with colors
+	//varGr->draw(vargfile); // with colors
+	
 
-	std::cout << "--- Drawing graphviz trees ---" << std::endl;
+	std::cout << "--- End Drawing graphviz trees ---" << std::endl;
 	return 0;
 
 }

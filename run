@@ -7,4 +7,7 @@ rm -f linear.txt
 # dot -Tpng forest.txt > forest.png
 # rm -f forest.txt
 dot -Tpng flowgraph.txt > flowgraph.png
+dot -Tpng vargraph.txt > vargraph.png
+dot -Tpng vargraphInColor.txt > vargraphInColor.png
 # rm -f flowgraph.txt
+# rm -f vargraph.txt

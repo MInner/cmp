@@ -30,6 +30,8 @@ namespace RegisterAllocation
                 node->color = constGr->getColor(node, registerCount);
                 std::cout << " Node " << node->name->name << " color " << node->color << std::endl;
             }
+            std::ofstream vargfile("vargraphInColor.txt");
+            constGr->draw(vargfile);
         }
 
         bool simplify(Assemble::VarGraph* graph, std::stack<Assemble::VarGraphNode*>& stack, int k) {
