@@ -109,6 +109,7 @@ int main(void){
 	std::cout << "--- Building flow-graph --- " << std::endl;
 
 	std::ofstream fgfile("flowgraph.txt");
+	std::ofstream vargfile("vargraph.txt");
 
 	auto fgBuilder = new Assemble::FlowGraphBuilder();
 	fgBuilder->build(rootAsmFragment);
@@ -134,6 +135,9 @@ int main(void){
 	//varGr->removeNode(node1);
 	auto regAllocator = new RegisterAllocation::RegAllocator();
 	regAllocator->colorGraph(varGr, 2);
+
+	// Serge TODO:
+	// varGr->draw(vargfile); // with colors
 
 	std::cout << "--- Drawing graphviz trees ---" << std::endl;
 	return 0;

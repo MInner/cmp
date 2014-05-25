@@ -153,6 +153,9 @@ public:
         }
         return num;
 	}
+	void draw(std::ofstream& out){
+		
+	}
 };
 
 class FlowGraphNode
