@@ -2,8 +2,9 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <map>
 
-#define PRINTPREASM 0
+#define PRINTPREASM 1
 #define PRINTFGCON 1
 
 #include "enums.h"
@@ -37,9 +38,16 @@ namespace Temp
 {
 	int Temp::curId = 1;
 	int Label::curId = 1;
+	std::map<const std::string, const Temp*> Temp::m = std::map<const std::string, const Temp*>();
+}
+
+namespace Assemble 
+{
+	std::map<const Temp::Temp*, VarGraphNode*> VarGraphNode::m = std::map<const Temp::Temp*, VarGraphNode*>();
 }
 
 int TypeCheckerVisitor::line = 0;
+
 
 // !- static thigs
 
@@ -113,8 +121,14 @@ int main(void){
 	std::cout << "--- Building a var-graph --- " << std::endl;
 	auto vg = fgBuilder->buildVarGraph();
 	vg->printGr();
-	
+
 	vg->draw(vargfile);
+
+	auto regAllocator = new RegisterAllocation::RegAllocator();
+	auto coloredGraph = regAllocator->colorGraph(vg, 2);
+
+    std::ofstream cvargfile("vargraphInColor.txt");
+	coloredGraph->draw(cvargfile);	
 
 	// std::cout << "--- Building var-graph --- " << std::endl;
 	// auto varGr = new Assemble::VarGraph();
@@ -133,11 +147,7 @@ int main(void){
 	// //varGr->addEdge(node1, node3);
 	// varGr->addEdge(node2, node3);
 	// //varGr->removeNode(node1);
-	// auto regAllocator = new RegisterAllocation::RegAllocator();
-	// auto coloredGraph = regAllocator->colorGraph(varGr, 2);
 
- //    std::ofstream cvargfile("vargraphInColor.txt");
-	// coloredGraph->draw(cvargfile);	
 
 	std::cout << "--- End Drawing graphviz trees ---" << std::endl;
 	return 0;

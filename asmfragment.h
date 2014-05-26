@@ -54,11 +54,16 @@ namespace Assemble {
 
 	class MOVE : public Instruction {
 	public:
-		MOVE(std::string asmcode, const Temp::TempList* _usedVars = NULL, const Temp::TempList* _definedVars = NULL)
+		bool betweenTemp;
+		bool reverse;
+		MOVE(std::string asmcode, const Temp::TempList* _usedVars = NULL, 
+			const Temp::TempList* _definedVars = NULL, bool _betweenTemp = false, bool _reverse = false)
 		{
 			this->asmcode = asmcode;
 			usedVars = _usedVars;
 			definedVars = _definedVars;
+			betweenTemp = _betweenTemp;
+			reverse = _reverse;
 		}
 	};
 

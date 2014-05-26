@@ -39,7 +39,7 @@ public:
 				currentCodeFragment->body = new SEQ(
 					esq->stm, 
 					new MOVE(
-						new TEMP(new Temp::Temp("RV")),
+						new TEMP(Temp::Temp::getTemp("RV")),
 						esq->exp
 					)
 				);

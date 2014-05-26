@@ -14,7 +14,7 @@ using std::string;
 // #define PRINTFGCON_debug(str) std::cout << str << std::endl;
 #define PRINTFGCON_debug(str) ;
 #define PRINTVG_debug(str) std::cout << str << std::endl;
-#define PRINTINOUT 1
+#define PRINTINOUT 0
 
 string colors[] = {	"#10b5ad", "#cfff4a", "#4bcfff", "#fe4973", "#47fe79", "#ff0000", 
 					"#ceff00", "#2500ff", "#00fff4", "#2500ff", "#7e4141", "#00ff8d", 
@@ -40,6 +40,21 @@ class VarGraphNode
 public:
 	const Temp::Temp* name;
 	int color; // -1 - stackCandidate 0 - stack, 1..k - num of register
+	static VarGraphNode* getVarGraphNode(const Temp::Temp* t)
+    {
+    	if (m.count(t))
+    	{
+    		return m[t];
+    	}
+    	else
+    	{
+    		auto n = new VarGraphNode(t);
+    		m[t] = n;
+    		return n;
+    	}
+    }
+private:
+    static std::map<const Temp::Temp*, VarGraphNode*> m;
 	VarGraphNode(const Temp::Temp* _name): name(_name) { color = 0; }
 };
 
@@ -57,21 +72,24 @@ class VarGraph
 public:
 	list<VarGraphNode*> allnodes;
 	list<VarGraphEdge*> alledges;
-	VarGraphNode* addNode(const Temp::Temp* i)
+	VarGraphNode* getNode(const Temp::Temp* i)
 	{
-		auto newnode = new VarGraphNode(i);
-		allnodes.push_front(newnode);
+		auto newnode = VarGraphNode::getVarGraphNode(i);
+		if (std::find(allnodes.begin(), allnodes.end(), newnode) == allnodes.end())
+		{
+			allnodes.push_front(newnode);
+		}
 		return newnode;
 	}
 
 	void printGr() {
 	    std::cout << "NODES" << std::endl;
 	    for (auto node: allnodes) {
-            PRINTVG_debug(" Node " + node->name->name);
+            std::cout <<" Node " << node->name->name << "(" << node << " | " << node->name << ")" << std::endl ;
         }
 	    std::cout << "EDGEES" << std::endl;
         for (auto edge: alledges) {
-            PRINTVG_debug(" Edge " + edge->from->name->name + " to " + edge->to->name->name);
+            std::cout << " Edge " << edge->from->name->name << "(" << edge->from << ") to " << edge->to->name->name << "(" << edge->to << ")" << std::endl;
         }
 	}
 
@@ -143,6 +161,19 @@ public:
 	VarGraphEdge* addEdge(const VarGraphNode* from, const VarGraphNode* to)
 	{
 		PRINTFGCON_debug(" Connecting " + from->name->name + " to " + to->name->name);
+		// kostil
+		if (from == to)
+		{
+			return NULL;
+		}
+
+		for(auto e : alledges)
+		{
+			if (e->from == from && e->to == to)
+			{
+				return e;
+			}
+		}
 		auto newedge = new VarGraphEdge(from, to);
 		alledges.push_front(newedge);
 		std::cout << " neighborsNumber " << neighborsNumber(from) <<  " isNNMoreThan " << isNNMoreThan(0, to) << std::endl;
@@ -360,9 +391,9 @@ public:
 			for (FlowGraphNode* node : fg->allnodes)
 			{
 				// out_i <- succ: in_k
-				for (const FlowGraphNode* node_from : fg->getNodesFrom(node)) // succ
+				for (const FlowGraphNode* node_to : fg->getNodesTo(node)) // succ
 				{
-					for (const Temp::Temp* in_k : node_from->in)
+					for (const Temp::Temp* in_k : node_to->in)
 					{
 						node->out.insert(in_k);
 					}
@@ -374,6 +405,8 @@ public:
 				{
 					node->in.insert(use_n);
 				}
+
+				// in <- out / def
 
 				for (const Temp::Temp* out_n: node->out)
 				{
@@ -408,6 +441,17 @@ public:
 				{
 					std::cout << out->name << std::endl;
 				}
+				std::cout << "USE:" << std::endl;
+				for(const Temp::Temp* use : TempListToSet(node->instruction->usedVars))
+				{
+					std::cout << use->name << std::endl;
+				}
+				std::cout << "DEF:" << std::endl;
+				for(const Temp::Temp* def : TempListToSet(node->instruction->definedVars))
+				{
+					std::cout << def->name << std::endl;
+				}
+
 
 				std::cout << "---" << std::endl;
 			}
@@ -417,22 +461,58 @@ public:
 
 			for (FlowGraphNode* node : fg->allnodes)
 			{
+
+				std::cout << "Node: " << node->instruction->asmcode << std::endl;
 				if (const MOVE* move = dynamic_cast<const MOVE*>(node->instruction))
 				{
-					// pass
+					if (move->betweenTemp)
+					{
+						const Temp::Temp* a = move->usedVars->temp;
+						const Temp::Temp* c;
+						if (move->usedVars->next)
+						{
+							c = move->usedVars->next->temp;
+						}
+						else
+						{
+							c = move->definedVars->temp;
+						}
+						if (move->reverse)
+						{
+							const Temp::Temp* t;
+							t = c;
+							c = a;
+							a = t;
+						}
+						VarGraphNode* a_node = vg->getNode(a);
+						VarGraphNode* c_node = vg->getNode(c);
+
+						for(const Temp::Temp* b : node->out)
+						{
+							if (b != c)
+							{
+								std::cout << "MOVE between staff" << std::endl;
+								VarGraphNode* b_node = vg->getNode(b);
+								vg->addEdge(a_node, b_node);
+								vg->addEdge(b_node, a_node);
+							}
+						}
+					}
 				}
-				else
+				else // not MOVE
 				{
 					for(const Temp::Temp* a : TempListToSet(node->instruction->definedVars))
 					{
 						std::cout << "Adding nodes" << std::endl;
 						for(const Temp::Temp* b : node->out)
 						{
-							auto a_node = vg->addNode(a);
-							auto b_node = vg->addNode(b);
+							auto a_node = vg->getNode(a);
+							auto b_node = vg->getNode(b);
 
 							vg->addEdge(a_node, b_node);
 							vg->addEdge(b_node, a_node);
+
+							std::cout << "Add edge " << a->name << " to " << b->name << std::endl;
 						}
 					}
 				}

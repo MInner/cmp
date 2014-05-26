@@ -401,7 +401,7 @@ CodeFragment* linearCF(const CodeFragment* mainCodeFragment) {
         const ESEQ* eseq = dynamic_cast<const ESEQ*>(ret);
         currentCodeFragment->body = getLinearTree1(
                     new SEQ( new EXP(currentOldCodeFragment->retval),
-                    new MOVE(new TEMP(new Temp::Temp("RV")), eseq->exp)
+                    new MOVE(new TEMP(Temp::Temp::getTemp("RV")), eseq->exp)
         ));
         currentCodeFragment->retval = NULL;
       }
@@ -410,7 +410,7 @@ CodeFragment* linearCF(const CodeFragment* mainCodeFragment) {
         assert(currentCodeFragment->body); // never used
         currentCodeFragment->body = getLinearTree1(
                     new SEQ(currentCodeFragment->body,
-                    new MOVE(new TEMP(new Temp::Temp("RV")), new CONST(0))
+                    new MOVE(new TEMP(Temp::Temp::getTemp("RV")), new CONST(0))
         ));
       }
 

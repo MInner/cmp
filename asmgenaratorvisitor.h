@@ -89,24 +89,26 @@ public:
 		n->right->Accept( this );
 		auto b = tmp;
 		auto d0 = new Temp::Temp();
+		auto ax = Temp::Temp::getTemp("AX");
+		auto al = Temp::Temp::getTemp("AL");
 		switch ( n->binop )
 		{
 			case 0: // +
-				curasmf->addInstruction(new Assemble::MOVE("MOVE d0, u0", new Temp::TempList(a), new Temp::TempList( d0 ) ));
-				curasmf->addInstruction(new Assemble::MOVE("ADD u0, u1", new Temp::TempList(d0), new Temp::TempList( b ) ));
+				curasmf->addInstruction(new Assemble::MOVE("MOVE AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::ASM("ADD AX, u0", new Temp::TempList(b), new Temp::TempList( ax ) ));
 				// now the sum lives in d0: ADD u0, u1 => u0 = u0 + u1
-				tmp = d0;
+				tmp = ax;
 				return 0;
 			case 1: // -
-				curasmf->addInstruction(new Assemble::MOVE("MOVE d0, u0", new Temp::TempList(a), new Temp::TempList( d0 ) ));
-				curasmf->addInstruction(new Assemble::MOVE("SUB u0, u1", new Temp::TempList(d0), new Temp::TempList( b ) ));
+				curasmf->addInstruction(new Assemble::MOVE("MOVE AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::ASM("SUB AX, u0", new Temp::TempList(b), new Temp::TempList( ax ) ));
 				// now the sub lives in d0: ADD u0, u1 => u0 = u0 + u1
 				tmp = d0;
 				return 0;
 			case 2: // *
-				curasmf->addInstruction(new Assemble::MOVE("MOVE AL, u0", new Temp::TempList(a) ));
-				curasmf->addInstruction(new Assemble::MOVE("MUL u0", new Temp::TempList(b) ));
-				curasmf->addInstruction(new Assemble::MOVE("MOVE d0, AX", NULL, new Temp::TempList(d0) ));
+				curasmf->addInstruction(new Assemble::MOVE("MOVE AL, u0", new Temp::TempList(a), new Temp::TempList( al ), true));
+				curasmf->addInstruction(new Assemble::ASM("MUL u0", new Temp::TempList(b), new Temp::TempList(ax) ));
+				curasmf->addInstruction(new Assemble::MOVE("MOVE d0, AX", new Temp::TempList(ax), new Temp::TempList(d0) , true, true));
 				tmp = d0;
 				return 0;
 			default:
@@ -162,7 +164,7 @@ public:
 	    											NULL, 
 	    											NULL));
 
-	    tmp = new Temp::Temp("RV");
+	    tmp = Temp::Temp::getTemp("RV");
 		debug_end();
 	}
 	
@@ -300,7 +302,7 @@ public:
 		auto a = tmp;
 		n->src->Accept(this);
 		auto b = tmp;
-		curasmf->addInstruction(new Assemble::MOVE("MOVE t0, t1", new Temp::TempList(a, b), NULL));
+		curasmf->addInstruction(new Assemble::MOVE("MOVE t0, t1", new Temp::TempList(a, b), NULL, true));
 		tmp = NULL;
 
 		debug_end();

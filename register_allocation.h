@@ -14,7 +14,7 @@ namespace RegisterAllocation
             Assemble::VarGraph* constGr = new Assemble::VarGraph();
             constGr->alledges = graph->alledges;
             constGr->allnodes = graph->allnodes;
-            graph->printGr();
+            // graph->printGr();
             std::cout << "Colorization" << std::endl;
             std::stack<Assemble::VarGraphNode*> stack;
             std::cout <<  " stack size " << stack.size() << std::endl;
@@ -37,7 +37,7 @@ namespace RegisterAllocation
         bool simplify(Assemble::VarGraph* graph, std::stack<Assemble::VarGraphNode*>& stack, int k) {
             auto node = graph->getUnsociableNode(k);
             if (node) {
-                graph->printGr();
+                // graph->printGr();
                 stack.push(node);
                 graph->removeNode(node);
                 graph->printGr();

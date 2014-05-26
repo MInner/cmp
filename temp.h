@@ -15,18 +15,35 @@ namespace Temp{
 
     class Temp 
     {
-    public: 
+    public:
+        std::string name;
+
         Temp(){
             name = "TEMP#" + NumberToString(curId++);
         }
 
+        static const Temp* getTemp(const std::string& s)
+        {
+            if (m.count(s))
+            {
+                return m[s];
+            }
+            else
+            {
+                auto t = new Temp(s);
+                m[s] = t;
+                return t;
+            }
+        }
+
+    private:
+        static std::map<const std::string, const Temp*> m;
         Temp(const std::string& s){
             name = s;
         }
         
         static int curId;
     
-        std::string name;
     }; 
 
     class TempList {

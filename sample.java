@@ -8,13 +8,15 @@ class Fac {
 	public int ComputeFac(int num, int l) {
 		int num_aux;
 		int b;
+		int a;
 		b = true;
+		a = 12;
 		if (num < 1){
 	  		num_aux = 3;
+			b = 3 + a;
 		}
 		else
 		{
-			b = 3 + 2;
 			num_aux = num * (this.ComputeFac(num - 1, num));
 		}
 		num_aux = 30;
