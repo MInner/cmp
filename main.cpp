@@ -24,6 +24,7 @@
 #include "asmgenaratorvisitor.h"
 #include <set>
 #include "flowgraph.h"
+#include "register_allocation.h"
 
 extern int yyparse();
 
@@ -76,12 +77,12 @@ int main(void){
 	mainCodeFragment = irvisitor->getMainFragment();
 
 	std::cout << "--- Building graphviz tree ---" << std::endl;
-	
+
 	printTree("graph.txt", mainCodeFragment);
 
 	std::cout << "--- Calonicial tree ---" << std::endl;
-	 
-	IRTree::Canon* canon = new IRTree::Canon();  
+
+	IRTree::Canon* canon = new IRTree::Canon();
 	IRTree::CodeFragment* newCF = canon->linearCF(mainCodeFragment);
 
 	std::cout << "--- Building canonical graphviz tree ---" << std::endl;
@@ -103,6 +104,7 @@ int main(void){
 	std::cout << "--- Building flow-graph --- " << std::endl;
 
 	std::ofstream fgfile("flowgraph.txt");
+	std::ofstream vargfile("vargraph.txt");
 
 	auto fgBuilder = new Assemble::FlowGraphBuilder();
 	fgBuilder->build(rootAsmFragment);
@@ -110,8 +112,33 @@ int main(void){
 
 	std::cout << "--- Building a var-graph --- " << std::endl;
 	fgBuilder->process();
+
+	std::cout << "--- Building var-graph --- " << std::endl;
+	auto varGr = new Assemble::VarGraph();
+	auto node1 = new Assemble::VarGraphNode(new Temp::Temp());
+	auto node2 = new Assemble::VarGraphNode(new Temp::Temp());
+	auto node3 = new Assemble::VarGraphNode(new Temp::Temp());
+	//auto edge1  = new Assemble::VarGraphEdge(node1, node2);
+	//auto edge2  = new Assemble::VarGraphEdge(node2, node1);
+	varGr->addNode(node1);
+	varGr->addNode(node2);
+	varGr->addEdge(node1, node2);
+	varGr->addEdge(node2, node1);
+	varGr->addNode(node3);
+	varGr->addEdge(node3, node2);
+	//varGr->addEdge(node3, node1);
+	//varGr->addEdge(node1, node3);
+	varGr->addEdge(node2, node3);
+	//varGr->removeNode(node1);
+	auto regAllocator = new RegisterAllocation::RegAllocator();
+	varGr->draw(vargfile);
+	regAllocator->colorGraph(varGr, 2);
+
+	// Serge TODO:
+	//varGr->draw(vargfile); // with colors
 	
-	std::cout << "--- Drawing graphviz trees ---" << std::endl;
+
+	std::cout << "--- End Drawing graphviz trees ---" << std::endl;
 	return 0;
 
 }

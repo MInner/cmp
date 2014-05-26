@@ -1,0 +1,648 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"th",
+				"Threshold"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"A",
+				"ADAPTIVE_THRESH_GAUSSIAN_C"
+			],
+			[
+				"the",
+				"threshold_type"
+			],
+			[
+				"glo",
+				"globalblurRate"
+			],
+			[
+				"blur",
+				"blur"
+			],
+			[
+				"g",
+				"globalblurRate"
+			],
+			[
+				"ex",
+				"except"
+			],
+			[
+				"im",
+				"image_directory"
+			],
+			[
+				"image_",
+				"image_directory"
+			],
+			[
+				"pr",
+				"print"
+			],
+			[
+				"s",
+				"samples"
+			],
+			[
+				"re",
+				"responses"
+			],
+			[
+				"to",
+				"toString"
+			],
+			[
+				"hi",
+				"hist_values_list"
+			],
+			[
+				"we",
+				"writeToImageDict"
+			],
+			[
+				"file",
+				"filename"
+			],
+			[
+				"sp",
+				"splitted"
+			],
+			[
+				"image",
+				"image_map"
+			],
+			[
+				"sav",
+				"save_path"
+			],
+			[
+				"e",
+				"ending"
+			],
+			[
+				"The",
+				"threshold"
+			],
+			[
+				"ca",
+				"call_cat"
+			],
+			[
+				"sa",
+				"save_path"
+			],
+			[
+				"thres",
+				"threshold"
+			],
+			[
+				"u",
+				"updateImage"
+			],
+			[
+				"get",
+				"get_messages"
+			],
+			[
+				"ge",
+				"get_message"
+			],
+			[
+				"fi",
+				"first_comma"
+			],
+			[
+				"i",
+				"is_created"
+			],
+			[
+				"use",
+				"user"
+			],
+			[
+				"po",
+				"post_save"
+			],
+			[
+				"fo",
+				"form"
+			],
+			[
+				"ed",
+				"edplatform"
+			],
+			[
+				"er",
+				"error_description"
+			],
+			[
+				"err",
+				"error"
+			],
+			[
+				"au",
+				"auth_code"
+			],
+			[
+				"erro",
+				"error_description"
+			],
+			[
+				"us",
+				"user_id"
+			],
+			[
+				"si",
+				"site_address"
+			],
+			[
+				"wee",
+				"weekday"
+			],
+			[
+				"els",
+				"else"
+			],
+			[
+				"prev",
+				"prev_weekday"
+			],
+			[
+				"retu",
+				"return"
+			],
+			[
+				"test",
+				"testImgThreshod"
+			],
+			[
+				"def",
+				"default"
+			],
+			[
+				"quiz",
+				"Quiz"
+			],
+			[
+				"V",
+				"VideoLecture"
+			],
+			[
+				"Vi",
+				"Video"
+			],
+			[
+				"do",
+				"double_number_video"
+			],
+			[
+				"N",
+				"None"
+			],
+			[
+				"Video",
+				"VideoLecture"
+			],
+			[
+				"Re",
+				"RegexValidator"
+			],
+			[
+				"url",
+				"url_parts"
+			],
+			[
+				"ur",
+				"url_parts"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"ls-",
+				"ls-tn"
+			],
+			[
+				"a",
+				"alert"
+			],
+			[
+				"al",
+				"alert"
+			],
+			[
+				"mou",
+				"mouseleave"
+			],
+			[
+				"margei",
+				"marginLeft"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"c",
+				"css"
+			],
+			[
+				"page",
+				"pageX"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"nw",
+				"new_course"
+			],
+			[
+				"U",
+				"OurUser"
+			],
+			[
+				"user",
+				"username"
+			],
+			[
+				"loca",
+				"localhost"
+			],
+			[
+				"su",
+				"support"
+			],
+			[
+				"ma",
+				"max_length"
+			],
+			[
+				"n",
+				"null"
+			],
+			[
+				"Cha",
+				"CharField"
+			],
+			[
+				"de",
+				"default"
+			],
+			[
+				"me",
+				"message_for_client"
+			],
+			[
+				"se",
+				"send_email_to"
+			],
+			[
+				"APP",
+				"APP_DIR"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/media/Data/c_disk/mipt/diploma/work/testingOpenCV.py",
+		"/media/Data/c_disk/mipt/diploma/work/testClustering.py",
+		"/media/Data/c_disk/mipt/diploma/work/testSwitchers.py",
+		"/media/Data/projects/Studier/tmp/HIDEO HTML5, CSS3, responsive, Bootstrap 3 website template.html",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2540-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2541-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2541-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2542-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2542-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2543-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2543-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2544-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2544-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2545-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2545-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2546-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2540-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2539-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2539-init.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2537-thres.txt",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/images/thresholded/IMG_2536-thres.txt",
+		"/media/Data/projects/Studier/util/django-ulogin/django_ulogin/templatetags/ulogin_tags.py",
+		"/media/Data/projects/Studier/util/django-ulogin/django_ulogin/views.py",
+		"/media/Data/projects/Studier/util/django-ulogin/django_ulogin/models.py",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/testSwitchers.py",
+		"/media/Data/Work/Sites/Konsol/Malta/banners.html",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/page-home.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/footer-prefooter.php",
+		"/home/sergezakh/Desktop/MIPT/diploma/work/testingOpenCV.py",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/functions.php",
+		"/media/Data/projects/Studier/work_heroku/venv/lib/python3.3/site-packages/python_social_auth-0.1.23-py3.3.egg/social/backends/oauth.py",
+		"/media/Data/projects/Studier/work_heroku/venv/lib/python3.3/site-packages/django_social_auth-0.8.1-py3.3.egg/social_auth/strategy.py",
+		"/media/Data/projects/Studier/work_heroku/venv/lib/python3.3/site-packages/python_social_auth-0.1.23-py3.3.egg/social/strategies/django_strategy.py",
+		"/media/Data/projects/Studier/work_heroku/venv/lib/python3.3/site-packages/python_social_auth-0.1.23-py3.3.egg/social/apps/django_app/middleware.py",
+		"/media/Data/projects/Studier/work_heroku/venv/lib/python3.3/site-packages/python_social_auth-0.1.23-py3.3.egg/social/utils.py",
+		"/media/Data/projects/Studier/work_heroku/venv/lib/python3.3/site-packages/python_social_auth-0.1.23-py3.3.egg/social/backends/base.py",
+		"/media/Data/projects/Studier/work_heroku/venv/lib/python3.3/site-packages/python_social_auth-0.1.23-py3.3.egg/social/strategies/base.py",
+		"/home/sergezakh/Downloads/jbzdak-django-registration-merge-repo-207e68db9a55/registration/models.py",
+		"/media/Data/projects/Studier/work_heroku/README.md",
+		"/media/Data/projects/Studier/auth.txt",
+		"/media/Data/projects/Studier/work_heroku/venv/bin/activate",
+		"/media/Data/Work/Sites/miptstream/temp/my-schedule.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/loop-blog.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/page.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/loop-single.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/standard.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/post-thumb.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/single.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/index.php",
+		"/media/Data/Work/Sites/Konsol/Malta/work/template/theme/CherryFramework/framework_options.php",
+		"/media/Data/Work/Sites/Konsol/Malta/temp/style.css",
+		"/media/Data/Work/Sites/miptstream/temp/my-cforms.php",
+		"/media/Data/Work/Sites/miptstream/temp/schedule_psy.js",
+		"/media/Data/Work/Sites/miptstream/temp/schedule.js",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/project/map.osm",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/project/map_lybianka.osm",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/project/map_red_squaire.osm",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/project/map_ny_cooper_triangle.osm",
+		"/media/sergezakh/OS/Windows/System32/LogFiles/Srt/SrtTrail.log",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/project/gisrussa.mapcss",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/project/map_alekseevskaia_small.osm",
+		"/media/sergezakh/OS/Windows/System32/LogFiles/Srt/SrtTrail.txt",
+		"/media/Data/projects/Studier/view/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-5.0.2/sources/js/layerslider.kreaturamedia.jquery.js",
+		"/media/Data/projects/Studier/work_heroku/edplatform/templates/d-index.html",
+		"/media/Data/projects/Studier/work_heroku/edplatform/urls.py",
+		"/media/Data/projects/Studier/view/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-5.0.2/examples/carousel-demo-slider.html",
+		"/media/Data/projects/Studier/view/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-5.0.2/layerslider/skins/v5/skin.css",
+		"/media/Data/projects/Studier/view/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-5.0.2/layerslider/js/layerslider.kreaturamedia.jquery.js",
+		"/media/Data/projects/Studier/view/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-5.0.2/examples/full-size-example.html",
+		"/media/Data/projects/Studier/view/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-5.0.2/layerslider/skins/carousel/skin.css",
+		"/media/Data/projects/Studier/work_heroku/edplatform/sql.cnf",
+		"/etc/X11/xorg.conf",
+		"/home/sergezakh/Desktop/Link to Downloads/Cinnamon-master/README",
+		"/media/Data/projects/Studier/work_heroku/edplatform/templates/d-course-full-info.html",
+		"/media/Data/projects/Studier/work_heroku/edplatform/templates/courses_list.html",
+		"/media/Data/projects/Studier/work_heroku/edplatform/settings.py",
+		"/media/Data/projects/Studier/work_heroku/student_page/views.py",
+		"/media/Data/projects/Studier/work_heroku/student_page/admin.py",
+		"/media/Data/projects/Studier/work_heroku/edplatform/models.py",
+		"/media/Data/projects/Studier/work_heroku/student_page/templates/personal_page.html",
+		"/media/Data/projects/Studier/work_heroku/teacher_constructor/admin.py",
+		"/media/Data/projects/Studier/work_heroku/edplatform/views.py",
+		"/media/Data/projects/Studier/work_heroku/edplatform/templates/base.html",
+		"/media/Data/projects/Studier/work_heroku/teacher_constructor/views.py",
+		"/media/Data/projects/Studier/work_heroku/student_page/templatetags/student_page_tags.py",
+		"/media/Data/projects/Studier/work_heroku/edplatform/static/d/css/styles.css",
+		"/media/Data/projects/Studier/util/Imaging-1.1.7/README",
+		"/media/Data/projects/Studier/util/Imaging-1.1.7/setup.py",
+		"/media/Data/projects/Studier/work_heroku/student_page/templates/course_page.html",
+		"/media/Data/projects/Studier/work_heroku/teacher_constructor/templates/course_create.html",
+		"/media/Data/projects/Studier/work_heroku/edplatform/static/js/scripts.js",
+		"/media/Data/projects/Studier/work_heroku/edplatform/templates/d-header.html",
+		"/media/Data/projects/Studier/work_heroku/edplatform/templates/d-base.html",
+		"/media/Data/c_disk/mipt/diploma/work/OpenCV/opencv-2.4.8/build/CMakeCache.txt",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/seminars/repo/CMakeLists.txt",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/seminars/repo/seminar1/Application.cpp",
+		"/home/sergezakh/Desktop/MIPT/4.2.Comp_Graphics/seminars/repo/Makefile",
+		"/home/sergezakh/Desktop/MIPT/ABBYY/Интеллектуальные системы/programo_v1.0.4/admin/funcs/config.php",
+		"/home/sergezakh/Desktop/MIPT/ABBYY/Интеллектуальные системы/programo_v1.0.4/bot/debugging.php",
+		"/home/sergezakh/Desktop/MIPT/ABBYY/Интеллектуальные системы/aiml-en-us-foundation-alice/biography.aiml",
+		"/home/sergezakh/Desktop/Link to ИНСТИТУТ/Диплом/work/opencv-opencv-latest.sh",
+		"/home/sergezakh/Desktop/Link to ИНСТИТУТ/Диплом/work/opencv.sh",
+		"/media/Data/Work/Sites/Konsol/Malta/wp-config.php",
+		"/media/Data/Work/Sites/Konsol/Malta/wordpress-mu-2.9.1.1-ru_RU/ru_RU.mo",
+		"/media/Data/Work/Sites/Konsol/Malta/malta-project/maltasite/maltasite/templates/base.html",
+		"/media/Data/Work/Sites/Konsol/Malta/malta-project/maltasite/maltasite/templates/template_2.html",
+		"/media/Data/Work/Sites/Konsol/Malta/malta-project/maltasite/maltasite/templates/template_1.html",
+		"/home/sergezakh/Desktop/Link to Downloads/template_45263_K1Cp43d1naYGNqJg14t7/theme/manual_install/theme45263.sql",
+		"/media/Data/Work/Sites/miptstream/my-schedule-job/schedule.js",
+		"/media/Data/Work/Sites/miptstream/wp-config.php",
+		"/media/Data/Work/Sites/miptstream/my-cforms-job/my-cforms.php",
+		"/media/Data/projects/Studier/work/main/commit.sh",
+		"/media/Data/projects/Studier/landing/send_form_email.php",
+		"/media/Data/projects/Studier/landing/index.html",
+		"/media/Data/Work/Sites/miptstream/my-schedule-job/my-schedule.php",
+		"/media/Data/Work/Sites/miptstream/my-cforms.php",
+		"/home/sergezakh/Desktop/Link to Downloads/my_appointments.sql",
+		"/home/sergezakh/Desktop/Link to Downloads/my_psych.sql",
+		"/home/sergezakh/Desktop/Link to Downloads/my_schedule.sql",
+		"/home/sergezakh/Desktop/Link to Downloads/my_psytable.sql",
+		"/media/Data/Work/Sites/Konsol/Malta/malta-project/maltasite/maltasite/templates/hotel_form.html",
+		"/media/Data/projects/Studier/work/main/runtime.txt",
+		"/media/sergezakh/Data/projects/Studier/work/main/edplatform/settings.py",
+		"/media/sergezakh/Data/projects/Studier/work/main/edplatform/models.py",
+		"/var/www/phpPgAdmin-5.1/conf/config.inc.php",
+		"/media/sergezakh/Data/projects/Studier/work/main/edplatform/migrations/0004_auto__add_field_videolecture_type__chg_field_videolecture_url__add_fie.py",
+		"/media/sergezakh/Data/projects/Studier/work/mysql_edplatform_dump.sql",
+		"/media/sergezakh/Data/projects/Studier/work/main/edplatform/sql.cnf"
+	],
+	"find":
+	{
+		"height": 22.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"get_footer",
+			"get_messages",
+			"settings",
+			"get_key_and_secret",
+			"auth_extra_arguments",
+			"AUTHORIZATION_URL",
+			"') ",
+			"instance",
+			"edplatform.OurUser",
+			"Keys:",
+			"height",
+			"street_lamp",
+			"CourseElement",
+			"HTTP",
+			"alert",
+			"vimeo",
+			"allowfullscreen",
+			"callMouseMove",
+			"tnHeight",
+			"ls.o.tnHeight",
+			"height",
+			"80",
+			"thumbnail",
+			"ls-thu",
+			"puppies",
+			"GLFW_INCLUDE_DIR",
+			"diploma",
+			"Desktop",
+			"Link",
+			"date()",
+			"AutoField",
+			" )",
+			"CREATE TABLE",
+			"course",
+			"dropdown-toogle",
+			".row",
+			"row",
+			"a",
+			");",
+			"large-6",
+			"large-6 columns",
+			");*/\n",
+			"super",
+			"use_unicode",
+			"MULTI_RESULT",
+			"ascrail2000",
+			"ascrail200",
+			"allow_wri",
+			"21",
+			".brand"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"webkitAllowFullScreen mozallowfullscreen allowFullScreen",
+			"date('l jS F Y h:i:s A')",
+			"CREATE TABLE IF NOT EXISTS"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 21.0
+	},
+	"input":
+	{
+		"height": 29.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "printvisitor.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 145.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
