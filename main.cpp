@@ -25,12 +25,7 @@
 #include <set>
 #include "flowgraph.h"
 
-
-
-
 extern int yyparse();
-
-
 
 // -- some STATIC things
 
@@ -112,6 +107,8 @@ int main(void){
 	auto fgBuilder = new Assemble::FlowGraphBuilder();
 	fgBuilder->build(rootAsmFragment);
 	fgBuilder->draw(fgfile);
+
+	std::cout << "--- Building a var-graph --- " << std::endl;
 	fgBuilder->process();
 	
 	std::cout << "--- Drawing graphviz trees ---" << std::endl;

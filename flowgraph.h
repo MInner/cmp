@@ -29,8 +29,8 @@ namespace Assemble
 class VarGraphNode
 {
 public:
-	Temp::Temp* name;
-	VarGraphNode(Temp::Temp* _name): name(_name) {}
+	const Temp::Temp* name;
+	VarGraphNode(const Temp::Temp* _name): name(_name) {}
 };
 
 class VarGraphEdge
@@ -38,7 +38,8 @@ class VarGraphEdge
 public:
 	const VarGraphNode* from;
 	const VarGraphNode* to;
-	VarGraphEdge(const VarGraphNode* _from, const VarGraphNode* _to): from(_from), to(_to) {}
+	bool simple;
+	VarGraphEdge(const VarGraphNode* _from, const VarGraphNode* _to): from(_from), to(_to), simple(1) {}
 };
 
 class VarGraph
@@ -46,7 +47,7 @@ class VarGraph
 public:
 	list<VarGraphNode*> allnodes;
 	list<VarGraphEdge*> alledges;
-	VarGraphNode* addNode(Temp::Temp* i)
+	VarGraphNode* addNode(const Temp::Temp* i)
 	{
 		auto newnode = new VarGraphNode(i);
 		allnodes.push_front(newnode);
@@ -67,8 +68,8 @@ class FlowGraphNode
 public:
 	Instruction* instruction;
 	list<FlowGraphNode*> upper;
-	std::set<Temp::Temp*> in;
-	std::set<Temp::Temp*> out;
+	std::set<const Temp::Temp*> in;
+	std::set<const Temp::Temp*> out;
 	FlowGraphNode(Instruction* i)
 	{
 		instruction = i;
@@ -210,7 +211,7 @@ public:
 			for (FlowGraphNode* node : fg->allnodes)
 			{
 				nodes_map[node] = node_n;
-				out << "n" << node_n << " [shape=\"box\",label=\"" << node->instruction->asmcode << "  ["<< node_n << "]\"];" << std::endl;
+				out << "n" << node_n << " [shape=\"box\",label=\"" << node->instruction->asmcode << " | "<< node_n << "\"];" << std::endl;
 				node_n++;
 			}
 			for (FlowGraphEdge* edge : fg->alledges)
@@ -225,22 +226,76 @@ public:
 
 	void process()
 	{
-		// for (FlowGraph* fg : flowgraph_list)
-		// {
-		// 	for (FlowGraphNode* node : fg->allnodes)
-		// 	{
-		// 		auto nodesToThis = fg->getNodesTo(node);
-		// 		for (auto to_node : nodesToThis)
-		// 		{
-		// 			for (const Temp::Temp* i : to_node->in)
-		// 			{
-		// 				node->out.insert(i);
-		// 			}
-		// 		}
-		// 	}
-		// }
+		for (FlowGraph* fg : flowgraph_list)
+		{
+			for (FlowGraphNode* node : fg->allnodes)
+			{
+				// out_i <- succ: in_k
+				for (const FlowGraphNode* node_from : fg->getNodesFrom(node)) // succ
+				{
+					for (const Temp::Temp* in_k : node_from->in)
+					{
+						node->out.insert(in_k);
+					}
+				}
+
+				// in_i <- use_i
+
+				for (const Temp::Temp* use_n : TempListToSet(node->instruction->usedVars))
+				{
+					node->in.insert(use_n);
+				}
+
+				for (const Temp::Temp* out_n: node->out)
+				{
+					bool isNotInDef = true;
+					for (const Temp::Temp* def_n : TempListToSet(node->instruction->definedVars))
+					{
+						if (out_n == def_n)
+						{
+							isNotInDef = false;
+							break;
+						}
+					}
+					if (isNotInDef)
+					{
+						node->in.insert(out_n);
+					}
+				}
+			}
+
+
+			VarGraph* vg = new VarGraph();
+			for (FlowGraphNode* node : fg->allnodes)
+			{
+				if (const MOVE* move = dynamic_cast<const MOVE*>(node->instruction))
+				{
+					// pass
+				}
+				else
+				{
+					for(const Temp::Temp* a : TempListToSet(node->instruction->definedVars))
+					{
+						for(const Temp::Temp* b : node->out)
+						{
+							auto a_node = vg->addNode(a);
+							auto b_node = vg->addNode(b);
+
+							vg->addEdge(a_node, b_node);
+							vg->addEdge(b_node, a_node);
+						}
+					}
+				}
+			}
+
+		}
 
 	}
+
+	// VarGraph* getVarGraph()
+	// {
+	// 	return 
+	// }
 };
 
 }
