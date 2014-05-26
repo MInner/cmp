@@ -9,7 +9,7 @@ namespace RegisterAllocation
 	class RegAllocator
 	{
 	public:
-        int colorGraph(Assemble::VarGraph* graph, int registerCount)
+        Assemble::VarGraph* colorGraph(Assemble::VarGraph* graph, int registerCount)
         {
             Assemble::VarGraph* constGr = new Assemble::VarGraph();
             constGr->alledges = graph->alledges;
@@ -30,8 +30,8 @@ namespace RegisterAllocation
                 node->color = constGr->getColor(node, registerCount);
                 std::cout << " Node " << node->name->name << " color " << node->color << std::endl;
             }
-            std::ofstream vargfile("vargraphInColor.txt");
-            constGr->draw(vargfile);
+
+            return constGr;
         }
 
         bool simplify(Assemble::VarGraph* graph, std::stack<Assemble::VarGraphNode*>& stack, int k) {

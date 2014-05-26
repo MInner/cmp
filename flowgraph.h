@@ -11,7 +11,10 @@ using std::map;
 using std::set;
 using std::string;
 
-#define PRINTFGCON_debug(str) std::cout << str << std::endl;
+// #define PRINTFGCON_debug(str) std::cout << str << std::endl;
+#define PRINTFGCON_debug(str) ;
+#define PRINTVG_debug(str) std::cout << str << std::endl;
+#define PRINTINOUT 1
 
 string colors[] = {	"#10b5ad", "#cfff4a", "#4bcfff", "#fe4973", "#47fe79", "#ff0000", 
 					"#ceff00", "#2500ff", "#00fff4", "#2500ff", "#7e4141", "#00ff8d", 
@@ -54,12 +57,7 @@ class VarGraph
 public:
 	list<VarGraphNode*> allnodes;
 	list<VarGraphEdge*> alledges;
-<<<<<<< HEAD
 	VarGraphNode* addNode(const Temp::Temp* i)
-=======
-
-	VarGraphNode* addNode(Temp::Temp* i)
->>>>>>> f637ceee62a1a3b9c4a57cfe3f6dacf8b41b122b
 	{
 		auto newnode = new VarGraphNode(i);
 		allnodes.push_front(newnode);
@@ -69,11 +67,11 @@ public:
 	void printGr() {
 	    std::cout << "NODES" << std::endl;
 	    for (auto node: allnodes) {
-            PRINTFGCON_debug(" Node " + node->name->name);
+            PRINTVG_debug(" Node " + node->name->name);
         }
 	    std::cout << "EDGEES" << std::endl;
         for (auto edge: alledges) {
-            PRINTFGCON_debug(" Edge " + edge->from->name->name + " to " + edge->to->name->name);
+            PRINTVG_debug(" Edge " + edge->from->name->name + " to " + edge->to->name->name);
         }
 	}
 
@@ -82,7 +80,7 @@ public:
 	    list<VarGraphEdge*> edgesToRemove;
 	    for (auto edge: alledges) {
             if ((edge->from ==  node)||(edge->to == node)) {
-                PRINTFGCON_debug(" Removing " + edge->from->name->name + " to " + edge->to->name->name);
+                PRINTVG_debug(" Removing " + edge->from->name->name + " to " + edge->to->name->name);
                 edgesToRemove.push_back(edge);
             }
         }
@@ -353,8 +351,10 @@ public:
 
 	}
 
-	void process()
+	VarGraph* buildVarGraph()
 	{
+		VarGraph* vg = new VarGraph();
+
 		for (FlowGraph* fg : flowgraph_list)
 		{
 			for (FlowGraphNode* node : fg->allnodes)
@@ -393,8 +393,28 @@ public:
 				}
 			}
 
+			#if PRINTINOUT
 
-			VarGraph* vg = new VarGraph();
+			for (FlowGraphNode* node : fg->allnodes)
+			{
+				std::cout << node->instruction->asmcode << std::endl;
+				std::cout << "IN:" << std::endl;
+				for(const Temp::Temp* in : node->in)
+				{
+					std::cout << in->name << std::endl;
+				}
+				std::cout << "OUT:" << std::endl;
+				for(const Temp::Temp* out : node->out)
+				{
+					std::cout << out->name << std::endl;
+				}
+
+				std::cout << "---" << std::endl;
+			}
+
+			#endif
+
+
 			for (FlowGraphNode* node : fg->allnodes)
 			{
 				if (const MOVE* move = dynamic_cast<const MOVE*>(node->instruction))
@@ -405,6 +425,7 @@ public:
 				{
 					for(const Temp::Temp* a : TempListToSet(node->instruction->definedVars))
 					{
+						std::cout << "Adding nodes" << std::endl;
 						for(const Temp::Temp* b : node->out)
 						{
 							auto a_node = vg->addNode(a);
@@ -416,8 +437,9 @@ public:
 					}
 				}
 			}
-
 		}
+
+		return vg;
 
 	}
 

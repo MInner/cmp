@@ -3,7 +3,7 @@
 #include <fstream>
 #include <list>
 
-#define PRINTPREASM 1
+#define PRINTPREASM 0
 #define PRINTFGCON 1
 
 #include "enums.h"
@@ -111,32 +111,33 @@ int main(void){
 	fgBuilder->draw(fgfile);
 
 	std::cout << "--- Building a var-graph --- " << std::endl;
-	fgBuilder->process();
-
-	std::cout << "--- Building var-graph --- " << std::endl;
-	auto varGr = new Assemble::VarGraph();
-	auto node1 = new Assemble::VarGraphNode(new Temp::Temp());
-	auto node2 = new Assemble::VarGraphNode(new Temp::Temp());
-	auto node3 = new Assemble::VarGraphNode(new Temp::Temp());
-	//auto edge1  = new Assemble::VarGraphEdge(node1, node2);
-	//auto edge2  = new Assemble::VarGraphEdge(node2, node1);
-	varGr->addNode(node1);
-	varGr->addNode(node2);
-	varGr->addEdge(node1, node2);
-	varGr->addEdge(node2, node1);
-	varGr->addNode(node3);
-	varGr->addEdge(node3, node2);
-	//varGr->addEdge(node3, node1);
-	//varGr->addEdge(node1, node3);
-	varGr->addEdge(node2, node3);
-	//varGr->removeNode(node1);
-	auto regAllocator = new RegisterAllocation::RegAllocator();
-	varGr->draw(vargfile);
-	regAllocator->colorGraph(varGr, 2);
-
-	// Serge TODO:
-	//varGr->draw(vargfile); // with colors
+	auto vg = fgBuilder->buildVarGraph();
+	vg->printGr();
 	
+	vg->draw(vargfile);
+
+	// std::cout << "--- Building var-graph --- " << std::endl;
+	// auto varGr = new Assemble::VarGraph();
+	// auto node1 = new Assemble::VarGraphNode(new Temp::Temp());
+	// auto node2 = new Assemble::VarGraphNode(new Temp::Temp());
+	// auto node3 = new Assemble::VarGraphNode(new Temp::Temp());
+	// //auto edge1  = new Assemble::VarGraphEdge(node1, node2);
+	// //auto edge2  = new Assemble::VarGraphEdge(node2, node1);
+	// varGr->addNode(node1);
+	// varGr->addNode(node2);
+	// varGr->addEdge(node1, node2);
+	// varGr->addEdge(node2, node1);
+	// varGr->addNode(node3);
+	// varGr->addEdge(node3, node2);
+	// //varGr->addEdge(node3, node1);
+	// //varGr->addEdge(node1, node3);
+	// varGr->addEdge(node2, node3);
+	// //varGr->removeNode(node1);
+	// auto regAllocator = new RegisterAllocation::RegAllocator();
+	// auto coloredGraph = regAllocator->colorGraph(varGr, 2);
+
+ //    std::ofstream cvargfile("vargraphInColor.txt");
+	// coloredGraph->draw(cvargfile);	
 
 	std::cout << "--- End Drawing graphviz trees ---" << std::endl;
 	return 0;
