@@ -458,10 +458,31 @@ public:
 
 			#endif
 
+			// add all nodes:
+
+			// for(const Temp::Temp* in : node->in)
+			// {
+			// 	std::cout << in->name << std::endl;
+			// }
+			// std::cout << "OUT:" << std::endl;
+			// for(const Temp::Temp* out : node->out)
+			// {
+			// 	std::cout << out->name << std::endl;
+			// }
+			// std::cout << "USE:" << std::endl;
+			// for(const Temp::Temp* use : TempListToSet(node->instruction->usedVars))
+			// {
+			// 	std::cout << use->name << std::endl;
+			// }
+			// std::cout << "DEF:" << std::endl;
+			// for(const Temp::Temp* def : TempListToSet(node->instruction->definedVars))
+			// {
+			// 	std::cout << def->name << std::endl;
+			// }
+
 
 			for (FlowGraphNode* node : fg->allnodes)
 			{
-
 				std::cout << "Node: " << node->instruction->asmcode << std::endl;
 				if (const MOVE* move = dynamic_cast<const MOVE*>(node->instruction))
 				{
