@@ -193,7 +193,7 @@ public:
 	}
 
 	void draw(std::ofstream& out){
-		out << "digraph VarGraph {" << std::endl;
+		out << "graph VarGraph {" << std::endl;
 		int node_count = 0;
 		std::map<const VarGraphNode*, int> node_count_map;
 		//int colorNum = getColorNum();
@@ -215,7 +215,10 @@ public:
 		}
 		for (auto edge : this->alledges)
 		{
-			out << "n" << node_count_map[edge->to] << " -> n" <<  node_count_map[edge->from] << ';' << std::endl;
+			if (edge->to < edge->from)
+			{
+				out << "n" << node_count_map[edge->to] << " -- n" <<  node_count_map[edge->from] << ';' << std::endl;
+			}
 		}
 		out << "}" << std::endl;
 	}

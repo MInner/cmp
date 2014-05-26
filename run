@@ -1,7 +1,7 @@
 echo "===RUN==="
 ./mjv < sample.java
 dot -Tpng graph.txt > graph.png
-rm -f graph.txt
+# rm -f graph.txt
 dot -Tpng linear.txt > linear.png
 rm -f linear.txt
 dot -Tpng forest.txt > forest.png
@@ -10,5 +10,5 @@ dot -Tpng flowgraph.txt > flowgraph.png
 dot -Tpng vargraph.txt > vargraph.png
 dot -Tpng vargraphInColor.txt > vargraphInColor.png
 rm -f flowgraph.txt
-rm -f vargraph.txt
-rm -f vargraphInColor.txt
+# rm -f vargraph.txt
+# rm -f vargraphInColor.txt
