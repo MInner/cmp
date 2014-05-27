@@ -41,7 +41,7 @@ namespace Temp
 	std::map<const std::string, const Temp*> Temp::m = std::map<const std::string, const Temp*>();
 }
 
-namespace Assemble 
+namespace Assemble
 {
 	std::map<const Temp::Temp*, VarGraphNode*> VarGraphNode::m = std::map<const Temp::Temp*, VarGraphNode*>();
 }
@@ -123,6 +123,7 @@ int main(void){
 	
 	std::cout << "Finally" << std::endl;
 
+<<<<<<< HEAD
 	for (auto vg : vg_list)
 	{
 		vg->printGr();

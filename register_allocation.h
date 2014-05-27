@@ -9,7 +9,7 @@ namespace RegisterAllocation
 	class RegAllocator
 	{
 	public:
-        Assemble::VarGraph* colorGraph(Assemble::VarGraph* graph, int registerCount)
+        Assemble::VarGraph* colorGraph(Assemble::VarGraph* graph, Assemble::FlowGraph* flowgraph, int registerCount)
         {
             Assemble::VarGraph* constGr = new Assemble::VarGraph();
             constGr->alledges = graph->alledges;
@@ -20,11 +20,12 @@ namespace RegisterAllocation
             std::cout <<  " stack size " << stack.size() << std::endl;
             while(!graph->allnodes.empty()){
                 while (simplify(graph, stack, registerCount));
+                calculateSpillPriorities(graph, flowgraph);
                 spill(graph, stack);
             }
             std::cout <<  " stack size " << stack.size() << std::endl;
             while (!stack.empty()) {
-                constGr->printGr();
+                //constGr->printGr();
                 auto node = stack.top();
                 stack.pop();
                 node->color = constGr->getColor(node, registerCount);
@@ -40,7 +41,7 @@ namespace RegisterAllocation
                 // graph->printGr();
                 stack.push(node);
                 graph->removeNode(node);
-                graph->printGr();
+                //graph->printGr();
                 return TRUE;
             } else {
                 return false;
@@ -48,13 +49,20 @@ namespace RegisterAllocation
         }
 
         void spill(Assemble::VarGraph* graph, std::stack<Assemble::VarGraphNode*>& stack) {
-            graph->printGr();
+            //graph->printGr();
             auto node = graph->getSomeNode();
             if (node) {
                 node->color = -1; // candidate
                 stack.push(node);
                 graph->removeNode(node);
-                graph->printGr();
+                //graph->printGr();
+            }
+        }
+
+        void calculateSpillPriorities(Assemble::VarGraph* graph, Assemble::FlowGraph* flowgraph) {
+            for(auto node: graph->allnodes) {
+                node->spillPriority = (double)flowgraph->countUsesDefs(node->name) / graph->neighborsNumber(node);
+                cout << " NODE " << node->name->name << " spillPriority: " << node->spillPriority << std::endl;
             }
         }
 	};
