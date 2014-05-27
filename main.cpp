@@ -123,11 +123,11 @@ int main(void){
 
 	std::cout << "Finally" << std::endl;
 
-  list<Assemble::VarGraph*> cvargraph_list;
+    list<Assemble::VarGraph*> cvargraph_list;
 	for (int i = 0; i < vg_list.size(); i++)
 	{
-    std::list<Assemble::VarGraph*>::iterator vg = std::next(vg_list.begin(), i);
-    std::list<Assemble::FlowGraph*>::iterator fg = std::next(fgBuilder->flowgraph_list.begin(), i);
+	    std::list<Assemble::VarGraph*>::iterator vg = std::next(vg_list.begin(), i);
+	    std::list<Assemble::FlowGraph*>::iterator fg = std::next(fgBuilder->flowgraph_list.begin(), i);
 
 		(*vg)->printGr();
 		(*vg)->draw(vargfile, vg_list);

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <math.h>
 
 using std::list;
 using std::map;
@@ -299,14 +300,14 @@ public:
             {
                 //std::cout << use->name << std::endl;
                 if (use == var) {
-                    count++;
+                    count += pow(10, node->instruction->depth); // magic number
                 }
             }
             for(const Temp::Temp* def : TempListToSet(node->instruction->definedVars))
             {
                 //std::cout << def->name << std::endl;
                 if (def == var) {
-                    count++;
+                    count += pow(10, node->instruction->depth);
                 }
             }
         }
@@ -341,13 +342,17 @@ public:
 			bool previousIsJump = false;
 
 			FlowGraphNode* previousNode = 0;
+			int prevDepth = 0;
+
+			std::vector<std::string> labels;
+            std::vector<std::string> markedLabels;
 
 			for (auto il = af->firstInstructionList; il != 0 ; il = il->next)
 			{
 				// PRINTFGCON_debug( "Converting instruction " + il->instr->asmcode );
 				// new node of graph
 				FlowGraphNode* newNode = flowgraph->addNode(il->instr);
-
+                il->instr->depth = prevDepth;
 				// building linear connections
 				if (!previousIsJump && previousNode)
 				{
@@ -362,12 +367,23 @@ public:
 
 					// if it is JE/JZ/JMP add jumpDirection to this node
 					jumpDirection[newNode] = j->where;
+
+					std::string direction = j->where;
+					std::cout << " Jump " << direction << std::endl;
+					if(std::find(labels.begin(), labels.end(), direction) != labels.end()) {
+					    std::cout << " Loop label " << direction << std::endl;
+                        markedLabels.push_back(direction);
+                    }
 				}
 
 				// if that is ASM::LABEL add it's ptr to labelLocation
 				if (auto lab = dynamic_cast<LABEL*>(il->instr))
 				{
-					labelLocation[lab->name] = newNode;
+				    std::string lname = lab->name;
+					labelLocation[lname] = newNode;
+					labels.push_back(lname);
+					std::cout << " Label " << lname << std::endl;
+
 				}
 
 				previousNode = newNode;
@@ -378,6 +394,32 @@ public:
 				// kv = [jumpNode, labelName]
 				// labelLocation[labelName] = labelNode
 				flowgraph->addEdge(labelLocation.at(kv.second), kv.first);
+			}
+
+			for (auto il = af->firstInstructionList; il != 0 ; il = il->next)
+			{
+			    /*if (!previousIsJump)
+				{
+					il->instr->depth = prevDepth;
+				} */
+				il->instr->depth = prevDepth;
+			    if (auto lab = dynamic_cast<LABEL*>(il->instr))
+				{
+				    if(std::find(markedLabels.begin(), markedLabels.end(), lab->name) != markedLabels.end()) {
+                        prevDepth++;
+                    }
+				}
+
+				if (auto j = dynamic_cast<JMP*>(il->instr))
+				{
+				    previousIsJump = j->type == "JMP";
+				    std::string direction = j->where;
+					if(std::find(markedLabels.begin(), markedLabels.end(),direction) != markedLabels.end()) {
+                        prevDepth--;
+                    }
+                    if (prevDepth < 0) prevDepth = 0;
+				}
+
 			}
 
 		}
@@ -395,7 +437,6 @@ public:
 			out << "subgraph cluster" << subgraph_n++ << " {" << std::endl;
 			for (FlowGraphNode* node : fg->allnodes)
 			{
-			    node->instruction->depth = 0;
 				nodes_map[node] = node_n;
 				out << "n" << node_n << " [shape=\"box\",label=\"" << node->instruction->asmcode << " | "<< node_n << " | "<< node->instruction->depth << "\"];" << std::endl;
 				node_n++;
