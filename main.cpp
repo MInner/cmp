@@ -119,17 +119,23 @@ int main(void){
 	fgBuilder->draw(fgfile);
 
 	std::cout << "--- Building a var-graph --- " << std::endl;
-	auto vg = fgBuilder->buildVarGraph();
-	vg->printGr();
+	auto vg_list = fgBuilder->buildVarGraph();
+	
+	std::cout << "Finally" << std::endl;
 
-	vg->draw(vargfile);
+	for (auto vg : vg_list)
+	{
+		vg->printGr();
 
-	auto regAllocator = new RegisterAllocation::RegAllocator();
-	auto coloredGraph = regAllocator->colorGraph(vg, 4);
+		vg->draw(vargfile);
 
-    std::ofstream cvargfile("vargraphInColor.txt");
-	coloredGraph->draw(cvargfile);	
+		// auto regAllocator = new RegisterAllocation::RegAllocator();
+		// auto coloredGraph = regAllocator->colorGraph(vg, 4);
 
+	 //    std::ofstream cvargfile("vargraphInColor.txt");
+		// coloredGraph->draw(cvargfile);	
+	}
+	
 	// std::cout << "--- Building var-graph --- " << std::endl;
 	// auto varGr = new Assemble::VarGraph();
 	// auto node1 = new Assemble::VarGraphNode(new Temp::Temp());

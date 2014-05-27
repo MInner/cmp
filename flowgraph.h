@@ -13,7 +13,8 @@ using std::string;
 
 // #define PRINTFGCON_debug(str) std::cout << str << std::endl;
 #define PRINTFGCON_debug(str) ;
-#define PRINTVG_debug(str) std::cout << str << std::endl;
+// #define PRINTVG_debug(str) std::cout << str << std::endl;
+#define PRINTVG_debug(str) ;
 #define PRINTINOUT 0
 
 string colors[] = {	"#10b5ad", "#cfff4a", "#4bcfff", "#fe4973", "#47fe79", "#ff0000", 
@@ -111,13 +112,6 @@ public:
 	int getColor(VarGraphNode* node, int k){
         std::vector<int> colors(k + 1, 1);
         for (auto edge: alledges) {
-            for(int i = 1; i <= k; i++){
-                if (colors[i])
-                std::cout << 1;
-                else
-                std::cout << 0;
-            }
-            std::cout << std::endl;
             const VarGraphNode* neighbor;
             if (edge->from ==  node) {
                 neighbor = edge->to;
@@ -296,6 +290,7 @@ class FlowGraphBuilder
 {
 public:
 	list<FlowGraph*> flowgraph_list;
+	list<VarGraph*> vargraph_list;
 	void build(AsmFragment* root_af) // list of asm_fragments
 	{
 		// два прохода:
@@ -385,12 +380,13 @@ public:
 
 	}
 
-	VarGraph* buildVarGraph()
+	list<VarGraph*> buildVarGraph()
 	{
-		VarGraph* vg = new VarGraph();
-
 		for (FlowGraph* fg : flowgraph_list)
 		{
+			VarGraph* vg = new VarGraph();
+			vargraph_list.push_front(vg);
+
 			for (FlowGraphNode* node : fg->allnodes)
 			{
 				// out_i <- succ: in_k
@@ -541,7 +537,7 @@ public:
 			}
 		}
 
-		return vg;
+		return vargraph_list;
 
 	}
 
