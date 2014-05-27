@@ -11,8 +11,12 @@ using std::map;
 using std::set;
 using std::string;
 
-// #define PRINTFGCON_debug(str) std::cout << str << std::endl;
+#if PRINTFGCON
+#define PRINTFGCON_debug(str) std::cout << str << std::endl;
+#else
 #define PRINTFGCON_debug(str) ;
+#endif
+
 // #define PRINTVG_debug(str) std::cout << str << std::endl;
 #define PRINTVG_debug(str) ;
 #define PRINTINOUT 0
@@ -74,6 +78,7 @@ class VarGraph
 public:
 	list<VarGraphNode*> allnodes;
 	list<VarGraphEdge*> alledges;
+	std::map<const Temp::Temp*, std::string> regmapping;
 	VarGraphNode* getNode(const Temp::Temp* i)
 	{
 		auto newnode = VarGraphNode::getVarGraphNode(i);
@@ -171,7 +176,7 @@ public:
 		}
 		auto newedge = new VarGraphEdge(from, to);
 		alledges.push_front(newedge);
-		std::cout << " neighborsNumber " << neighborsNumber(from) <<  " isNNMoreThan " << isNNMoreThan(0, to) << std::endl;
+		PRINTFGCON_debug( " neighborsNumber " + NumberToString( neighborsNumber(from) ) + " isNNMoreThan " + NumberToString( isNNMoreThan(0, to) ) );
 		return newedge;
 	}
 
@@ -187,35 +192,87 @@ public:
         return num;
 	}
 
-	void draw(std::ofstream& out){
-		out << "graph VarGraph {" << std::endl;
+	void draw(std::ofstream& out, list<VarGraph*> vargraph_list){
+	    out << "graph top {" << std::endl;
+		int subgraph_n = 0;
 		int node_count = 0;
 		std::map<const VarGraphNode*, int> node_count_map;
-		//int colorNum = getColorNum();
-		for (VarGraphNode* node: this->allnodes){
-			node_count_map[node] = node_count;
-			string color;
-			if (node->color > 0){
-				color = colors[node->color - 1];
-			}
-			else if(node->color == 0){ // stack
-				color = "#888888";
-			}
-			else if(node->color == 0){ // stack candidate
-				color = "#cccccc";
-			}
-
-			out << "n" << node_count << " [shape=\"box\",style=\"filled\",fillcolor=\"" << color << "\", label=\"" << node->name->name << "  ["<< node_count << "]\"];" << std::endl;
-			node_count++;
-		}
-		for (auto edge : this->alledges)
+	    for (VarGraph* vg : vargraph_list)
 		{
-			if (edge->to < edge->from)
-			{
-				out << "n" << node_count_map[edge->to] << " -- n" <<  node_count_map[edge->from] << ';' << std::endl;
-			}
+            out << "subgraph cluster" << subgraph_n++ << " {" << std::endl;
+            //int colorNum = getColorNum();
+            for (VarGraphNode* node: vg->allnodes){
+                node_count_map[node] = node_count;
+                string color;
+                if (node->color > 0){
+                    color = colors[node->color - 1];
+                }
+                else if(node->color == 0){ // stack
+                    color = "#888888";
+                }
+                else if(node->color == 0){ // stack candidate
+                    color = "#cccccc";
+                }
+
+                out << "n" << node_count << " [shape=\"box\",style=\"filled\",fillcolor=\"" << color << "\", label=\"" << node->name->name << "  ["<< node_count << "]\"];" << std::endl;
+                node_count++;
+            }
+            for (auto edge : vg->alledges)
+            {
+                if (edge->to < edge->from)
+                {
+                    out << "n" << node_count_map[edge->to] << " -- n" <<  node_count_map[edge->from] << ';' << std::endl;
+                }
+            }
+            out << "}" << std::endl;
 		}
 		out << "}" << std::endl;
+	}
+
+	void preColor(std::vector<std::string> regnames)
+	{
+		for (VarGraphNode* node: allnodes)
+		{
+			auto it = std::find(regnames.begin(), regnames.end(), node->name->name);
+			if (it != regnames.end())
+			{
+				auto index = std::distance(regnames.begin(), it);
+				node->color = index + 1; // to get 1..k
+				std::cout << "Precolor " << node->name->name << " with color " << node->color << std::endl;
+			}
+		}
+	}
+
+	void mapVarsToRegisters(std::vector<std::string> regnames)
+	{
+		int shifts = 0;
+		for (auto node: allnodes)
+		{
+			if (regnames.size() < node->color)
+			{
+				std::cout << "Not enougth ("<< regnames.size() <<") register names provided can't fit color" << node->color << std::endl;
+				assert(false);
+			}
+
+			if (node->color > 0)
+			{
+				regmapping[node->name] = regnames.at(node->color - 1);
+
+				#if PRINTVARMAP
+				std::cout << "Map " << node->name->name << " into " << regnames.at(node->color - 1) << std::endl;
+				#endif
+			}
+
+			if (node->color == 0)
+			{
+				regmapping[node->name] = "<" + NumberToString(shifts++);
+
+				#if PRINTVARMAP
+				std::cout << "Map " << node->name->name << " into " << regmapping[node->name] << std::endl;				
+				#endif
+			}
+		}
+		regmapping[Temp::Temp::getTemp("##FP")] = "EBP";
 	}
 };
 
@@ -304,7 +361,9 @@ public:
                 }
             }
         }
+        #if PRINTCOLORING
         std::cout << " count " << var->name <<  ": " << count << std::endl;
+        #endif
         return count;
 	}
 };
@@ -338,7 +397,7 @@ public:
 
 			for (auto il = af->firstInstructionList; il != 0 ; il = il->next)
 			{
-				// PRINTFGCON_debug( "Converting instruction " + il->instr->asmcode );
+				PRINTFGCON_debug( "Converting instruction " + il->instr->asmcode );
 				// new node of graph
 				FlowGraphNode* newNode = flowgraph->addNode(il->instr);
 
@@ -389,8 +448,9 @@ public:
 			out << "subgraph cluster" << subgraph_n++ << " {" << std::endl;
 			for (FlowGraphNode* node : fg->allnodes)
 			{
+			    node->instruction->depth = 0;
 				nodes_map[node] = node_n;
-				out << "n" << node_n << " [shape=\"box\",label=\"" << node->instruction->asmcode << " | "<< node_n << "\"];" << std::endl;
+				out << "n" << node_n << " [shape=\"box\",label=\"" << node->instruction->asmcode << " | "<< node_n << " | "<< node->instruction->depth << "\"];" << std::endl;
 				node_n++;
 			}
 			for (FlowGraphEdge* edge : fg->alledges)
@@ -503,7 +563,7 @@ public:
 
 			for (FlowGraphNode* node : fg->allnodes)
 			{
-				std::cout << "Node: " << node->instruction->asmcode << std::endl;
+				PRINTFGCON_debug( "Node: " + node->instruction->asmcode );
 				if (const MOVE* move = dynamic_cast<const MOVE*>(node->instruction))
 				{
 					if (move->betweenTemp)
@@ -532,7 +592,6 @@ public:
 						{
 							if (b != c)
 							{
-								std::cout << "MOVE between staff" << std::endl;
 								VarGraphNode* b_node = vg->getNode(b);
 								vg->addEdge(a_node, b_node);
 								vg->addEdge(b_node, a_node);
@@ -544,7 +603,7 @@ public:
 				{
 					for(const Temp::Temp* a : TempListToSet(node->instruction->definedVars))
 					{
-						std::cout << "Adding nodes" << std::endl;
+						PRINTFGCON_debug( "Adding nodes" );
 						for(const Temp::Temp* b : node->out)
 						{
 							auto a_node = vg->getNode(a);
@@ -553,7 +612,7 @@ public:
 							vg->addEdge(a_node, b_node);
 							vg->addEdge(b_node, a_node);
 
-							std::cout << "Add edge " << a->name << " to " << b->name << std::endl;
+							PRINTFGCON_debug( "Add edge " + a->name + " to " + b->name );
 						}
 					}
 				}

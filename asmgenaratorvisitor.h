@@ -20,7 +20,7 @@ namespace Assemble
 class AsmGenaratorVisitor : public IRTree::ITreeVisitor
 {
 public:
-	AsmGenaratorVisitor(): padding(0), root(0), curasmf(0) {}
+	AsmGenaratorVisitor(): padding(0), root(0), curasmf(0)/*, curcodef(0)*/ {}
 
 	virtual ~AsmGenaratorVisitor() {}
 
@@ -40,7 +40,10 @@ public:
 				curasmf->next = newasmf;
 				curasmf = newasmf;
 			}
-			
+
+			curasmf->frame = currentCodeFragment->frame;
+
+			//curcodef = currentCodeFragment
 			debug("!!!--------- CF: " << currentCodeFragment->frame->getName()->name << "------------!!!");
 			currentCodeFragment->stmlist->Accept( this );
 
@@ -50,7 +53,8 @@ public:
 	int visit(const IRTree::CONST* n)
 	{
 		logging("CONST");
-		debug("// CONST(c) => MOVE d0, c => d0");
+		debug("// CONST(c) => MOV d0, c => d0");
+
 		Temp::Temp* d0 = new Temp::Temp();
 		std::ostringstream ss;
 		ss << "MOV d0, " << n->value;
@@ -83,7 +87,7 @@ public:
 	int visit(const IRTree::BINOP* n)
 	{
 		logging("BINOP");
-		debug("// a BINOP b => MOVE d0, a; MOVE d1, b; BINOP d0, d1; MOVE d2, d0 => d2");
+		debug("// a BINOP b => MOV d0, a; MOV d1, b; BINOP d0, d1; MOV d2, d0 => d2");
 		n->left->Accept( this );
 		auto a = tmp;
 		n->right->Accept( this );
@@ -93,21 +97,21 @@ public:
 		switch ( n->binop )
 		{
 			case 0: // +
-				curasmf->addInstruction(new Assemble::MOVE("MOVE AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
 				curasmf->addInstruction(new Assemble::ASM("ADD AX, u0", new Temp::TempList(b), new Temp::TempList( ax ) ));
 				// now the sum lives in d0: ADD u0, u1 => u0 = u0 + u1
 				tmp = ax;
 				return 0;
 			case 1: // -
-				curasmf->addInstruction(new Assemble::MOVE("MOVE AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
 				curasmf->addInstruction(new Assemble::ASM("SUB AX, u0", new Temp::TempList(b), new Temp::TempList( ax ) ));
 				// now the sub lives in d0: ADD u0, u1 => u0 = u0 + u1
 				tmp = d0;
 				return 0;
 			case 2: // *
-				curasmf->addInstruction(new Assemble::MOVE("MOVE AL, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV AL, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
 				curasmf->addInstruction(new Assemble::ASM("MUL u0", new Temp::TempList(b), new Temp::TempList(ax) ));
-				curasmf->addInstruction(new Assemble::MOVE("MOVE d0, AX", new Temp::TempList(ax), new Temp::TempList(d0) , true, true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV d0, AX", new Temp::TempList(ax), new Temp::TempList(d0) , true, true));
 				tmp = d0;
 				return 0;
 			default:
@@ -131,7 +135,7 @@ public:
 					b->left->Accept(this);
 					auto u0 = tmp;
 					std::ostringstream ss;
-					ss << "MOV d0, [t0 + " << c->value << ']';
+					ss << "MOV d0, [u0 + " << c->value << ']';
 					curasmf->addInstruction(new Assemble::MOVE(ss.str(), 
 											new Temp::TempList(u0), 
 											new Temp::TempList(d0)));
@@ -145,7 +149,7 @@ public:
 		Temp::Temp* d0 = new Temp::Temp();
 		n->exp->Accept( this );
 		auto u0 = tmp;
-		curasmf->addInstruction(new Assemble::MOVE("MOV d0, [t0]", 
+		curasmf->addInstruction(new Assemble::MOVE("MOV d0, [u0]", 
 								new Temp::TempList(u0), 
 								new Temp::TempList(d0)));
 		tmp = d0;
@@ -158,10 +162,25 @@ public:
 	    n->args->Accept( this ); // packed here
 	    debug("// CALL funcname => RV")
 	    std::ostringstream ss;
+	    std::ostringstream leaveS;
+	    //enter , $0 //locals - amount of storage to allocate, level - nesting level of routine
+	    //      sizeof() all variables inside
+	    //or
+
+	    //curasmf->addInstruction(new Assemble::ASM("PUSH ebp", NULL, NULL));
+	    //curasmf->addInstruction(new Assemble::ASM("MOV ebp, esp", NULL, NULL));
+	    //curasmf->addInstruction(new Assemble::ASM("SUP esp, " + curasmf->frame->localVarCount()*4, NULL, NULL));
+	   	//push ebp // save the value to ebp
+  		// mov ebp, esp // ebp now points to the head of stack
+  		// sub esp, this.frame.localVarCount()*4
 	    ss << "CALL " << n->func->name;
 	    curasmf->addInstruction(new Assemble::ASM(ss.str(), 
 	    											NULL, 
 	    											NULL));
+	    // leaveS << "LEAVE";
+	    // curasmf->addInstruction(new Assemble::ASM(leaveS.str(), 
+	    // 											NULL, 
+	    // 											NULL));
 
 	    tmp = Temp::Temp::getTemp("RV");
 		debug_end();
@@ -272,13 +291,13 @@ public:
 				}
 				else
 				{
-					debug("// MOVE(a, MEM(b)) => MOV t0, [t1] | (a, b) => NULL")
+					debug("// MOVE(a, MEM(b)) => MOV u0, [u1] | (a, b) => NULL")
 
 					n->dst->Accept(this);
 					auto a = tmp;
 					r->exp->Accept(this);
 					auto b = tmp;
-					curasmf->addInstruction(new Assemble::MOVE("MOVE t0, [t1]", new Temp::TempList(a, b), NULL));
+					curasmf->addInstruction(new Assemble::MOVE("MOV u0, [u1]", new Temp::TempList(a, b), NULL));
 					tmp = NULL;
 					return 0;
 				}
@@ -287,21 +306,21 @@ public:
 
 		if (auto c = dynamic_cast<const IRTree::CONST*>(n->src))
 		{
-			debug("// MOVE (a, CONST(c)) => MOV t0, c | (a) => NULL")
+			debug("// MOV (a, CONST(c)) => MOV u0, c | (a) => NULL")
 			std::ostringstream ss;
-			ss << "MOVE t0, " << c->value;
+			ss << "MOV u0, " << c->value;
 			n->dst->Accept(this);
 			curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(tmp), NULL));
 			tmp = NULL;
 			return 0;
 		}
 
-		debug("// MOVE (a, b) => MOV t0, t1 | (a, b) => NULL")
+		debug("// MOV (a, b) => MOV u0, u1 | (a, b) => NULL")
 		n->dst->Accept(this);
 		auto a = tmp;
 		n->src->Accept(this);
 		auto b = tmp;
-		curasmf->addInstruction(new Assemble::MOVE("MOVE t0, t1", new Temp::TempList(a, b), NULL, true));
+		curasmf->addInstruction(new Assemble::MOVE("MOV u0, u1", new Temp::TempList(a, b), NULL, true));
 		tmp = NULL;
 
 		debug_end();
@@ -342,7 +361,7 @@ public:
 		auto a = tmp;
 		n->right->Accept(this);
 		auto b = tmp;
-		debug("// CMP t0, t1 | (left, right); J(E, NE, L ..) truelabel ")
+		debug("// CMP u0, u1 | (left, right); J(E, NE, L ..) truelabel ")
 		
 		curasmf->addInstruction(new Assemble::ASM("CMP u0, u1", new Temp::TempList(a, b), NULL));
 		std::string cjumptype;

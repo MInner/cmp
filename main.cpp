@@ -4,11 +4,16 @@
 #include <list>
 #include <map>
 #include <boost/iterator/zip_iterator.hpp>
+#include <set>
+#include <sstream>
 
 #include "snippets.h"
 
 #define PRINTPREASM 1
-#define PRINTFGCON 1
+#define PRINTFGCON 0
+#define PRINTVARMAP 1
+#define PRINTREGALLOC 0
+#define PRINTCOLORING 0
 
 #include "enums.h"
 #include "bi.hpp"
@@ -26,7 +31,6 @@
 #include "canon.h"
 #include "forestprintvisitor.h"
 #include "asmgenaratorvisitor.h"
-#include <set>
 #include "flowgraph.h"
 #include "register_allocation.h"
 
@@ -35,13 +39,7 @@ extern int yyparse();
 
 // -- some STATIC things
 
-template <typename T> 
-std::string NumberToString(T Number)
-{
-    std::stringstream ss;
-    ss << Number;
-    return ss.str();
-}
+
 
 const ProgramImpl* ProgramImpl::me = 0;
 const TypeData BuildTableVisitor::NULLTYPE = TypeData();
@@ -117,40 +115,68 @@ int main(void){
     of.close();
 
 	std::cout << "--- Generating pre-assembler ---" << std::endl;
-	Assemble::AsmGenaratorVisitor* cg = new Assemble::AsmGenaratorVisitor();
-	cg->visit(newCF);
-	auto rootAsmFragment = cg->getRootAsmFragment();
+	Assemble::AsmGenaratorVisitor* asmgen = new Assemble::AsmGenaratorVisitor();
+	asmgen->visit(newCF);
+	auto rootAsmFragment = asmgen->getRootAsmFragment();
 
 	std::cout << "--- Building flow-graph --- " << std::endl;
 
 	std::ofstream fgfile("flowgraph.txt");
+	std::ofstream vargfile("vargraph.txt");
 
 	auto fgBuilder = new Assemble::FlowGraphBuilder();
 	fgBuilder->build(rootAsmFragment);
 	fgBuilder->draw(fgfile);
 
 	std::cout << "--- Building a var-graph --- " << std::endl;
+
+	std::vector<std::string> regnames = {"AX", "BX", "CX", "DX"};
+
 	auto vg_list = fgBuilder->buildVarGraph();
-	
+
 	std::cout << "Finally" << std::endl;
 
-	int i = 0;
+	auto af = rootAsmFragment;
 
+	list<Assemble::VarGraph*> cvargraph_list;
 	for (int i = 0; i < vg_list.size(); i++)
 	{
-		std::cout << "Building for " << i << std::endl;
-		std::list<Assemble::VarGraph*>::iterator vg = std::next(vg_list.begin(), i);
-		std::list<Assemble::FlowGraph*>::iterator fg = std::next(fgBuilder->flowgraph_list.begin(), i);
+		if (af == 0)
+		{
+			std::cout << "Strang on sizes of vg, fg, af" << std::endl;
+		}
 
-		std::ofstream vargfile("vargraph"+NumberToString(i++)+".txt");
-		(*vg)->draw(vargfile);
+	    std::list<Assemble::VarGraph*>::iterator vg = std::next(vg_list.begin(), i);
+	    std::list<Assemble::FlowGraph*>::iterator fg = std::next(fgBuilder->flowgraph_list.begin(), i);
+
+		(*vg)->printGr();
+		(*vg)->preColor(regnames);
+		(*vg)->draw(vargfile, vg_list);
 
 		auto regAllocator = new RegisterAllocation::RegAllocator();
-		auto coloredGraph = regAllocator->colorGraph(*vg, *fg, 4);
+		auto coloredGraph = regAllocator->colorGraph((*vg),(*fg) , regnames.size());
+		cvargraph_list.push_back(coloredGraph);
 
-		std::ofstream cvargfile("cvargraph"+NumberToString(i++)+".txt");
-		coloredGraph->draw(cvargfile);	
+	    std::ofstream cvargfile("vargraphInColor.txt");
+		coloredGraph->draw(cvargfile, cvargraph_list);
 
+		coloredGraph->mapVarsToRegisters(regnames);
+
+		af->writeMappedTemps(coloredGraph->regmapping);
+		af->writePrologueEpilogue(regnames);
+
+		af = af->next;
+	}
+
+	std::ofstream asmfile("asmfile.txt");
+
+	for (af = rootAsmFragment; af != 0; af = af->next)
+	{
+		asmfile << af->frame->getName()->name << ":" << std::endl;
+		for (auto line : af->code)
+		{
+			asmfile << "	" << line << std::endl;
+		}
 	}
 
 
