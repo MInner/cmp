@@ -155,6 +155,7 @@ int main(void){
 
 		auto regAllocator = new RegisterAllocation::RegAllocator();
 		auto coloredGraph = regAllocator->colorGraph((*vg),(*fg) , regnames.size());
+
 		cvargraph_list.push_back(coloredGraph);
 
 	    std::ofstream cvargfile("vargraphInColor.txt");
