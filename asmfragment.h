@@ -6,6 +6,7 @@ namespace Assemble {
 
 	class Instruction {
 	public:
+        int depth;
 		std::string asmcode;
 		const Temp::TempList* usedVars;
 		const Temp::TempList* definedVars;
@@ -29,7 +30,7 @@ namespace Assemble {
 	class LABEL : public Instruction {
 	public:
 		std::string name;
-		LABEL(const Temp::Label* l) 
+		LABEL(const Temp::Label* l)
 		{
 			asmcode = l->name + ":";
 			name = l->name;
@@ -42,7 +43,7 @@ namespace Assemble {
 	public:
 		std::string type;
 		std::string where;
-		JMP(const std::string _type, const Temp::Label* _where) 
+		JMP(const std::string _type, const Temp::Label* _where)
 		{
 			asmcode = _type + " " + _where->name;
 			type = _type;
@@ -56,7 +57,7 @@ namespace Assemble {
 	public:
 		bool betweenTemp;
 		bool reverse;
-		MOVE(std::string asmcode, const Temp::TempList* _usedVars = NULL, 
+		MOVE(std::string asmcode, const Temp::TempList* _usedVars = NULL,
 			const Temp::TempList* _definedVars = NULL, bool _betweenTemp = false, bool _reverse = false)
 		{
 			this->asmcode = asmcode;
@@ -105,7 +106,7 @@ namespace Assemble {
 			if (i->usedVars)
 			{
 				for(auto curUsedVar = i->usedVars;
-			        curUsedVar != nullptr; curUsedVar = curUsedVar->next ) 
+			        curUsedVar != nullptr; curUsedVar = curUsedVar->next )
 				{
 					std::cout << curUsedVar->temp->name << ", ";
 				}
@@ -114,8 +115,8 @@ namespace Assemble {
 			if (i->definedVars)
 			{
 				std::cout << " ; ";
-				for(auto curUsedVar = i->definedVars; 
-			        curUsedVar != nullptr; curUsedVar = curUsedVar->next ) 
+				for(auto curUsedVar = i->definedVars;
+			        curUsedVar != nullptr; curUsedVar = curUsedVar->next )
 				{
 					std::cout << curUsedVar->temp->name;
 				}

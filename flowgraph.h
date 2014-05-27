@@ -187,33 +187,39 @@ public:
         return num;
 	}
 
-	void draw(std::ofstream& out){
-		out << "graph VarGraph {" << std::endl;
+	void draw(std::ofstream& out, list<VarGraph*> vargraph_list){
+	    out << "graph top {" << std::endl;
+		int subgraph_n = 0;
 		int node_count = 0;
 		std::map<const VarGraphNode*, int> node_count_map;
-		//int colorNum = getColorNum();
-		for (VarGraphNode* node: this->allnodes){
-			node_count_map[node] = node_count;
-			string color;
-			if (node->color > 0){
-				color = colors[node->color - 1];
-			}
-			else if(node->color == 0){ // stack
-				color = "#888888";
-			}
-			else if(node->color == 0){ // stack candidate
-				color = "#cccccc";
-			}
-
-			out << "n" << node_count << " [shape=\"box\",style=\"filled\",fillcolor=\"" << color << "\", label=\"" << node->name->name << "  ["<< node_count << "]\"];" << std::endl;
-			node_count++;
-		}
-		for (auto edge : this->alledges)
+	    for (VarGraph* vg : vargraph_list)
 		{
-			if (edge->to < edge->from)
-			{
-				out << "n" << node_count_map[edge->to] << " -- n" <<  node_count_map[edge->from] << ';' << std::endl;
-			}
+            out << "subgraph cluster" << subgraph_n++ << " {" << std::endl;
+            //int colorNum = getColorNum();
+            for (VarGraphNode* node: vg->allnodes){
+                node_count_map[node] = node_count;
+                string color;
+                if (node->color > 0){
+                    color = colors[node->color - 1];
+                }
+                else if(node->color == 0){ // stack
+                    color = "#888888";
+                }
+                else if(node->color == 0){ // stack candidate
+                    color = "#cccccc";
+                }
+
+                out << "n" << node_count << " [shape=\"box\",style=\"filled\",fillcolor=\"" << color << "\", label=\"" << node->name->name << "  ["<< node_count << "]\"];" << std::endl;
+                node_count++;
+            }
+            for (auto edge : vg->alledges)
+            {
+                if (edge->to < edge->from)
+                {
+                    out << "n" << node_count_map[edge->to] << " -- n" <<  node_count_map[edge->from] << ';' << std::endl;
+                }
+            }
+            out << "}" << std::endl;
 		}
 		out << "}" << std::endl;
 	}
@@ -389,8 +395,9 @@ public:
 			out << "subgraph cluster" << subgraph_n++ << " {" << std::endl;
 			for (FlowGraphNode* node : fg->allnodes)
 			{
+			    node->instruction->depth = 0;
 				nodes_map[node] = node_n;
-				out << "n" << node_n << " [shape=\"box\",label=\"" << node->instruction->asmcode << " | "<< node_n << "\"];" << std::endl;
+				out << "n" << node_n << " [shape=\"box\",label=\"" << node->instruction->asmcode << " | "<< node_n << " | "<< node->instruction->depth << "\"];" << std::endl;
 				node_n++;
 			}
 			for (FlowGraphEdge* edge : fg->alledges)

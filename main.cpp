@@ -120,22 +120,26 @@ int main(void){
 
 	std::cout << "--- Building a var-graph --- " << std::endl;
 	auto vg_list = fgBuilder->buildVarGraph();
-	
+
 	std::cout << "Finally" << std::endl;
 
-	for (auto vg : vg_list)
+  list<Assemble::VarGraph*> cvargraph_list;
+	for (int i = 0; i < vg_list.size(); i++)
 	{
-		vg->printGr();
+    std::list<Assemble::VarGraph*>::iterator vg = std::next(vg_list.begin(), i);
+    std::list<Assemble::FlowGraph*>::iterator fg = std::next(fgBuilder->flowgraph_list.begin(), i);
 
-		vg->draw(vargfile);
+		(*vg)->printGr();
+		(*vg)->draw(vargfile, vg_list);
 
-		// auto regAllocator = new RegisterAllocation::RegAllocator();
-		// auto coloredGraph = regAllocator->colorGraph(vg, 4);
+		auto regAllocator = new RegisterAllocation::RegAllocator();
+		auto coloredGraph = regAllocator->colorGraph((*vg),(*fg) , 4);
+		cvargraph_list.push_back(coloredGraph);
 
-	 //    std::ofstream cvargfile("vargraphInColor.txt");
-		// coloredGraph->draw(cvargfile);	
+	    std::ofstream cvargfile("vargraphInColor.txt");
+		coloredGraph->draw(cvargfile, cvargraph_list);
 	}
-	
+
 	// std::cout << "--- Building var-graph --- " << std::endl;
 	// auto varGr = new Assemble::VarGraph();
 	// auto node1 = new Assemble::VarGraphNode(new Temp::Temp());
