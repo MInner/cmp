@@ -159,11 +159,17 @@ public:
 	    n->args->Accept( this ); // packed here
 	    debug("// CALL funcname => RV")
 	    std::ostringstream ss;
+	    //enter $16, $0 //locals - amount of storage to allocate, level - nesting level of routine
+	    //      sizeof() all variables inside
+	    //or
+	   	//push ebp // save the value to ebp
+  		// mov ebp, esp // ebp now points to the head of stack
+  		// sub esp, #ofSpaceOnStack
 	    ss << "CALL " << n->func->name;
 	    curasmf->addInstruction(new Assemble::ASM(ss.str(), 
 	    											NULL, 
 	    											NULL));
-
+	    // leave // popular
 	    tmp = Temp::Temp::getTemp("RV");
 		debug_end();
 	}
