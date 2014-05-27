@@ -90,7 +90,6 @@ public:
 		auto b = tmp;
 		auto d0 = new Temp::Temp();
 		auto ax = Temp::Temp::getTemp("AX");
-		auto al = Temp::Temp::getTemp("AL");
 		switch ( n->binop )
 		{
 			case 0: // +
@@ -106,7 +105,7 @@ public:
 				tmp = d0;
 				return 0;
 			case 2: // *
-				curasmf->addInstruction(new Assemble::MOVE("MOVE AL, u0", new Temp::TempList(a), new Temp::TempList( al ), true));
+				curasmf->addInstruction(new Assemble::MOVE("MOVE AL, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
 				curasmf->addInstruction(new Assemble::ASM("MUL u0", new Temp::TempList(b), new Temp::TempList(ax) ));
 				curasmf->addInstruction(new Assemble::MOVE("MOVE d0, AX", new Temp::TempList(ax), new Temp::TempList(d0) , true, true));
 				tmp = d0;

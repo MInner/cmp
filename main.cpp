@@ -3,6 +3,9 @@
 #include <fstream>
 #include <list>
 #include <map>
+#include <boost/iterator/zip_iterator.hpp>
+
+#include "snippets.h"
 
 #define PRINTPREASM 1
 #define PRINTFGCON 1
@@ -27,9 +30,18 @@
 #include "flowgraph.h"
 #include "register_allocation.h"
 
+
 extern int yyparse();
 
 // -- some STATIC things
+
+template <typename T> 
+std::string NumberToString(T Number)
+{
+    std::stringstream ss;
+    ss << Number;
+    return ss.str();
+}
 
 const ProgramImpl* ProgramImpl::me = 0;
 const TypeData BuildTableVisitor::NULLTYPE = TypeData();
@@ -112,7 +124,6 @@ int main(void){
 	std::cout << "--- Building flow-graph --- " << std::endl;
 
 	std::ofstream fgfile("flowgraph.txt");
-	std::ofstream vargfile("vargraph.txt");
 
 	auto fgBuilder = new Assemble::FlowGraphBuilder();
 	fgBuilder->build(rootAsmFragment);
@@ -123,37 +134,24 @@ int main(void){
 	
 	std::cout << "Finally" << std::endl;
 
-<<<<<<< HEAD
-	for (auto vg : vg_list)
+	int i = 0;
+
+	for (int i = 0; i < vg_list.size(); i++)
 	{
-		vg->printGr();
+		std::cout << "Building for " << i << std::endl;
+		std::list<Assemble::VarGraph*>::iterator vg = std::next(vg_list.begin(), i);
+		std::list<Assemble::FlowGraph*>::iterator fg = std::next(fgBuilder->flowgraph_list.begin(), i);
 
-		vg->draw(vargfile);
+		std::ofstream vargfile("vargraph"+NumberToString(i++)+".txt");
+		(*vg)->draw(vargfile);
 
-		// auto regAllocator = new RegisterAllocation::RegAllocator();
-		// auto coloredGraph = regAllocator->colorGraph(vg, 4);
+		auto regAllocator = new RegisterAllocation::RegAllocator();
+		auto coloredGraph = regAllocator->colorGraph(*vg, *fg, 4);
 
-	 //    std::ofstream cvargfile("vargraphInColor.txt");
-		// coloredGraph->draw(cvargfile);	
+		std::ofstream cvargfile("cvargraph"+NumberToString(i++)+".txt");
+		coloredGraph->draw(cvargfile);	
+
 	}
-	
-	// std::cout << "--- Building var-graph --- " << std::endl;
-	// auto varGr = new Assemble::VarGraph();
-	// auto node1 = new Assemble::VarGraphNode(new Temp::Temp());
-	// auto node2 = new Assemble::VarGraphNode(new Temp::Temp());
-	// auto node3 = new Assemble::VarGraphNode(new Temp::Temp());
-	// //auto edge1  = new Assemble::VarGraphEdge(node1, node2);
-	// //auto edge2  = new Assemble::VarGraphEdge(node2, node1);
-	// varGr->addNode(node1);
-	// varGr->addNode(node2);
-	// varGr->addEdge(node1, node2);
-	// varGr->addEdge(node2, node1);
-	// varGr->addNode(node3);
-	// varGr->addEdge(node3, node2);
-	// //varGr->addEdge(node3, node1);
-	// //varGr->addEdge(node1, node3);
-	// varGr->addEdge(node2, node3);
-	// //varGr->removeNode(node1);
 
 
 	std::cout << "--- End Drawing graphviz trees ---" << std::endl;
