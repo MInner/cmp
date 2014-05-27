@@ -20,7 +20,7 @@ namespace Assemble
 class AsmGenaratorVisitor : public IRTree::ITreeVisitor
 {
 public:
-	AsmGenaratorVisitor(): padding(0), root(0), curasmf(0) {}
+	AsmGenaratorVisitor(): padding(0), root(0), curasmf(0), curcodef(0) {}
 
 	virtual ~AsmGenaratorVisitor() {}
 
@@ -40,7 +40,7 @@ public:
 				curasmf->next = newasmf;
 				curasmf = newasmf;
 			}
-			
+			//curcodef = currentCodeFragment
 			debug("!!!--------- CF: " << currentCodeFragment->frame->getName()->name << "------------!!!");
 			currentCodeFragment->stmlist->Accept( this );
 
@@ -51,6 +51,7 @@ public:
 	{
 		logging("CONST");
 		debug("// CONST(c) => MOVE d0, c => d0");
+
 		Temp::Temp* d0 = new Temp::Temp();
 		std::ostringstream ss;
 		ss << "MOV d0, " << n->value;
@@ -159,17 +160,25 @@ public:
 	    n->args->Accept( this ); // packed here
 	    debug("// CALL funcname => RV")
 	    std::ostringstream ss;
-	    //enter $16, $0 //locals - amount of storage to allocate, level - nesting level of routine
+	    std::ostringstream leaveS;
+	    //enter , $0 //locals - amount of storage to allocate, level - nesting level of routine
 	    //      sizeof() all variables inside
 	    //or
+
+	    //curasmf->addInstruction(new Assemble::ASM("PUSH ebp", NULL, NULL));
+	    //curasmf->addInstruction(new Assemble::ASM("MOVE ebp, esp", NULL, NULL));
+	    //curasmf->addInstruction(new Assemble::ASM("SUP esp, " + curasmf->frame->localVarCount()*4, NULL, NULL));
 	   	//push ebp // save the value to ebp
   		// mov ebp, esp // ebp now points to the head of stack
-  		// sub esp, #ofSpaceOnStack
+  		// sub esp, this.frame.localVarCount()*4
 	    ss << "CALL " << n->func->name;
 	    curasmf->addInstruction(new Assemble::ASM(ss.str(), 
 	    											NULL, 
 	    											NULL));
-	    // leave // popular
+	    leaveS << "LEAVE";
+	    curasmf->addInstruction(new Assemble::ASM(leaveS.str(), 
+	    											NULL, 
+	    											NULL));
 	    tmp = Temp::Temp::getTemp("RV");
 		debug_end();
 	}
