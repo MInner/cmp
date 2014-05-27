@@ -18,4 +18,4 @@ public:
 		out_nodes.push_back(ch);
 	}
 
-}
+};

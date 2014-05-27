@@ -41,7 +41,7 @@ namespace Temp
 	std::map<const std::string, const Temp*> Temp::m = std::map<const std::string, const Temp*>();
 }
 
-namespace Assemble 
+namespace Assemble
 {
 	std::map<const Temp::Temp*, VarGraphNode*> VarGraphNode::m = std::map<const Temp::Temp*, VarGraphNode*>();
 }
@@ -124,11 +124,12 @@ int main(void){
 
 	vg->draw(vargfile);
 
+    //fgBuilder->flowgraph_list
 	auto regAllocator = new RegisterAllocation::RegAllocator();
-	auto coloredGraph = regAllocator->colorGraph(vg, 4);
+	auto coloredGraph = regAllocator->colorGraph(vg,fgBuilder->flowgraph_list.front(), 4);
 
     std::ofstream cvargfile("vargraphInColor.txt");
-	coloredGraph->draw(cvargfile);	
+	coloredGraph->draw(cvargfile);
 
 	// std::cout << "--- Building var-graph --- " << std::endl;
 	// auto varGr = new Assemble::VarGraph();
