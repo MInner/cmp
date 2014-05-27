@@ -14,3 +14,10 @@ int StringToInt(std::string s)
 	ss >> i;
 	return i;
 }
+
+void replace_if_found(std::string& line, std::string what, std::string with)
+{
+	auto index = line.find(what);
+	if (index != std::string::npos)
+		line.replace(index, what.size(), with);
+}

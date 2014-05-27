@@ -58,12 +58,7 @@ public:
 		Temp::Temp* d0 = new Temp::Temp();
 		std::ostringstream ss;
 		ss << "MOV d0, " << n->value;
-		curasmf->addInstruction(
-			new Assemble::MOVE(ss.str(), 
-								NULL, 
-								new Temp::TempList(d0)
-			)
-		);
+		curasmf->addInstruction( new Assemble::MOVE(ss.str(), NULL, new Temp::TempList(d0), {d0} )	);
 		tmp = d0;
 		debug_end();
 	}
@@ -97,21 +92,21 @@ public:
 		switch ( n->binop )
 		{
 			case 0: // +
-				curasmf->addInstruction(new Assemble::MOVE("MOV AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), {ax, a}));
 				curasmf->addInstruction(new Assemble::ASM("ADD AX, u0", new Temp::TempList(b), new Temp::TempList( ax ) ));
 				// now the sum lives in d0: ADD u0, u1 => u0 = u0 + u1
 				tmp = ax;
 				return 0;
 			case 1: // -
-				curasmf->addInstruction(new Assemble::MOVE("MOV AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV AX, u0", new Temp::TempList(a), new Temp::TempList( ax ), {ax, a}));
 				curasmf->addInstruction(new Assemble::ASM("SUB AX, u0", new Temp::TempList(b), new Temp::TempList( ax ) ));
 				// now the sub lives in d0: ADD u0, u1 => u0 = u0 + u1
 				tmp = d0;
 				return 0;
 			case 2: // *
-				curasmf->addInstruction(new Assemble::MOVE("MOV AL, u0", new Temp::TempList(a), new Temp::TempList( ax ), true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV AL, u0", new Temp::TempList(a), new Temp::TempList( ax ), {ax, a}));
 				curasmf->addInstruction(new Assemble::ASM("MUL u0", new Temp::TempList(b), new Temp::TempList(ax) ));
-				curasmf->addInstruction(new Assemble::MOVE("MOV d0, AX", new Temp::TempList(ax), new Temp::TempList(d0) , true, true));
+				curasmf->addInstruction(new Assemble::MOVE("MOV d0, AX", new Temp::TempList(ax), new Temp::TempList(d0), {d0, ax}));
 				tmp = d0;
 				return 0;
 			default:
@@ -138,7 +133,8 @@ public:
 					ss << "MOV d0, [u0 + " << c->value << ']';
 					curasmf->addInstruction(new Assemble::MOVE(ss.str(), 
 											new Temp::TempList(u0), 
-											new Temp::TempList(d0)));
+											new Temp::TempList(d0), 
+											{d0}));
 					tmp = d0;
 					return 0;
 				}
@@ -151,7 +147,8 @@ public:
 		auto u0 = tmp;
 		curasmf->addInstruction(new Assemble::MOVE("MOV d0, [u0]", 
 								new Temp::TempList(u0), 
-								new Temp::TempList(d0)));
+								new Temp::TempList(d0), 
+								{d0}));
 		tmp = d0;
 		debug_end();
 	}
@@ -282,7 +279,7 @@ public:
 							auto exp = tmp;
 							std::ostringstream ss;
 							ss << "MOV u0, [u1 + " << br->value << "]"; 
-							curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(a, exp), NULL));
+							curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(a, exp), NULL, {a} ) );
 							tmp = NULL;
 							return 0;
 						}
@@ -297,7 +294,7 @@ public:
 					auto a = tmp;
 					r->exp->Accept(this);
 					auto b = tmp;
-					curasmf->addInstruction(new Assemble::MOVE("MOV u0, [u1]", new Temp::TempList(a, b), NULL));
+					curasmf->addInstruction(new Assemble::MOVE("MOV u0, [u1]", new Temp::TempList(a, b), NULL, {a}));
 					tmp = NULL;
 					return 0;
 				}
@@ -310,7 +307,7 @@ public:
 			std::ostringstream ss;
 			ss << "MOV u0, " << c->value;
 			n->dst->Accept(this);
-			curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(tmp), NULL));
+			curasmf->addInstruction(new Assemble::MOVE(ss.str(), new Temp::TempList(tmp), NULL, {tmp}));
 			tmp = NULL;
 			return 0;
 		}
@@ -320,7 +317,7 @@ public:
 		auto a = tmp;
 		n->src->Accept(this);
 		auto b = tmp;
-		curasmf->addInstruction(new Assemble::MOVE("MOV u0, u1", new Temp::TempList(a, b), NULL, true));
+		curasmf->addInstruction(new Assemble::MOVE("MOV u0, u1", new Temp::TempList(a, b), NULL, {a, b}));
 		tmp = NULL;
 
 		debug_end();

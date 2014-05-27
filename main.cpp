@@ -3,17 +3,17 @@
 #include <fstream>
 #include <list>
 #include <map>
-#include <boost/iterator/zip_iterator.hpp>
 #include <set>
 #include <sstream>
+#include <algorithm>
 
 #include "snippets.h"
 
-#define PRINTPREASM 1
-#define PRINTFGCON 0
-#define PRINTVARMAP 1
-#define PRINTREGALLOC 0
-#define PRINTCOLORING 0
+#define PRINTPREASM 	1
+#define PRINTFGCON 		0
+#define PRINTVARMAP 	1
+#define PRINTREGALLOC 	0
+#define PRINTCOLORING 	0
 
 #include "enums.h"
 #include "bi.hpp"

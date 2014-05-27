@@ -1,7 +1,6 @@
 #pragma once
 
 #include "temp.h"
-#include <boost/algorithm/string/replace.hpp>
 
 namespace Assemble {
 
@@ -56,16 +55,14 @@ namespace Assemble {
 
 	class MOVE : public Instruction {
 	public:
-		bool betweenTemp;
-		bool reverse;
+		std::vector<const Temp::Temp*> vars;
 		MOVE(std::string asmcode, const Temp::TempList* _usedVars = NULL,
-			const Temp::TempList* _definedVars = NULL, bool _betweenTemp = false, bool _reverse = false)
+			const Temp::TempList* _definedVars = NULL, std::vector<const Temp::Temp*> _vars = std::vector<const Temp::Temp*>())
 		{
 			this->asmcode = asmcode;
 			usedVars = _usedVars;
 			definedVars = _definedVars;
-			betweenTemp = _betweenTemp;
-			reverse = _reverse;
+			vars = _vars;
 		}
 	};
 
@@ -110,17 +107,17 @@ namespace Assemble {
 
 			// log
 			#if PRINTPREASM
-			std::cout << "	";
+			std::cout << "ASM: ";
 			std::string line = i->asmcode;
 			int j = 0;
 			for (auto definedvar = i->definedVars; definedvar != 0; definedvar = definedvar->next, j++)
 			{
-				boost::replace_all(line, "d" + NumberToString(j), definedvar->temp->name);
+				replace_if_found(line, "d" + NumberToString(j), definedvar->temp->name);
 			}
 			j = 0;
 			for (auto usedvar = i->usedVars; usedvar != 0; usedvar = usedvar->next, j++)
 			{
-				boost::replace_all(line, "u" + NumberToString(j), usedvar->temp->name);
+				replace_if_found(line, "u" + NumberToString(j), usedvar->temp->name);
 			}
 
 			std::cout << line << std::endl;
@@ -144,9 +141,9 @@ namespace Assemble {
 						int shift = StringToInt(regmapping[ uservar->temp ].substr(1));
 						std::string place = "[" + regmapping[ Temp::Temp::getTemp("##FP") ] + \
 							" - " + NumberToString( frame->wordSize()*(shift + frame->localVarCount() + 1) ) + "]";
-						boost::replace_all(line, "u" + NumberToString(i), place);
+						replace_if_found(line, "u" + NumberToString(i), place);
 					} else {
-						boost::replace_all(line, "u" + NumberToString(i), regmapping[ uservar->temp ]);
+						replace_if_found(line, "u" + NumberToString(i), regmapping[ uservar->temp ]);
 					}
 				}
 				i = 0;
@@ -158,9 +155,9 @@ namespace Assemble {
 						int shift = StringToInt(regmapping[ definedvar->temp ].substr(1));
 						std::string place = "[" + regmapping[ Temp::Temp::getTemp("##FP") ] + \
 							" - " + NumberToString( frame->wordSize()*(shift + frame->localVarCount() + 1) ) + "]";
-						boost::replace_all(line, "d" + NumberToString(i), place);
+						replace_if_found(line, "d" + NumberToString(i), place);
 					} else {
-						boost::replace_all(line, "d" + NumberToString(i), regmapping[ definedvar->temp ]);
+						replace_if_found(line, "d" + NumberToString(i), regmapping[ definedvar->temp ]);
 					}
 				}
 

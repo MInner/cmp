@@ -609,35 +609,27 @@ public:
 				PRINTFGCON_debug( "Node: " + node->instruction->asmcode );
 				if (const MOVE* move = dynamic_cast<const MOVE*>(node->instruction))
 				{
-					if (move->betweenTemp)
+					if (move->vars.size() == 1)
 					{
-						const Temp::Temp* a = move->usedVars->temp;
-						const Temp::Temp* c;
-						if (move->usedVars->next)
+						auto a = vg->getNode( move->vars[0] );
+						for(const Temp::Temp* b_t : node->out)
 						{
-							c = move->usedVars->next->temp;
+							auto b = vg->getNode( b_t );
+							vg->addEdge(a, b);
+							vg->addEdge(b, a);
 						}
-						else
+					} else if (move->vars.size() == 2)
+					{
+						auto a = vg->getNode( move->vars[0] );
+						auto c = vg->getNode( move->vars[1] );
+						for(const Temp::Temp* b_t : node->out)
 						{
-							c = move->definedVars->temp;
-						}
-						if (move->reverse)
-						{
-							const Temp::Temp* t;
-							t = c;
-							c = a;
-							a = t;
-						}
-						VarGraphNode* a_node = vg->getNode(a);
-						VarGraphNode* c_node = vg->getNode(c);
-
-						for(const Temp::Temp* b : node->out)
-						{
+							auto b = vg->getNode( b_t );
 							if (b != c)
 							{
-								VarGraphNode* b_node = vg->getNode(b);
-								vg->addEdge(a_node, b_node);
-								vg->addEdge(b_node, a_node);
+								vg->addEdge(a, b);
+								vg->addEdge(b, a);
+
 							}
 						}
 					}
