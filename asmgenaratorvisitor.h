@@ -20,7 +20,7 @@ namespace Assemble
 class AsmGenaratorVisitor : public IRTree::ITreeVisitor
 {
 public:
-	AsmGenaratorVisitor(): padding(0), root(0), curasmf(0), curcodef(0) {}
+	AsmGenaratorVisitor(): padding(0), root(0), curasmf(0)/*, curcodef(0)*/ {}
 
 	virtual ~AsmGenaratorVisitor() {}
 

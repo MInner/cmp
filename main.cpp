@@ -123,7 +123,6 @@ int main(void){
 	
 	std::cout << "Finally" << std::endl;
 
-<<<<<<< HEAD
 	for (auto vg : vg_list)
 	{
 		vg->printGr();
