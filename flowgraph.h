@@ -13,11 +13,12 @@ using std::string;
 
 // #define PRINTFGCON_debug(str) std::cout << str << std::endl;
 #define PRINTFGCON_debug(str) ;
-#define PRINTVG_debug(str) std::cout << str << std::endl;
+// #define PRINTVG_debug(str) std::cout << str << std::endl;
+#define PRINTVG_debug(str) ;
 #define PRINTINOUT 0
 
-string colors[] = {	"#10b5ad", "#cfff4a", "#4bcfff", "#fe4973", "#47fe79", "#ff0000", 
-					"#ceff00", "#2500ff", "#00fff4", "#2500ff", "#7e4141", "#00ff8d", 
+string colors[] = {	"#10b5ad", "#cfff4a", "#4bcfff", "#fe4973", "#47fe79", "#ff0000",
+					"#ceff00", "#2500ff", "#00fff4", "#2500ff", "#7e4141", "#00ff8d",
 					"#00864a", "#00ff8d", "#dbc6cb", "#fa9e5f"};
 
 std::set<const Temp::Temp*> TempListToSet (const Temp::TempList* start)
@@ -40,6 +41,7 @@ class VarGraphNode
 public:
 	const Temp::Temp* name;
 	int color; // -1 - stackCandidate 0 - stack, 1..k - num of register
+	double spillPriority;
 	static VarGraphNode* getVarGraphNode(const Temp::Temp* t)
     {
     	if (m.count(t))
@@ -83,14 +85,14 @@ public:
 	}
 
 	void printGr() {
-	    std::cout << "NODES" << std::endl;
+	    /*std::cout << "NODES" << std::endl;
 	    for (auto node: allnodes) {
             std::cout <<" Node " << node->name->name << "(" << node << " | " << node->name << ")" << std::endl ;
         }
 	    std::cout << "EDGEES" << std::endl;
         for (auto edge: alledges) {
             std::cout << " Edge " << edge->from->name->name << "(" << edge->from << ") to " << edge->to->name->name << "(" << edge->to << ")" << std::endl;
-        }
+        } */
 	}
 
 	void removeNode(VarGraphNode* node)
@@ -111,13 +113,6 @@ public:
 	int getColor(VarGraphNode* node, int k){
         std::vector<int> colors(k + 1, 1);
         for (auto edge: alledges) {
-            for(int i = 1; i <= k; i++){
-                if (colors[i])
-                std::cout << 1;
-                else
-                std::cout << 0;
-            }
-            std::cout << std::endl;
             const VarGraphNode* neighbor;
             if (edge->from ==  node) {
                 neighbor = edge->to;
@@ -290,12 +285,35 @@ public:
 		}
 		return ret;
 	}
+
+	int countUsesDefs(const Temp::Temp* var) {
+	    int count = 0;
+        for (FlowGraphNode* node : allnodes) {
+            for(const Temp::Temp* use : TempListToSet(node->instruction->usedVars))
+            {
+                //std::cout << use->name << std::endl;
+                if (use == var) {
+                    count++;
+                }
+            }
+            for(const Temp::Temp* def : TempListToSet(node->instruction->definedVars))
+            {
+                //std::cout << def->name << std::endl;
+                if (def == var) {
+                    count++;
+                }
+            }
+        }
+        std::cout << " count " << var->name <<  ": " << count << std::endl;
+        return count;
+	}
 };
 
 class FlowGraphBuilder
 {
 public:
 	list<FlowGraph*> flowgraph_list;
+	list<VarGraph*> vargraph_list;
 	void build(AsmFragment* root_af) // list of asm_fragments
 	{
 		// два прохода:
@@ -385,12 +403,13 @@ public:
 
 	}
 
-	VarGraph* buildVarGraph()
+	list<VarGraph*> buildVarGraph()
 	{
-		VarGraph* vg = new VarGraph();
-
 		for (FlowGraph* fg : flowgraph_list)
 		{
+			VarGraph* vg = new VarGraph();
+			vargraph_list.push_front(vg);
+
 			for (FlowGraphNode* node : fg->allnodes)
 			{
 				// out_i <- succ: in_k
@@ -541,13 +560,13 @@ public:
 			}
 		}
 
-		return vg;
+		return vargraph_list;
 
 	}
 
 	// VarGraph* getVarGraph()
 	// {
-	// 	return 
+	// 	return
 	// }
 };
 
